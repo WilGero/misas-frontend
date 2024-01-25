@@ -1,0 +1,6 @@
+# Configuración para LF en todos los archivos
+* text eol=lf
+
+# Configuración específica para archivos binarios
+*.png binary
+*.jpg binary
