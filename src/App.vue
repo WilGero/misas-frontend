@@ -5,12 +5,19 @@
 
 <script>
 import MenuNav from "./components/MenuNav.vue";
+import { mapActions } from "vuex";
 export default {
   components: {
     MenuNav,
   },
   data() {
     return {};
+  },
+  created(){
+    this.setAuth();
+  },
+  methods: {
+    ...mapActions(["setAuth"]),
   },
 };
 </script>

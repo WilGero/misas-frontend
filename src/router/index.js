@@ -18,12 +18,27 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/auth/LoginApp.vue')
+    component: () => import('../views/auth/LoginApp.vue'),
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem('auth')) {
+        next('/')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import('../views/auth/RegisterVue.vue')
+    component: () => import('../views/auth/RegisterVue.vue'),
+    // meta:{
+    //   requiresAuth:true
+    // }
+  },
+  {
+    path: '/:patMatch(.*)',
+    name: 'notfound',
+    component: () => import('../views/NotFound.vue')
   }
 ]
 
@@ -32,4 +47,12 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  const protectedRoute = to.matched.some(record => record.meta.requiresAuth)
+  if(protectedRoute && !localStorage.getItem('auth')){
+  next('/login')
+}else {
+  next()
+}
+})
 export default router

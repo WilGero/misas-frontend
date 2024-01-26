@@ -10,8 +10,10 @@ import 'jquery';
 // para fontawesome
 import '@fortawesome/fontawesome-free/css/all.css';
 
+import store from './store'
+
 //para axios
 // import axios from 'axios';
 
 // axios.defaults.baseURL = 'https://localhost:5050/';
-createApp(App).use(router).mount('#app')
+createApp(App).use(store).use(router).mount('#app')

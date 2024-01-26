@@ -47,38 +47,55 @@
             </div>
             <!-- boton para ingresar -->
             <div class="col-12">
-              <button type="submit" class="btn btn-primary">Ingresar</button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :class="{ disabled: disabled }"
+              >
+                Ingresar
+              </button>
             </div>
           </div>
         </form>
       </div>
       <div class="card-footer">
-        {{ usuario }}
         <router-link to="/"> Registrarse </router-link>
       </div>
+      {{ auth }}
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { mapMutations, mapState } from "vuex";
 export default {
   data() {
     return {
+      disabled: false,
       form: {
         usuario: "",
         contra: "",
       },
-      usuario:{}
+      usuario: {},
     };
   },
+  computed: {
+    ...mapState(['auth'])
+  },
   methods: {
+    ...mapMutations(["setAuth"]),
     login() {
+      this.disabled = true;
       axios
-        .post('http://localhost:5050/usuarios/login',this.form)
+        .post("http://localhost:5050/usuarios/login", this.form)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.usuario = response.data;
+          this.setAuth(this.usuario);
+          localStorage.setItem("auth",JSON.stringify(this.usuario));
+          this.disabled = false;
+          this.$router.push({name:'home'});
         })
         .catch((error) => {
           // Manejar errores
