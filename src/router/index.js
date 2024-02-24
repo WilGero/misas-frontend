@@ -36,6 +36,32 @@ const routes = [
     // }
   },
   {
+    path: '/usuarios',
+    name: 'usuarios',
+    component: () => import('../views/usuarios/IndexUser.vue'),
+    children: [
+      {
+        path: 'agregar',
+        component: () => import('../views/usuarios/AgregarUser.vue')
+
+      }
+    ]
+    ,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path:'/usuarios/:id',
+    name:'usuario',
+    component: () => import('../views/usuarios/DetalleUsuario.vue')
+  },
+  {
+    path:'/editarUsuario/:id',
+    name:'editarUsuario',
+    component: () => import('../views/usuarios/EditarUser.vue')
+  },
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')
@@ -49,10 +75,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requiresAuth)
-  if(protectedRoute && !localStorage.getItem('auth')){
-  next('/login')
-}else {
-  next()
-}
+  if (protectedRoute && !localStorage.getItem('auth')) {
+    next('/login')
+  } else {
+    next()
+  }
 })
 export default router

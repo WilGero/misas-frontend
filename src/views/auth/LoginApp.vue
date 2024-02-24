@@ -67,7 +67,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapMutations, mapState } from "vuex";
 export default {
   data() {
@@ -87,9 +86,9 @@ export default {
     ...mapMutations(["setAuth"]),
     login() {
       this.disabled = true;
-      axios
-        .post("http://localhost:5050/usuarios/login", this.form)
-        .then((response) => {
+      this.axios
+        .post("usuarios/login",this.form)
+        .then((response) => { 
           // Manejar la respuesta exitosa
           this.usuario = response.data;
           this.setAuth(this.usuario);

@@ -13,7 +13,10 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import store from './store'
 
 //para axios
-// import axios from 'axios';
+import axios from 'axios';
+import VueAxios  from 'vue-axios';
 
-// axios.defaults.baseURL = 'https://localhost:5050/';
-createApp(App).use(store).use(router).mount('#app')
+// Configurar Axios para incluir el token en las solicitudes
+axios.defaults.baseURL = 'http://localhost:5050/';
+
+createApp(App).use(VueAxios,axios).use(store).use(router).mount('#app')
