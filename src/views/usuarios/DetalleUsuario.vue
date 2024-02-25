@@ -9,7 +9,7 @@
           <label for="nombre" class="col-sm-2 col-form-label">Nombre:</label>
           <div class="col-sm-10">
             <input
-              v-model="usuario.nombre"
+              v-model="usuario.nombre_usuario"
               type="text"
               readonly
               class="form-control-plaintext text-center text-sm-start"
@@ -33,7 +33,7 @@
           <label for="nombre" class="col-sm-2 col-form-label">Rol:</label>
           <div class="col-sm-10">
             <input
-              v-model="usuario.rol_id"
+              v-model="usuario.nombre_rol"
               type="text"
               readonly
               class="form-control-plaintext text-center text-sm-start"

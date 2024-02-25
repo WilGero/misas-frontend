@@ -4,9 +4,14 @@
     class="card shadow bg-light w-50 w-sm-100 m-auto border border-3 p-2 mb-2"
   >
     <div class="card-header position-relative p-4">
-      <h3 class="card-title text-primary fw-bolder me-2">Agregar nuevo usuario</h3>
+      <h3 class="card-title text-primary fw-bolder me-2">
+        Agregar nuevo usuario
+      </h3>
 
-      <button class="btn btn-danger position-absolute end-0 top-0" @click="cerrarFormulario">
+      <button
+        class="btn btn-danger position-absolute end-0 top-0"
+        @click="cerrarFormulario"
+      >
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -88,17 +93,15 @@
               </label>
               <div class="col-10 px-0">
                 <select
-                  v-model="form.rol_id"
+                  v-model="rolSeleccionado"
                   class="form-control rounded-start-0"
                   name="rol"
                   id="rol"
                   required
                 >
-                  <option selected disabled>Seleccione un rol</option>
-                  <option value="1">Público</option>
-                  <option value="2">Administrador</option>
-                  <option value="3">Catequista</option>
-                  <option value="4">Secretaria</option>
+                  <option v-for="rol in roles" :key="rol.id" :value="rol.id">
+                    {{ rol.nombre }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -120,12 +123,36 @@ export default {
         nombre: "",
         usuario: "",
         contra: "",
-        rol_id: 0,
+        rol_id: null,
       },
+      roles: [],
+      rolSeleccionado: null,
     };
   },
+  created() {
+    this.getRoles();
+  },
   methods: {
+    async getRoles() {
+      await this.axios
+        .get("/roles/listado")
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.roles = response.data.data;
+
+          // Agregar la opción predeterminada "Seleccione un rol"
+          this.roles.unshift({ id: null, nombre: "Seleccione un rol" });
+          console.log(this.roles);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar roles:", error);
+        });
+    },
     async agregarUsuario() {
+      if (this.rolSeleccionado !== null) {
+        this.form.rol_id = this.rolSeleccionado;
+      }
       await this.axios
         .post("/usuarios/agregar", this.form)
         .then((response) => {
@@ -135,8 +162,9 @@ export default {
             nombre: "",
             usuario: "",
             contra: "",
-            rol_id: 0,
+            rol_id: null,
           };
+          this.rolSeleccionado=null;
         })
         .catch((error) => {
           // Manejar errores
