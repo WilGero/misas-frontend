@@ -9,7 +9,7 @@
           <label for="nombre" class="col-sm-2 col-form-label">Nombre:</label>
           <div class="col-sm-10">
             <input
-              v-model="usuario.nombre_usuario"
+              v-model="usuario.nombre"
               type="text"
               readonly
               class="form-control-plaintext text-center text-sm-start"
@@ -33,7 +33,7 @@
           <label for="nombre" class="col-sm-2 col-form-label">Rol:</label>
           <div class="col-sm-10">
             <input
-              v-model="usuario.nombre_rol"
+              v-model="rol.nombre"
               type="text"
               readonly
               class="form-control-plaintext text-center text-sm-start"
@@ -45,7 +45,12 @@
       <div class="card-footer">
         <div class="d-flex justify-content-around">
           <button class="btn btn-secondary" @click="irAtras">Atras</button>
-          <router-link :to="{ name: 'editarUsuario',params:{id:this.$route.params.id} }" class="btn btn-warning"
+          <router-link
+            :to="{
+              name: 'editarUsuario',
+              params: { id: this.$route.params.id },
+            }"
+            class="btn btn-warning"
             >Editar</router-link
           >
         </div>
@@ -59,6 +64,7 @@ export default {
   data() {
     return {
       usuario: {},
+      rol: {},
     };
   },
   created() {
@@ -72,6 +78,21 @@ export default {
           // Manejar la respuesta exitosa
           this.usuario = response.data.data;
           console.log(this.usuario);
+          this.getRol();
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar el usuario:", error);
+        });
+    },
+    async getRol() {
+      console.log(this.usuario.rol_id);
+      await this.axios
+        .get("/roles/encontrar/" + this.usuario.rol_id)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.rol = response.data.data;
+          console.log(this.rol);
         })
         .catch((error) => {
           // Manejar errores

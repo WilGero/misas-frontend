@@ -131,7 +131,7 @@ export default {
           this.roles = response.data.data;
 
           // Agregar la opción predeterminada "Seleccione un rol"
-          this.roles.unshift({ id: null, nombre: "Seleccione un rol" });
+          this.roles.unshift({ id: null, nombre: "Seleccione un rol..." });
           console.log(this.roles);
         })
         .catch((error) => {
@@ -153,11 +153,15 @@ export default {
         });
     },
     async actualizarUsuario() {
+      if (this.rolSeleccionado !== null) {
+        this.usuario.rol_id = this.rolSeleccionado;
+      }
+      console.log(this.usuario);
       await this.axios
         .put("/usuarios/actualizar", this.usuario)
         .then((response) => {
           // Manejar la respuesta exitosa
-          console.log("usuario actualizado existosamente ", response.data.data);
+          console.log("usuario actualizado exitosamente ", response.data.data);
           this.$router.push({
             name: "usuario",
             params: { id: this.$route.params.id },
@@ -165,7 +169,7 @@ export default {
         })
         .catch((error) => {
           // Manejar errores
-          console.error("Error al agregar usuario:", error);
+          console.error("Error al actualizar usuario:", error);
         });
     },
     cerrarFormulario() {

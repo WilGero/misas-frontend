@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="d-lg-flex justify-content-center align-items-center">
+    <div class="d-lg-flex justify-content-center pt-4">
       <div class="mx-0">
         <router-view />
       </div>
@@ -48,7 +48,9 @@
                       <td>
                         <button
                           class="btn btn-danger"
-                          @click="EliminarUsuario(item.id)"
+                          data-bs-toggle="modal"
+                          data-bs-target="#mi-modal"
+                          @click="guardarIdUsuario(item.id)"
                         >
                           <i class="fas fa-trash"></i>
                         </button>
@@ -62,6 +64,27 @@
         </div>
       </div>
     </div>
+    <!-- modal para eliminar un usuario-->
+    <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered " >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Alerta!!!</h3>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>Esta seguro de eliminar el usuario?</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Cancelar</button
+            ><button class="btn btn-danger" @click="eliminarUsuario">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -70,18 +93,8 @@ export default {
   data() {
     return {
       usuarios: [],
+      idUsuario: null,
     };
-  },
-  watch: {
-    usuarios: {
-      handler(newUsuarios, oldUsuarios) {
-        console.log(oldUsuarios);
-        // Se ejecutará cuando la lista de usuarios cambie
-        console.log('La lista de usuarios ha cambiado:', newUsuarios);
-        // Puedes realizar otras acciones aquí
-      },
-      deep: true // Observar cambios en la profundidad de la propiedad
-    }
   },
   created() {
     this.getUsuarios();
@@ -99,18 +112,27 @@ export default {
           console.error("Error al listar usuarios:", error);
         });
     },
-    async EliminarUsuario(id) {
-      await this.axios
-        .delete("/usuarios/borrar/"+id)
-        .then((response) => {
+    guardarIdUsuario(id) {
+      this.idUsuario = id;
+    },
+    async eliminarUsuario() {
+      if (this.idUsuario !== null) {
+        try {
+          await this.axios.delete("/usuarios/borrar/" + this.idUsuario);
           // Manejar la respuesta exitosa
-          console.log(response);
-          this.usuarios = this.usuarios.filter((user) => user.id != id);
-        })
-        .catch((error) => {
+          console.log("Usuario eliminado con éxito");
+          this.usuarios = this.usuarios.filter(
+            (user) => user.id != this.idUsuario
+          );
+        } catch (error) {
           // Manejar errores
           console.error("Error al eliminar el usuario:", error);
-        });
+        } finally {
+          // Limpia el ID y cierra el modal, independientemente del resultado
+          this.idUsuario = null;
+          
+        }
+      }
     },
   },
 };
