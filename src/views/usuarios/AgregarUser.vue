@@ -101,7 +101,7 @@
                 for="rol"
                 class="form-label my-0 px-0 col-2 d-flex justify-content-end"
                 ><i
-                  class="fa fa-id-badge py-2 px-4 bg-warning rounded rounded-end-0"
+                  class="fa fa-child py-2 px-4 bg-warning rounded rounded-end-0"
                 ></i>
               </label>
               <div class="col-10 px-0">

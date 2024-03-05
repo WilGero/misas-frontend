@@ -16,7 +16,7 @@
                     to="/usuarios/agregar"
                     class="btn btn-success rounded rounded-5 shadow"
                   >
-                    <i class="fas fa-plus fs-1"></i>
+                    <i class="fas fa-user-plus fs-1"></i>
                   </router-link>
                 </div>
               </div>

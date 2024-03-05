@@ -1,6 +1,11 @@
 <template>
   <!-- formulario para actualizar un usuario -->
   <div class="container m-auto py-4">
+    <div v-if="mostrarAlerta" class="alert alert-success alert-dismissible m-4">
+      <span>Usuario actualizado satisfactoriamente</span>
+      <button class="btn-close" @click="cerrarAlerta"></button>
+    </div>
+
     <div
       class="card shadow bg-light w-50 w-sm-100 m-auto border border-3 p-2 mb-2"
     >
@@ -30,7 +35,7 @@
                 </label>
                 <div class="col-10 px-0">
                   <input
-                    v-model="usuario.nombre_usuario"
+                    v-model="usuario.nombre"
                     id="nombre"
                     class="form-control rounded-start-0"
                     type="text"
@@ -79,10 +84,30 @@
             <div class="col-12">
               <div class="row m-0">
                 <label
+                  for="rol_nombre"
+                  class="form-label my-0 px-0 col-2 d-flex justify-content-end"
+                  ><i
+                    class="fas fa-child py-2 px-4 bg-warning rounded rounded-end-0"
+                  ></i>
+                </label>
+                <div class="col-10 px-0">
+                  <input
+                    v-model="rol.nombre"
+                    id="rol_nombre"
+                    class="form-control rounded-start-0"
+                    type="text"
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="row m-0">
+                <label
                   for="rol"
                   class="form-label my-0 px-0 col-2 d-flex justify-content-end"
                   ><i
-                    class="fas fa-user py-2 px-4 bg-warning rounded rounded-end-0"
+                    class="fas fa-exchange py-2 px-4 bg-warning rounded rounded-end-0"
                   ></i>
                 </label>
                 <div class="col-10 px-0">
@@ -92,7 +117,7 @@
                     name="rol"
                     id="rol"
                   >
-                    <option v-for="rol in roles"  :key="rol.id" :value="rol.id">
+                    <option v-for="rol in roles" :key="rol.id" :value="rol.id">
                       {{ rol.nombre }}
                     </option>
                   </select>
@@ -114,8 +139,10 @@ export default {
   data() {
     return {
       usuario: {},
+      rol: {},
       roles: [],
       rolSeleccionado: null,
+      mostrarAlerta: false,
     };
   },
   created() {
@@ -146,6 +173,21 @@ export default {
           // Manejar la respuesta exitosa
           this.usuario = response.data.data;
           console.log(this.usuario);
+          this.getRol();
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar el usuario:", error);
+        });
+    },
+    async getRol() {
+      console.log(this.usuario.rol_id);
+      await this.axios
+        .get("/roles/encontrar/" + this.usuario.rol_id)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.rol = response.data.data;
+          console.log(this.rol);
         })
         .catch((error) => {
           // Manejar errores
@@ -162,10 +204,14 @@ export default {
         .then((response) => {
           // Manejar la respuesta exitosa
           console.log("usuario actualizado exitosamente ", response.data.data);
-          this.$router.push({
-            name: "usuario",
-            params: { id: this.$route.params.id },
-          });
+          this.mostrarAlerta = true;
+          setTimeout(() => {
+            // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+            this.$router.push({
+              name: "usuario",
+              params: { id: this.$route.params.id },
+            });
+          }, 3000); // 3000 milisegundos = 3 segundos
         })
         .catch((error) => {
           // Manejar errores
@@ -174,6 +220,9 @@ export default {
     },
     cerrarFormulario() {
       this.$router.push({ name: "usuario" });
+    },
+    cerrarAlerta() {
+      this.mostrarAlerta = false;
     },
   },
 };
