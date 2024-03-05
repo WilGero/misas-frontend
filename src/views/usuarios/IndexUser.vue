@@ -66,19 +66,26 @@
     </div>
     <!-- modal para eliminar un usuario-->
     <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered " >
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h3 class="modal-title">Alerta!!!</h3>
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
-            <p>Esta seguro de eliminar el usuario?</p>
+            <div
+              v-if="mostrarAlerta"
+              class="alert alert-danger alert-dismissible m-4"
+            >
+              <span>Usuario eliminado satisfactoriamente</span>
+            </div>
+            <p v-else>Esta seguro de eliminar el usuario?</p>
           </div>
           <div class="modal-footer">
+            
             <button class="btn btn-secondary" data-bs-dismiss="modal">
-              Cancelar</button
-            ><button class="btn btn-danger" @click="eliminarUsuario">
+              {{ msgBoton }}</button
+            ><button v-if="!mostrarAlerta" class="btn btn-danger" @click="eliminarUsuario">
               Eliminar
             </button>
           </div>
@@ -94,6 +101,8 @@ export default {
     return {
       usuarios: [],
       idUsuario: null,
+      mostrarAlerta:false,
+      msgBoton:"Cancelar"
     };
   },
   created() {
@@ -121,6 +130,8 @@ export default {
           await this.axios.delete("/usuarios/borrar/" + this.idUsuario);
           // Manejar la respuesta exitosa
           console.log("Usuario eliminado con éxito");
+          this.mostrarAlerta=true;
+          this.msgBoton="Cerrar"
           this.usuarios = this.usuarios.filter(
             (user) => user.id != this.idUsuario
           );
@@ -130,7 +141,6 @@ export default {
         } finally {
           // Limpia el ID y cierra el modal, independientemente del resultado
           this.idUsuario = null;
-          
         }
       }
     },

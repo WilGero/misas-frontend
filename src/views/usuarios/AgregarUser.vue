@@ -168,6 +168,10 @@ export default {
       if (this.rolSeleccionado !== null) {
         this.form.rol_id = this.rolSeleccionado;
       }
+      else{
+        // si es que no se selecciona algun rol, por defecto se elegira el primer rol de la lista de roles
+        this.form.rol_id=this.roles[1].id;
+      }
       console.log(this.form);
       await this.axios
         .post("/usuarios/agregar", this.form)
