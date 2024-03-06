@@ -1,5 +1,11 @@
 <template>
   <div class="container p-4">
+    <!-- Alerta de registro exitoso -->
+    <div v-if="mostrarAlerta" class="alert alert-danger alert-dismissible m-4">
+      <span>Usuario o contraseña incorrectos!</span>
+      <button class="btn-close" @click="cerrarAlerta"></button>
+    </div>
+
     <div class="card shadow bg-light w-50 w-sm-100 m-auto border border-3">
       <div class="card-header">
         <h3 class="card-title text-primary fw-bolder">Inicio de Sesión</h3>
@@ -35,13 +41,28 @@
                     class="fas fa-lock py-2 px-4 bg-warning rounded rounded-end-0"
                   ></i>
                 </label>
-                <div class="col-10 px-0">
+                <div class="col-8 px-0">
                   <input
                     v-model="form.contra"
+                    id="contra"
                     class="form-control rounded-start-0"
-                    type="password"
+                    :type="mostrarPassword ? 'text' : 'password'"
                     placeholder="Ingrese su contraseña"
+                    required
                   />
+                </div>
+                <div class="col-2 px-0">
+                  <button
+                    type="button"
+                    class="btn btn-light mx-0"
+                    @click="cambiarMostrarPassword"
+                  >
+                    <i
+                      :class="
+                        mostrarPassword ? 'fas fa-eye-slash' : 'fas fa-eye'
+                      "
+                    ></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -59,7 +80,7 @@
         </form>
       </div>
       <div class="card-footer">
-        <router-link to="/"> Registrarse </router-link>
+        <router-link :to="{ name: 'register' }"> Registrarse </router-link>
       </div>
       {{ auth }}
     </div>
@@ -77,29 +98,37 @@ export default {
         contra: "",
       },
       usuario: {},
+      mostrarPassword: false,
+      mostrarAlerta: false,
     };
   },
   computed: {
-    ...mapState(['auth'])
+    ...mapState(["auth"]),
   },
   methods: {
     ...mapMutations(["setAuth"]),
     login() {
-      this.disabled = true;
       this.axios
-        .post("usuarios/login",this.form)
-        .then((response) => { 
+        .post("usuarios/login", this.form)
+        .then((response) => {
           // Manejar la respuesta exitosa
           this.usuario = response.data;
           this.setAuth(this.usuario);
-          localStorage.setItem("auth",JSON.stringify(this.usuario));
-          this.disabled = false;
-          this.$router.push({name:'home'});
+          localStorage.setItem("auth", JSON.stringify(this.usuario));
+          this.disabled = true;
+          this.$router.push({ name: "home" });
         })
         .catch((error) => {
           // Manejar errores
           console.error("Error al ingresar al sistema:", error);
+          this.mostrarAlerta = true;
         });
+    },
+    cambiarMostrarPassword() {
+      this.mostrarPassword = !this.mostrarPassword;
+    },
+    cerrarAlerta() {
+      this.mostrarAlerta = false;
     },
   },
 };

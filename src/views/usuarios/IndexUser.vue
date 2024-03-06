@@ -123,8 +123,10 @@ export default {
     },
     guardarIdUsuario(id) {
       this.idUsuario = id;
+      this.mostrarAlerta=false;
     },
     async eliminarUsuario() {
+      this.msgBoton="Cancelar"; 
       if (this.idUsuario !== null) {
         try {
           await this.axios.delete("/usuarios/borrar/" + this.idUsuario);

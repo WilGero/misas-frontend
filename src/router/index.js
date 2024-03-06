@@ -52,14 +52,22 @@ const routes = [
     }
   },
   {
-    path:'/usuarios/:id',
-    name:'usuario',
+    path: '/usuarios/:id',
+    name: 'usuario',
     component: () => import('../views/usuarios/DetalleUsuario.vue')
   },
   {
-    path:'/editarUsuario/:id',
-    name:'editarUsuario',
+    path: '/editarUsuario/:id',
+    name: 'editarUsuario',
     component: () => import('../views/usuarios/EditarUser.vue')
+  },
+  {
+    path: '/misas',
+    name: 'misas',
+    component: () => import('../views/misas/IndexMisas.vue'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/:patMatch(.*)',
