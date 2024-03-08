@@ -178,6 +178,10 @@ export default {
           // Manejar la respuesta exitosa
           console.log("usuario agregado exitosamente ", response.data.data);
           this.mostrarAlerta=true;
+          setTimeout(() => {
+            // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+          this.mostrarAlerta = false;
+          }, 2000); // 3000 milisegundos = 2 segundos
           this.form = {
             nombre: "",
             usuario: "",

@@ -42,6 +42,7 @@ const routes = [
     children: [
       {
         path: 'agregar',
+        name:'agregarUsuario',
         component: () => import('../views/usuarios/AgregarUser.vue')
 
       }
@@ -65,6 +66,22 @@ const routes = [
     path: '/misas',
     name: 'misas',
     component: () => import('../views/misas/IndexMisas.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/agregarmisa',
+    name: 'agregarMisa',
+    component: () => import('../views/misas/AgregarMisa.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/editarmisa/:id',
+    name: 'editarMisa',
+    component: () => import('../views/misas/EditarMisa.vue'),
     meta: {
       requiresAuth: true
     }

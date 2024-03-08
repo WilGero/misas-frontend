@@ -125,6 +125,7 @@
               </div>
             </div>
             <div class="col-12">
+              <button type="submit" class="btn btn-secondary" @click="cerrarFormulario">Cancelar</button>
               <button class="btn btn-success">Guardar</button>
             </div>
           </div>
@@ -158,7 +159,7 @@ export default {
           this.roles = response.data.data;
 
           // Agregar la opción predeterminada "Seleccione un rol"
-          this.roles.unshift({ id: null, nombre: "Seleccione un rol..." });
+          this.roles.unshift({ id: null, nombre: "Seleccione otro rol..." });
           console.log(this.roles);
         })
         .catch((error) => {
@@ -211,7 +212,7 @@ export default {
               name: "usuario",
               params: { id: this.$route.params.id },
             });
-          }, 3000); // 3000 milisegundos = 3 segundos
+          }, 2000); // 3000 milisegundos = 3 segundos
         })
         .catch((error) => {
           // Manejar errores

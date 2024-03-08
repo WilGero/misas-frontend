@@ -8,12 +8,12 @@
         <div class="row p-2">
           <!-- listado de usuarios -->
           <div class="card col-lg-6 w-100">
-            <div class="card-header bg-primary text-light">
+            <div class="card-header bg-secondary text-light">
               <div class="row">
                 <h2 class="card-title col-9">Usuarios</h2>
                 <div class="col-3">
                   <router-link
-                    to="/usuarios/agregar"
+                    :to="{ name: 'agregarUsuario' }"
                     class="btn btn-success rounded rounded-5 shadow"
                   >
                     <i class="fas fa-user-plus fs-1"></i>
@@ -82,10 +82,13 @@
             <p v-else>Esta seguro de eliminar el usuario?</p>
           </div>
           <div class="modal-footer">
-            
             <button class="btn btn-secondary" data-bs-dismiss="modal">
               {{ msgBoton }}</button
-            ><button v-if="!mostrarAlerta" class="btn btn-danger" @click="eliminarUsuario">
+            ><button
+              v-if="!mostrarAlerta"
+              class="btn btn-danger"
+              @click="eliminarUsuario"
+            >
               Eliminar
             </button>
           </div>
@@ -101,8 +104,8 @@ export default {
     return {
       usuarios: [],
       idUsuario: null,
-      mostrarAlerta:false,
-      msgBoton:"Cancelar"
+      mostrarAlerta: false,
+      msgBoton: "Cancelar",
     };
   },
   created() {
@@ -123,17 +126,17 @@ export default {
     },
     guardarIdUsuario(id) {
       this.idUsuario = id;
-      this.mostrarAlerta=false;
+      this.mostrarAlerta = false;
     },
     async eliminarUsuario() {
-      this.msgBoton="Cancelar"; 
+      this.msgBoton = "Cancelar";
       if (this.idUsuario !== null) {
         try {
           await this.axios.delete("/usuarios/borrar/" + this.idUsuario);
           // Manejar la respuesta exitosa
           console.log("Usuario eliminado con éxito");
-          this.mostrarAlerta=true;
-          this.msgBoton="Cerrar"
+          this.mostrarAlerta = true;
+          this.msgBoton = "Cerrar";
           this.usuarios = this.usuarios.filter(
             (user) => user.id != this.idUsuario
           );
