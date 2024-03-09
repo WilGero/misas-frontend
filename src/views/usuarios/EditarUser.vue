@@ -125,7 +125,13 @@
               </div>
             </div>
             <div class="col-12">
-              <button type="submit" class="btn btn-secondary" @click="cerrarFormulario">Cancelar</button>
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                @click="cerrarFormulario"
+              >
+                Cancelar
+              </button>
               <button class="btn btn-success">Guardar</button>
             </div>
           </div>
@@ -212,7 +218,7 @@ export default {
               name: "usuario",
               params: { id: this.$route.params.id },
             });
-          }, 2000); // 3000 milisegundos = 3 segundos
+          }, 1500);
         })
         .catch((error) => {
           // Manejar errores

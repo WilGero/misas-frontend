@@ -3,13 +3,23 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <!-- Card 1 -->
       <div class="col" v-for="item in misas" :key="item.id_misa">
-        <div class="card shadow  h-100">
+        <div class="card shadow h-100">
           <div class="card-body">
             <h5 class="card-title fw-bolder fs-4">{{ item.tipo_misa }}</h5>
-            <p class="card-text"><span class="fw-bold">Fecha: </span>{{formatearFecha(item.fecha)}}</p>
-            <p class="card-text"><span class="fw-bold">Hora: </span>{{ formatearHora(item.fecha) }}</p>
+            <p class="card-text">
+              <span class="fw-bold">Fecha: </span
+              >{{ formatearFecha(item.fecha) }}
+            </p>
+            <p class="card-text">
+              <span class="fw-bold">Hora: </span>{{ formatearHora(item.fecha) }}
+            </p>
 
-            <button class="btn btn-primary">Registrar Intención</button>
+            <button
+              class="btn btn-primary"
+              @click="RegistrarIntencion(item.id_misa)"
+            >
+              Registrar Intención
+            </button>
           </div>
         </div>
       </div>
@@ -37,11 +47,11 @@ export default {
   },
   methods: {
     formatearFecha(fechaHora) {
-    return moment(fechaHora).locale('es').format('D, MMMM YYYY');
-  },
-  formatearHora(fechaHora) {
-    return moment(fechaHora).format('h:mm a');
-  },
+      return moment(fechaHora).locale("es").format("D, MMMM YYYY");
+    },
+    formatearHora(fechaHora) {
+      return moment(fechaHora).format("h:mm a");
+    },
     async getMisas() {
       await this.axios
         .get("/misas/listado")
@@ -91,6 +101,10 @@ export default {
           this.idMisa = null;
         }
       }
+    },
+    RegistrarIntencion(id) {
+      console.log(id);
+      this.$router.push({ name: "registrarIntencion", params: { misaId: id } });
     },
   },
 };

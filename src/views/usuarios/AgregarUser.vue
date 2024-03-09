@@ -181,7 +181,7 @@ export default {
           setTimeout(() => {
             // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
           this.mostrarAlerta = false;
-          }, 2000); // 3000 milisegundos = 2 segundos
+          }, 1500);   
           this.form = {
             nombre: "",
             usuario: "",

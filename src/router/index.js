@@ -87,6 +87,14 @@ const routes = [
     }
   },
   {
+    path: '/registrarintencion/:misaId',
+    name: 'registrarIntencion',
+    component: () => import('../views/intenciones/RegistrarIntencion.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')

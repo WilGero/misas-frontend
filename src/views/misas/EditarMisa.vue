@@ -56,7 +56,6 @@
                   type="datetime-local"
                   id="fecha"
                   class="form-control"
-                  required
                 />
               </div>
               <button type="submit" class="btn btn-secondary" @click="cerrarFormulario">Cancelar</button>
@@ -144,7 +143,8 @@ export default {
       if (this.tipoMisaSelec !== null) {
         this.misa.tipo_misa_id = this.tipoMisaSelec;
       }
-      this.misa.usuario_id=this.auth.data.usuario.id;
+      this.misa.usuario_id=this.auth.data.id;
+      console.log(this.auth.data.id);
       console.log(this.misa);
       await this.axios
         .put("/misas/actualizar", this.misa)
@@ -157,7 +157,7 @@ export default {
             this.$router.push({
               name: "misas",
             });
-          }, 2000); // 3000 milisegundos = 2 segundos
+          }, 1500); // 3000 milisegundos = 2 segundos
         })
         .catch((error) => {
           // Manejar errores
