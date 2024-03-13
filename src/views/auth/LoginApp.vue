@@ -96,6 +96,7 @@ export default {
       form: {
         usuario: "",
         contra: "",
+        email:""
       },
       usuario: {},
       mostrarPassword: false,
@@ -110,6 +111,23 @@ export default {
     login() {
       this.axios
         .post("usuarios/login", this.form)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.usuario = response.data;
+          this.setAuth(this.usuario);
+          localStorage.setItem("auth", JSON.stringify(this.usuario));
+          this.disabled = true;
+          this.$router.push({ name: "home" });
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al ingresar al sistema:", error);
+          this.mostrarAlerta = true;
+        });
+    },
+    loginPayment() {
+      this.axios
+        .post("payments/login", this.form.email)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.usuario = response.data;

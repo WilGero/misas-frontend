@@ -76,7 +76,7 @@
                   Cancelar
                 </button>
                 <button type="submit" class="btn btn-primary">
-                  Registrar Intención
+                  Agregar
                 </button>
               </div>
             </form>
@@ -101,7 +101,8 @@ export default {
         usuario_id: "",
       },
       tipoIntenSelec: null,
-      mostrarAlerta:false
+      mostrarAlerta:false,
+      sesion:{}
     };
   },
   computed: {
@@ -148,19 +149,35 @@ export default {
           setTimeout(() => {
             // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
             this.mostrarAlerta = false;
-          }, 1500); //
-          this.form = {
-            razon: "",
-            descripcion: "",
-            misa_id: "",
-            tipo_intencion_id: "",
-            usuario_id: "",
-          };
+          }, 1500); 
+          this.crearSesionPago(this.form.id);
+          // this.form = {
+          //   razon: "",
+          //   descripcion: "",
+          //   misa_id: "",
+          //   tipo_intencion_id: "",
+          //   usuario_id: "",
+          // };
           this.tipoIntenSelec = null;
         })
         .catch((error) => {
           // Manejar errores
           console.error("Error al registrar intencion:", error);
+        });
+    },
+   async crearSesionPago(id){
+      await this.axios
+        .post("/pagos/create-checkout-session/"+id)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.sesion = response.data.data;
+          console.log(this.sesion);
+          window.location.href =this.sesion.url;
+       
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al crear la sesion de pago:", error);
         });
     },
     cerrarFormulario() {

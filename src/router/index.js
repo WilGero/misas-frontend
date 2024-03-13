@@ -95,6 +95,22 @@ const routes = [
     }
   },
   {
+    path: '/intencion-pagada/:id',
+    name: 'intencionPagada',
+    component: () => import('../views/intenciones/IntencionPagada.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/detalle-intencion/:id',
+    name: 'detalleIntencion',
+    component: () => import('../views/intenciones/DetalleIntencion.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')
