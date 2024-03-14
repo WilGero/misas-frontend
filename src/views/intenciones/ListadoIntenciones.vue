@@ -34,7 +34,12 @@
             <p>Costo: {{ item.costo }} Bs</p>
           </div>
           <div class="col-md-3 text-end">
-            <button class="btn btn-danger">
+            <button
+              class="btn btn-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#mi-modal"
+              @click="guardarIdIntencion(item.id)"
+            >
               <i class="fas fa-trash"></i> Eliminar
             </button>
           </div>
@@ -42,7 +47,7 @@
       </div>
       <!-- Fin del ejemplo -->
     </div>
-    <div class="row justify-content-center  mt-5">
+    <div class="row justify-content-center mt-5">
       <div class="col-auto me-3">
         <label for="montoTotal" class="form-label">Monto Total(Bs):</label>
       </div>
@@ -56,14 +61,48 @@
         />
       </div>
       <div class="col-auto">
-        <div  v-if="!activarMsg">
+        <div v-if="!activarMsg">
           <button class="btn btn-primary btn-lg">
             <i class="fas fa-credit-card"></i> Pagar
           </button>
         </div>
       </div>
     </div>
-    <!-- Botón para proceder al pago -->
+    <!-- modal para eliminar intencion-->
+    <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title text-danger fw-bolder ">Alerta</h3>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div
+              v-if="mostrarAlerta"
+              class="alert alert-danger alert-dismissible m-4"
+            >
+              <span class="fw-bold text-danger"
+                >Intención eliminada satisfactoriamente</span
+              >
+            </div>
+            <p class="fw-bold text-danger" v-else>
+              ¿Esta seguro de eliminar esta intención?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              {{ msgBoton }}</button
+            ><button
+              v-if="!mostrarAlerta"
+              class="btn btn-danger"
+              @click="eliminarIntencion"
+            >
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -74,6 +113,9 @@ export default {
       intenciones: [],
       activarMsg: false,
       suma: 0,
+      msgBoton: "Cancelar",
+      mostrarAlerta: false,
+      idIntencion:null
     };
   },
   created() {
@@ -108,6 +150,30 @@ export default {
           listaId: this.$route.params.listaId,
         },
       });
+    },
+    guardarIdIntencion(id) {
+      this.idIntencion = id;
+      this.mostrarAlerta = false;
+    },
+    async eliminarIntencion() {
+      this.msgBoton = "Cancelar";
+      if (this.idIntencion !== null) {
+        try {
+          await this.axios.delete("/intenciones/borrar/" + this.idIntencion);
+          // Manejar la respuesta exitosa
+          console.log("entencion eliminada con exito");
+          this.mostrarAlerta = true;
+          this.msgBoton = "Cerrar";
+          this.intenciones = this.intenciones.filter((intencion) => intencion.id != this.idIntencion);
+          this.getIntenciones();
+        } catch (error) {
+          // Manejar errores
+          console.error("Error al eliminar la intencion:", error);
+        } finally {
+          // Limpia el ID y cierra el modal, independientemente del resultado
+          this.idIntencion = null;
+        }
+      }
     },
   },
 };
