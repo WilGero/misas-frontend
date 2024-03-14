@@ -2,6 +2,8 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
+        {{ form }}
+        {{ errores }}
         <div class="card">
           <div class="card-header bg-secondary text-white">
             <h4 class="mb-0">Registrar Intención para Misa</h4>
@@ -26,7 +28,6 @@
                   type="text"
                   class="form-control"
                   id="ofrecidaPor"
-                  required
                 />
               </div>
 
@@ -38,7 +39,6 @@
                   class="form-control"
                   id="descripcion"
                   rows="3"
-                  required
                 ></textarea>
               </div>
 
@@ -51,7 +51,6 @@
                   v-model="tipoIntenSelec"
                   id="tipoIntencion"
                   class="form-select"
-                  required
                 >
                   <option
                     v-for="item in tiposIntencion"
@@ -99,7 +98,11 @@
             >
               Alerta
             </h3>
-            <button class="btn-close" data-bs-dismiss="modal" @click="cerrarModal"></button>
+            <button
+              class="btn-close"
+              data-bs-dismiss="modal"
+              @click="cerrarModal"
+            ></button>
           </div>
           <div class="modal-body">
             <div
@@ -114,8 +117,11 @@
             >
               <span>{{ mensaje }}</span>
             </div>
-            <div v-else class="alert alert-warning alert-dismissible m-4">
-              <span>No se agrego datos</span>
+            <div v-else class="alert alert-danger alert-dismissible m-4">
+              <ul class="list-group" v-for="(error,index) in errores" :key="index">
+                <li class="list-group-item text-danger">{{error}}</li>
+
+              </ul>
             </div>
           </div>
           <div class="modal-footer">
@@ -164,18 +170,20 @@ export default {
   data() {
     return {
       form: {
-        razon: "",
-        descripcion: "",
-        misa_id: "",
-        tipo_intencion_id: "",
-        usuario_id: "",
-        lista_id: "",
-        mensaje: "",
+        razon: null,
+        descripcion: null,
+        misa_id: null,
+        tipo_intencion_id: null,
+        usuario_id: null,
+        lista_id: null,
       },
+      mensaje: "",
       tipoIntenSelec: null,
       mostrarAlerta: false,
       mostrarAlerta2: false,
       sesion: {},
+      errores: [],
+      error: null,
     };
   },
   computed: {
@@ -208,34 +216,53 @@ export default {
     async agregarIntencion() {
       if (this.tipoIntenSelec !== null) {
         this.form.tipo_intencion_id = this.tipoIntenSelec;
-      } else {
-        this.form.tipo_intencion_id = this.tiposIntencion[1].id;
       }
       this.form.misa_id = this.$route.params.misaId;
       this.form.usuario_id = this.auth.data.id;
       this.form.lista_id = this.$route.params.listaId;
+      // Validando los campos importantes
+      if (this.form.razon === null) {
+        this.error = "Se requiere la información de quien ofrece la intención";
+        this.errores.push(this.error);
+      }
+      if (this.form.descripcion === null) {
+        this.error = "Se requiere la descripción de la intención";
+        this.errores.push(this.error);
+      }
+      if (this.form.tipo_intencion_id === null) {
+        this.error = "Se require el tipo de intención";
+        this.errores.push(this.error);
+      }
       console.log(this.form);
-      await this.axios
-        .post("/intenciones/agregar", this.form)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          console.log("intencion registrada exitosamente ", response.data.data);
-          this.mostrarAlerta = true;
-          this.mensaje = "Intencion agregada satisfactoriamente";
-          this.form = {
-            razon: "",
-            descripcion: "",
-            misa_id: "",
-            tipo_intencion_id: "",
-            usuario_id: "",
-            lista_id: "",
-          };
-          this.tipoIntenSelec = null;
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al registrar intencion:", error);
-        });
+
+      console.log(this.errores.length);
+      if (this.errores.length === 0) {
+        await this.axios
+          .post("/intenciones/agregar", this.form)
+          .then((response) => {
+            // Manejar la respuesta exitosa
+            console.log(
+              "intencion registrada exitosamente ",
+              response.data.data
+            );
+            this.mostrarAlerta = true;
+            this.mensaje = "Intencion agregada satisfactoriamente";
+            this.form = {
+              razon: "",
+              descripcion: "",
+              misa_id: "",
+              tipo_intencion_id: "",
+              usuario_id: "",
+              lista_id: "",
+            };
+            this.tipoIntenSelec = null;
+          })
+          .catch((error) => {
+            // Manejar errores
+
+            console.error("Error al registrar intencion:", error);
+          });
+      }
     },
     async crearSesionPago(id) {
       await this.axios
@@ -254,7 +281,10 @@ export default {
     irPago() {
       this.$router.push({
         name: "listadoIntenciones",
-        params: { misaId:this.$route.params.misaId ,listaId: this.$route.params.listaId },
+        params: {
+          misaId: this.$route.params.misaId,
+          listaId: this.$route.params.listaId,
+        },
       });
     },
     abrirModal() {
@@ -266,8 +296,9 @@ export default {
       this.$router.push({ name: "home" });
     },
     cerrarModal() {
-      this.mostrarAlerta=false;
+      this.mostrarAlerta = false;
       this.mostrarAlerta2 = false;
+      this.errores = [];
     },
     cerrarAlerta() {
       this.mostrarAlerta = false;
