@@ -6,8 +6,10 @@
           <div class="card-header bg-secondary text-white">
             <h4 class="mb-0">Registrar Intención para Misa</h4>
             <button
+              data-bs-toggle="modal"
+              data-bs-target="#mi-modal"
               class="btn btn-danger position-absolute end-0 top-0"
-              @click="cerrarFormulario"
+              @click="abrirModal"
             >
               <i class="fas fa-times"></i>
             </button>
@@ -64,9 +66,11 @@
               <!-- Botón de Enviar -->
               <div class="mb-3 text-end">
                 <button
+                  data-bs-toggle="modal"
+                  data-bs-target="#mi-modal"
                   type="submit"
                   class="btn btn-secondary me-2"
-                  @click="cerrarFormulario"
+                  @click="abrirModal"
                 >
                   Cancelar
                 </button>
@@ -89,27 +93,58 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title"></h3>
-            <button class="btn-close" data-bs-dismiss="modal"></button>
+            <h3
+              v-if="mostrarAlerta2"
+              class="modal-title fs-4 fw-bolder text-danger"
+            >
+              Alerta
+            </h3>
+            <button class="btn-close" data-bs-dismiss="modal" @click="cerrarModal"></button>
           </div>
           <div class="modal-body">
             <div
               v-if="mostrarAlerta"
               class="alert alert-success alert-dismissible m-4"
             >
-              <span>Intencion agregada satisfactoriamente</span>
+              <span>{{ mensaje }}</span>
+            </div>
+            <div
+              v-else-if="mostrarAlerta2"
+              class="alert alert-danger alert-dismissible m-4"
+            >
+              <span>{{ mensaje }}</span>
+            </div>
+            <div v-else class="alert alert-warning alert-dismissible m-4">
+              <span>No se agrego datos</span>
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-success" data-bs-dismiss="modal">
-              Agregar otra intencion</button
-            ><button
-              class="btn btn-primary"
-              data-bs-dismiss="modal"
-              @click="irPago"
-            >
-              Pagar
-            </button>
+            <div class="" v-if="mostrarAlerta">
+              <button class="btn btn-success m-4" data-bs-dismiss="modal">
+                Agregar otra intencion</button
+              ><button
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                @click="irPago"
+              >
+                Pagar
+              </button>
+            </div>
+            <div class="" v-else-if="mostrarAlerta2">
+              <button
+                class="btn btn-primary m-4"
+                @click="cerrarFormulario"
+                data-bs-dismiss="modal"
+              >
+                SI</button
+              ><button
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+                @click="cerrarModal"
+              >
+                NO
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -135,9 +170,11 @@ export default {
         tipo_intencion_id: "",
         usuario_id: "",
         lista_id: "",
+        mensaje: "",
       },
       tipoIntenSelec: null,
       mostrarAlerta: false,
+      mostrarAlerta2: false,
       sesion: {},
     };
   },
@@ -184,6 +221,7 @@ export default {
           // Manejar la respuesta exitosa
           console.log("intencion registrada exitosamente ", response.data.data);
           this.mostrarAlerta = true;
+          this.mensaje = "Intencion agregada satisfactoriamente";
           this.form = {
             razon: "",
             descripcion: "",
@@ -219,8 +257,17 @@ export default {
         params: { listaId: this.$route.params.listaId },
       });
     },
+    abrirModal() {
+      this.mostrarAlerta2 = true;
+      this.mensaje =
+        "¿Esta seguro de volver atrás?, no se guardo la información.";
+    },
     cerrarFormulario() {
       this.$router.push({ name: "home" });
+    },
+    cerrarModal() {
+      this.mostrarAlerta=false;
+      this.mostrarAlerta2 = false;
     },
     cerrarAlerta() {
       this.mostrarAlerta = false;
