@@ -2,8 +2,6 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        {{ form }}
-        {{ errores }}
         <div class="card">
           <div class="card-header bg-secondary text-white">
             <h4 class="mb-0">Registrar Intención para Misa</h4>

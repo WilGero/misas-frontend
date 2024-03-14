@@ -9,7 +9,7 @@
       <h1 class="text-center my-5">Listado de Intenciones</h1>
     </div>
     <!-- Lista de intenciones -->
-    <div v-if="activarMsg" class="col-md-6 m-auto ">
+    <div v-if="activarMsg" class="col-md-6 m-auto">
       <p class="text-center">
         No se agrego ninguna intención, por favor agregue al menos una itención
       </p>
@@ -42,13 +42,28 @@
       </div>
       <!-- Fin del ejemplo -->
     </div>
-
-    <!-- Botón para proceder al pago -->
-    <div class="text-end mt-5" v-if="!activarMsg">
-      <button  class="btn btn-primary btn-lg">
-        <i class="fas fa-credit-card"></i> Pagar todas las intenciones
-      </button>
+    <div class="row justify-content-center  mt-5">
+      <div class="col-auto me-3">
+        <label for="montoTotal" class="form-label">Monto Total(Bs):</label>
+      </div>
+      <div class="col-auto me-3">
+        <input
+          v-model="suma"
+          type="text"
+          class="form-control fw-bolder fs-3"
+          id="montoTotal"
+          disabled
+        />
+      </div>
+      <div class="col-auto">
+        <div  v-if="!activarMsg">
+          <button class="btn btn-primary btn-lg">
+            <i class="fas fa-credit-card"></i> Pagar
+          </button>
+        </div>
+      </div>
     </div>
+    <!-- Botón para proceder al pago -->
   </div>
 </template>
 
@@ -58,6 +73,7 @@ export default {
     return {
       intenciones: [],
       activarMsg: false,
+      suma: 0,
     };
   },
   created() {
@@ -75,6 +91,9 @@ export default {
             this.activarMsg = true;
           }
           console.log(this.intenciones);
+          for (let i = 0; i < this.intenciones.length; i++) {
+            this.suma = this.suma + this.intenciones[i].costo;
+          }
         })
         .catch((error) => {
           // Manejar errores
