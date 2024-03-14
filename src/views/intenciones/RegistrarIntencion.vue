@@ -1,10 +1,5 @@
 <template>
   <div class="container mt-5">
-    <!-- Alerta de registro exitoso -->
-    <div v-if="mostrarAlerta" class="alert alert-success alert-dismissible m-4">
-      <span>Intencion registrada satisfactoriamente</span>
-      <button class="btn-close" @click="cerrarAlerta"></button>
-    </div>
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
@@ -18,7 +13,7 @@
             </button>
           </div>
           <div class="card-body bg-light">
-            <form @submit.prevent="registrarIntencion">
+            <form @submit.prevent="agregarIntencion">
               <!-- Quien ofrece la intencion -->
               <div class="mb-3">
                 <label for="ofrecidaPor" class="form-label"
@@ -75,7 +70,12 @@
                 >
                   Cancelar
                 </button>
-                <button type="submit" class="btn btn-primary">
+                <button
+                  data-bs-toggle="modal"
+                  data-bs-target="#mi-modal"
+                  type="submit"
+                  class="btn btn-success"
+                >
                   Agregar
                 </button>
               </div>
@@ -84,25 +84,61 @@
         </div>
       </div>
     </div>
+    <!-- modal para agregar mas intenciones-->
+    <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title"></h3>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div
+              v-if="mostrarAlerta"
+              class="alert alert-success alert-dismissible m-4"
+            >
+              <span>Intencion agregada satisfactoriamente</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success" data-bs-dismiss="modal">
+              Agregar otra intencion</button
+            ><button
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              @click="irPago"
+            >
+              Pagar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- boton de pago -->
+    <div class="d-grid gap-2 col-6 mx-auto">
+      <button class="btn btn-outline-primary mt-4" @click="irPago">
+        Pagar intenciones
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 export default {
-  data: function () {
+  data() {
     return {
-      tiposIntencion: [],
       form: {
         razon: "",
         descripcion: "",
         misa_id: "",
         tipo_intencion_id: "",
         usuario_id: "",
+        lista_id: "",
       },
       tipoIntenSelec: null,
-      mostrarAlerta:false,
-      sesion:{}
+      mostrarAlerta: false,
+      sesion: {},
     };
   },
   computed: {
@@ -131,7 +167,8 @@ export default {
           console.error("Error al listar tipos de intencion:", error);
         });
     },
-    async registrarIntencion() {
+
+    async agregarIntencion() {
       if (this.tipoIntenSelec !== null) {
         this.form.tipo_intencion_id = this.tipoIntenSelec;
       } else {
@@ -139,6 +176,7 @@ export default {
       }
       this.form.misa_id = this.$route.params.misaId;
       this.form.usuario_id = this.auth.data.id;
+      this.form.lista_id = this.$route.params.listaId;
       console.log(this.form);
       await this.axios
         .post("/intenciones/agregar", this.form)
@@ -146,18 +184,14 @@ export default {
           // Manejar la respuesta exitosa
           console.log("intencion registrada exitosamente ", response.data.data);
           this.mostrarAlerta = true;
-          setTimeout(() => {
-            // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
-            this.mostrarAlerta = false;
-          }, 1500); 
-          this.crearSesionPago(this.form.id);
-          // this.form = {
-          //   razon: "",
-          //   descripcion: "",
-          //   misa_id: "",
-          //   tipo_intencion_id: "",
-          //   usuario_id: "",
-          // };
+          this.form = {
+            razon: "",
+            descripcion: "",
+            misa_id: "",
+            tipo_intencion_id: "",
+            usuario_id: "",
+            lista_id: "",
+          };
           this.tipoIntenSelec = null;
         })
         .catch((error) => {
@@ -165,20 +199,25 @@ export default {
           console.error("Error al registrar intencion:", error);
         });
     },
-   async crearSesionPago(id){
+    async crearSesionPago(id) {
       await this.axios
-        .post("/pagos/create-checkout-session/"+id)
+        .post("/pagos/create-checkout-session/" + id)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.sesion = response.data.data;
           console.log(this.sesion);
-          window.location.href =this.sesion.url;
-       
+          window.location.href = this.sesion.url;
         })
         .catch((error) => {
           // Manejar errores
           console.error("Error al crear la sesion de pago:", error);
         });
+    },
+    irPago() {
+      this.$router.push({
+        name: "listadoIntenciones",
+        params: { listaId: this.$route.params.listaId },
+      });
     },
     cerrarFormulario() {
       this.$router.push({ name: "home" });

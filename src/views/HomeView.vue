@@ -16,9 +16,9 @@
 
             <button
               class="btn btn-primary"
-              @click="RegistrarIntencion(item.id_misa)"
+              @click="agregarIntencion(item.id_misa)"
             >
-              Registrar Intención
+              Agregar Intención
             </button>
           </div>
         </div>
@@ -40,6 +40,7 @@ export default {
       msgBoton: "Cancelar",
       fechaFormateada: "",
       horaFormateada: "",
+      ultimaLista: { id: null },
     };
   },
   created() {
@@ -79,32 +80,41 @@ export default {
           console.error("Error al listar el usuario:", error);
         });
     },
-    guardarIdMisa(id) {
-      this.idMisa = id;
-      this.mostrarAlerta = false;
-    },
-    async eliminarMisa() {
-      this.msgBoton = "Cancelar";
-      if (this.idMisa !== null) {
-        try {
-          await this.axios.delete("/misas/borrar/" + this.idMisa);
+    async agregarLista() {
+      await this.axios
+        .post("/lista-intenciones/agregar")
+        .then((response) => {
           // Manejar la respuesta exitosa
-          console.log("misa eliminado con éxito");
-          this.mostrarAlerta = true;
-          this.msgBoton = "Cerrar";
-          this.misas = this.misas.filter((misa) => misa.id_misa != this.idMisa);
-        } catch (error) {
+          console.log("lista agregado exitosamente ", response.data.data);
+          this.getUltimaLista();
+        })
+        .catch((error) => {
           // Manejar errores
-          console.error("Error al eliminar la misa:", error);
-        } finally {
-          // Limpia el ID y cierra el modal, independientemente del resultado
-          this.idMisa = null;
-        }
-      }
+          console.error("Error al agregar la lista:", error);
+        });
     },
-    RegistrarIntencion(id) {
+    async getUltimaLista() {
+      await this.axios
+        .get("/lista-intenciones/listar-ultimo")
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.ultimaLista = response.data.data;
+          console.log(this.ultimaLista);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar:", error);
+        });
+    },
+    async agregarIntencion(id) {
       console.log(id);
-      this.$router.push({ name: "registrarIntencion", params: { misaId: id } });
+      await this.agregarLista();
+      setTimeout(() => {
+        this.$router.push({
+          name: "registrarIntencion",
+          params: { misaId: id, listaId: this.ultimaLista.id },
+        });
+      }, 1000);
     },
   },
 };

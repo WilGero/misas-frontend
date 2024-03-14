@@ -7,7 +7,7 @@
           <h2 class="card-title col-9">Misas</h2>
           <div class="col-3">
             <router-link
-              :to="{name:'agregarMisa'}"
+              :to="{ name: 'agregarMisa' }"
               class="btn btn-success rounded rounded-5 shadow"
             >
               <div class="d-flex align-items-center">
@@ -62,8 +62,8 @@
         </div>
       </div>
     </div>
-       <!-- modal para eliminar un usuario-->
-       <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
+    <!-- modal para eliminar un usuario-->
+    <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -97,15 +97,15 @@
 </template>
 
 <script>
-import moment from 'moment';
+import moment from "moment";
 export default {
   data() {
     return {
       misas: [],
-      mostrarAlerta:false,
-      idMisa:null,
-      tipoMisa:{},
-      msgBoton:"Cancelar",
+      mostrarAlerta: false,
+      idMisa: null,
+      tipoMisa: {},
+      msgBoton: "Cancelar",
     };
   },
   created() {
@@ -113,14 +113,14 @@ export default {
   },
   methods: {
     formatDate(datetime) {
-      return moment(datetime).format('YYYY-MM-DD HH:mm:ss');
+      return moment(datetime).format("YYYY-MM-DD HH:mm:ss");
       // Puedes personalizar el formato según tus necesidades
     },
     formatRelativeTime(datetime) {
       return moment(datetime).fromNow();
     },
     formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime).locale('es').format('D, MMMM YYYY, h:mm a');
+      return moment(datetime).locale("es").format("D, MMMM YYYY, h:mm a");
     },
     async getMisas() {
       await this.axios
@@ -142,7 +142,7 @@ export default {
           // Manejar la respuesta exitosa
           this.tipoMisa = response.data.data;
           console.log(this.tipoMisa);
-          return this.tipoMisa.tipo_misa
+          return this.tipoMisa.tipo_misa;
         })
         .catch((error) => {
           // Manejar errores
@@ -162,9 +162,7 @@ export default {
           console.log("misa eliminado con éxito");
           this.mostrarAlerta = true;
           this.msgBoton = "Cerrar";
-          this.misas = this.misas.filter(
-            (misa) => misa.id_misa != this.idMisa
-          );
+          this.misas = this.misas.filter((misa) => misa.id_misa != this.idMisa);
         } catch (error) {
           // Manejar errores
           console.error("Error al eliminar la misa:", error);

@@ -87,7 +87,7 @@ const routes = [
     }
   },
   {
-    path: '/registrarintencion/:misaId',
+    path: '/registrar-intencion/:misaId/:listaId',
     name: 'registrarIntencion',
     component: () => import('../views/intenciones/RegistrarIntencion.vue'),
     meta: {
@@ -106,6 +106,14 @@ const routes = [
     path: '/detalle-intencion/:id',
     name: 'detalleIntencion',
     component: () => import('../views/intenciones/DetalleIntencion.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/listado-intenciones/:listaId',
+    name: 'listadoIntenciones',
+    component: () => import('../views/intenciones/ListadoIntenciones.vue'),
     meta: {
       requiresAuth: true
     }
