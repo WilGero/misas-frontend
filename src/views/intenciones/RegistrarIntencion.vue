@@ -254,7 +254,7 @@ export default {
     irPago() {
       this.$router.push({
         name: "listadoIntenciones",
-        params: { listaId: this.$route.params.listaId },
+        params: { misaId:this.$route.params.misaId ,listaId: this.$route.params.listaId },
       });
     },
     abrirModal() {

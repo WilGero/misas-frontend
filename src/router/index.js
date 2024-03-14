@@ -111,7 +111,7 @@ const routes = [
     }
   },
   {
-    path: '/listado-intenciones/:listaId',
+    path: '/listado-intenciones/:misaId/:listaId',
     name: 'listadoIntenciones',
     component: () => import('../views/intenciones/ListadoIntenciones.vue'),
     meta: {
