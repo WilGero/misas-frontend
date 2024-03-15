@@ -67,7 +67,7 @@
       </div>
       <div class="col-auto">
         <div v-if="!activarMsg">
-          <button class="btn btn-primary btn-lg">
+          <button class="btn btn-primary btn-lg" :class="{ disabled: disabled }" @click="crearSesionPago">
             <i class="fas fa-credit-card"></i> Pagar
           </button>
         </div>
@@ -121,6 +121,7 @@ export default {
       msgBoton: "Cancelar",
       mostrarAlerta: false,
       idIntencion: null,
+      disabled:false
     };
   },
   created() {
@@ -184,7 +185,23 @@ export default {
     },
     editarIntencion(intencionId){
       this.$router.push({name:'editarIntencion',params:{intencionId:intencionId}});
-    }
+    },
+    async crearSesionPago() {
+      console.log(this.$route.params.listaId)
+      await this.axios
+        .post("/pagos/create-checkout-session/" + this.$route.params.listaId)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.sesion = response.data;
+          this.disabled=true;
+          console.log(this.sesion);
+          window.location.href = this.sesion.url;
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al crear la sesion de pago:", error);
+        });
+    },
   },
 };
 </script>

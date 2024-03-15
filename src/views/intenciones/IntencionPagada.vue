@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <h3 class="fs-1 fw-bold text-success">
-      Su intención fue registrada satisfactoriamente
+      Su Pago fue realalizado satisfactoriamente
     </h3>
     <img
       class="rounded mx-auto d-block"

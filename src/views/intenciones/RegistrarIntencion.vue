@@ -262,20 +262,6 @@ export default {
           });
       }
     },
-    async crearSesionPago(id) {
-      await this.axios
-        .post("/pagos/create-checkout-session/" + id)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          this.sesion = response.data.data;
-          console.log(this.sesion);
-          window.location.href = this.sesion.url;
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al crear la sesion de pago:", error);
-        });
-    },
     irPago() {
       this.$router.push({
         name: "listadoIntenciones",

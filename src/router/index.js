@@ -95,7 +95,7 @@ const routes = [
     }
   },
   {
-    path: '/intencion-pagada/:id',
+    path: '/intencion-pagada',
     name: 'intencionPagada',
     component: () => import('../views/intenciones/IntencionPagada.vue'),
     meta: {
