@@ -119,6 +119,14 @@ const routes = [
     }
   },
   {
+    path: '/editar-intencion/:intencionId',
+    name: 'editarIntencion',
+    component: () => import('../views/intenciones/EditarIntencion.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')

@@ -6,7 +6,7 @@
           <i class="fas fa-arrow-left"></i> Volver Atrás
         </button>
       </div>
-      <h1 class="text-center my-5">Listado de Intenciones</h1>
+      <h1 class="text-center my-5 ">Listado de Intenciones</h1>
     </div>
     <!-- Lista de intenciones -->
     <div v-if="activarMsg" class="col-md-6 m-auto">
@@ -23,7 +23,7 @@
       <div class="intencion-item">
         <div class="row align-items-center">
           <div class="col-md-2">
-            <p>{{ index + 1 }}</p>
+            <p class="fs-4 fw-bold ">{{ index + 1 }}</p>
           </div>
           <div class="col-md-4">
             <h4>Ofrece: {{ item.razon }}</h4>
@@ -34,14 +34,19 @@
             <p>Costo: {{ item.costo }} Bs</p>
           </div>
           <div class="col-md-3 text-end">
-            <button
-              class="btn btn-danger"
-              data-bs-toggle="modal"
-              data-bs-target="#mi-modal"
-              @click="guardarIdIntencion(item.id)"
-            >
-              <i class="fas fa-trash"></i> Eliminar
-            </button>
+            <div class="btn-group">
+              <button class="btn btn-warning btn-sm text-white" @click="editarIntencion(item.id)">
+                <i class="fas fa-edit me-2" ></i> Editar
+              </button>
+              <button
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#mi-modal"
+                @click="guardarIdIntencion(item.id)"
+              >
+                <i class="fas fa-trash"></i> Eliminar
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -73,7 +78,7 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title text-danger fw-bolder ">Alerta</h3>
+            <h3 class="modal-title text-danger fw-bolder">Alerta</h3>
             <button class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
@@ -115,7 +120,7 @@ export default {
       suma: 0,
       msgBoton: "Cancelar",
       mostrarAlerta: false,
-      idIntencion:null
+      idIntencion: null,
     };
   },
   created() {
@@ -164,7 +169,9 @@ export default {
           console.log("entencion eliminada con exito");
           this.mostrarAlerta = true;
           this.msgBoton = "Cerrar";
-          this.intenciones = this.intenciones.filter((intencion) => intencion.id != this.idIntencion);
+          this.intenciones = this.intenciones.filter(
+            (intencion) => intencion.id != this.idIntencion
+          );
           this.getIntenciones();
         } catch (error) {
           // Manejar errores
@@ -175,6 +182,9 @@ export default {
         }
       }
     },
+    editarIntencion(intencionId){
+      this.$router.push({name:'editarIntencion',params:{intencionId:intencionId}});
+    }
   },
 };
 </script>
