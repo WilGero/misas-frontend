@@ -2,7 +2,10 @@
   <!-- Navbar principal -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">Mi Sitio</a>
+      <a class="navbar-brand" href="#"
+        >Parroquia Inmaculada <br> 
+        Concepción - Vinto</a
+      >
       <!-- Menú hamburguesa para pantallas pequeñas -->
       <button
         class="navbar-toggler"
@@ -26,7 +29,7 @@
           <ul class="navbar-nav">
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'home' }"
-                >Home</router-link
+                ><i class="fas fa-home"></i>Inicio</router-link
               >
             </li>
             <li class="nav-item">
@@ -56,17 +59,17 @@
           <ul class="navbar-nav">
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'home' }"
-                >Home</router-link
+                ><i class="fas fa-home"></i> Inicio</router-link
               >
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'misas' }"
-                >Misas</router-link
+                ><i class="fas fa-church"></i> Misas</router-link
               >
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'usuarios' }"
-                >Usuarios</router-link
+                ><i class="fas fa-users"></i> Usuarios</router-link
               >
             </li>
             <li class="nav-item">
@@ -123,14 +126,13 @@ export default {
   },
   computed: {
     ...mapState(["auth"]),
-
   },
   methods: {
     ...mapActions(["logout"]),
-    mayuscula(usuario){
-      var resultado=usuario.toUpperCase();
+    mayuscula(usuario) {
+      var resultado = usuario.toUpperCase();
       return resultado;
-    }
+    },
   },
 };
 </script>

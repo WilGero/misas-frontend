@@ -1,36 +1,65 @@
 <template>
-  <div class="container mt-5">
-
-    <div class="card w-50 m-auto">
-      <div class="card-header">
-        Detalle de Intención
+  <div class="container my-2">
+    <div class="factura">
+      <!-- Encabezado de la factura -->
+      <div class="factura-header">
+        <div>
+          <h1>Factura</h1>
+          <p>Nombre del Cliente: {{ nombreCliente }}</p>
+        </div>
+        <img
+          src="../../assets/logo-parro.jpeg"
+          alt="Logo Parroquia"
+          class="logo-parroquia"
+        />
       </div>
-      <div class="card-body">
-        <h5 class="card-title">{{ intencion.tipo }}</h5>
-        <p class="card-text">{{ intencion.descripcion }}</p>
+      <!-- Tabla de intenciones -->
+      <table class="table intenciones-table">
+        <thead>
+          <tr>
+            <th>Nro</th>
+            <th>Ofrece</th>
+            <th>Tipo de Intención</th>
+            <th>Costo(Bs)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(intencion, index) in intenciones" :key="intencion.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ intencion.razon }}</td>
+            <td>{{ intencion.tipo }}</td>
+            <td>{{ intencion.costo }}</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="2"></td>
+            <td>Total</td>
+            <td>{{ suma }} Bs</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Acciones -->
+      <div class="acciones btn-group">
+        <button class="btn btn-danger">Exportar a PDF</button>
+        <button class="btn btn-primary" @click="imprimirFactura">
+          Imprimir
+        </button>
       </div>
-      <ul class="list-group list-group-flush text-start ">
-        <li class="list-group-item px-4"><strong>Misa: </strong> {{intencion.tipo_misa}}</li>
-        <li class="list-group-item px-4"><strong>Fecha: </strong> {{  formatearFecha(intencion.fecha) }}</li>
-        <li class="list-group-item px-4"><strong>Hora: </strong> {{  formatearHora(intencion.fecha) }}</li>
-        <li class="list-group-item px-4"><strong>Ofrecido por: </strong> {{ intencion.razon }}</li>
-        <li class="list-group-item px-4"><strong>Costo: </strong> {{ intencion.costo }} Bs</li>
-        <li class="list-group-item px-4"><strong>Estado: </strong> {{ intencion.estado_pago===1 ? 'Pagado':'No Pagado'}}</li>
-      </ul>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment';
+import moment from "moment";
 export default {
   data() {
     return {
-      intencion: {},
+      intenciones: [],
+      suma: 0,
+      nombreCliente: null,
     };
   },
-  created(){
-    this.getIntencion();
+  created() {
+    this.getIntenciones();
   },
   methods: {
     formatearFecha(fechaHora) {
@@ -39,23 +68,72 @@ export default {
     formatearHora(fechaHora) {
       return moment(fechaHora).format("h:mm a");
     },
-    async getIntencion() {
+    async getIntenciones() {
       await this.axios
-        .get("/intenciones/encontrar/" + this.$route.params.id)
+        .get("/lista-intenciones/encontrar/" + this.$route.params.listaId)
         .then((response) => {
           // Manejar la respuesta exitosa
-          this.intencion = response.data.data;
-          console.log(this.intencion);
-          return this.intencion;
+          this.intenciones = response.data.data;
+
+          if (this.intenciones.length === 0) {
+            this.activarMsg = true;
+          }
+          console.log(this.intenciones);
+          for (let i = 0; i < this.intenciones.length; i++) {
+            this.suma = this.suma + this.intenciones[i].costo;
+          }
+          this.nombreCliente = this.intenciones[0].nombre;
         })
         .catch((error) => {
           // Manejar errores
-          console.error("Error al listar el usuario:", error);
+          console.error("Error al listar las intenciones:", error);
         });
+    },
+    imprimirFactura() {
+      // Lógica para imprimir factura
+      window.print();
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.factura {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+}
+.factura-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.logo-parroquia {
+  max-width: 200px;
+  height: auto;
+}
+.intenciones-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.intenciones-table th,
+.intenciones-table td {
+  padding: 8px;
+  text-align: left;
+}
+.total-row {
+  font-weight: bold;
+}
+.acciones {
+  text-align: right;
+}
+@media print {
+  .acciones {
+    display: none;
+  }
+}
 </style>

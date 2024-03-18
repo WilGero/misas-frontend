@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5">
     <h3 class="fs-1 fw-bold text-success">
-      Su Pago fue realalizado satisfactoriamente
+      Su Pago fue realizado satisfactoriamente
     </h3>
     <img
       class="rounded mx-auto d-block"
@@ -23,7 +23,7 @@ export default {
     };
   },
   created(){
-    this.actualizarEstadoPago();
+    // this.actualizarEstadoPago();
   },
   methods: {
     async actualizarEstadoPago() {
@@ -47,7 +47,7 @@ export default {
       this.$router.push({
         name:'detalleIntencion',
         params:{
-          id:this.$route.params.id
+          listaId:this.$route.params.listaId
         }
       })
     }
