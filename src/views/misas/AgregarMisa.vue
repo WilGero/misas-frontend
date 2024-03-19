@@ -4,6 +4,12 @@
     <span>Misa registrada satisfactoriamente</span>
     <button class="btn-close" @click="cerrarAlerta"></button>
   </div>
+  <!-- Alerta error de formulario -->
+  <div v-if="mostrarAlerta2" class="alert alert-danger alert-dismissible m-4">
+    <ul class="error-list" v-for="(error, index) in errores" :key="index">
+      <li class="error-list-item">{{ error }}</li>
+    </ul>
+  </div>
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -26,7 +32,6 @@
                   v-model="tipoMisaSelec"
                   id="tipoMisa"
                   class="form-select"
-                  required
                 >
                   <option
                     v-for="item in tiposMisa"
@@ -44,10 +49,15 @@
                   type="datetime-local"
                   id="fecha"
                   class="form-control"
-                  required
                 />
               </div>
-              <button type="submit" class="btn btn-secondary" @click="cerrarFormulario">Cancelar</button>
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                @click="cerrarFormulario"
+              >
+                Cancelar
+              </button>
               <button type="submit" class="btn btn-success">Guardar</button>
             </form>
           </div>
@@ -59,6 +69,7 @@
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -70,6 +81,9 @@ export default {
       tiposMisa: [],
       tipoMisaSelec: null,
       mostrarAlerta: false,
+      mostrarAlerta2: false,
+      errores: [],
+      error: null,
     };
   },
   computed: {
@@ -99,34 +113,53 @@ export default {
         });
     },
     async agregarMisa() {
+      this.errores=[];
       if (this.tipoMisaSelec !== null) {
         this.form.tipo_misa_id = this.tipoMisaSelec;
-      } else {
-        this.form.tipo_misa_id = this.tiposMisa[1].id;
       }
       this.form.usuario_id = this.auth.data.id;
       console.log(this.form);
-      await this.axios
-        .post("/misas/agregar", this.form)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          console.log("misa agregada exitosamente ", response.data.data);
-          this.mostrarAlerta = true;
-          setTimeout(() => {
-            // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
-          this.mostrarAlerta = false;
-          }, 1500); // 
-          this.form = {
-            tipo_misa_id: null,
-            fecha: null,
-            usuario_id: null,
-          };
-          this.tipoMisaSelec = null;
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al agregar misa:", error);
-        });
+      if (this.form.tipo_misa_id === null) {
+        this.error = "Se requiere de un tipo de misa";
+        this.errores.push(this.error);
+      }
+      const dif = this.calcularDiferenciaFechaHoraEnHoras(this.form.fecha);
+      if (this.form.fecha === null) {
+        this.error = "Se requiere la fecha y hora de la misa";
+        this.errores.push(this.error);
+      } else if (dif < 2) {
+        this.error = "Ingrese una fecha y hora mas actual";
+        this.errores.push(this.error);
+      }
+      if (this.errores.length === 0) {
+        await this.axios
+          .post("/misas/agregar", this.form)
+          .then((response) => {
+            // Manejar la respuesta exitosa
+            console.log("misa agregada exitosamente ", response.data.data);
+            this.mostrarAlerta = true;
+            setTimeout(() => {
+              // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+              this.mostrarAlerta = false;
+            }, 1500); //
+            this.form = {
+              tipo_misa_id: null,
+              fecha: null,
+              usuario_id: null,
+            };
+            this.tipoMisaSelec = null;
+          })
+          .catch((error) => {
+            // Manejar errores
+            console.error("Error al agregar misa:", error);
+          });
+      } else {
+        this.mostrarAlerta2 = true;
+        setTimeout(() => {
+          // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+          this.mostrarAlerta2 = false;
+        }, 1500); //
+      }
     },
     cerrarFormulario() {
       this.$router.push({ name: "misas" });
@@ -134,9 +167,29 @@ export default {
     cerrarAlerta() {
       this.mostrarAlerta = false;
     },
+    calcularDiferenciaFechaHoraEnHoras(fechaHora) {
+      // Convertir la fecha y hora específica a un objeto Moment
+      const fechaHoraMoment = moment(fechaHora); //fecha de momento objetivo
+
+      // Obtener la fecha y hora actual
+      const fechaHoraActual = moment(); //fecha de momento base
+
+      // Calcular la diferencia en milisegundos entre las dos fechas y horas
+      const diferenciaEnHoras = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnHoras);
+      return diferenciaEnHoras;
+    },
   },
 };
 </script>
 
-<style>
+<style scoped>
+.error-list {
+  list-style: none;
+  padding-left: 0;
+}
+.error-list-item {
+  color: #dc3545;
+  margin-bottom: 5px;
+}
 </style>

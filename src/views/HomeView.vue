@@ -1,8 +1,5 @@
 <template>
   <div class="container mt-4">
-        <input v-model="fecha" type="datetime-local">
-    <button @click="calcularDif">obtener</button>
-    <input v-model="resultado" type="number">
     <h2 class="text-center mb-4 fs-1 fw-bolder">Misas Disponibles</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <!-- Card 1 -->
@@ -46,8 +43,6 @@ export default {
       horaFormateada: "",
       ultimaLista: { id: null },
       fechaHoraActual: null,
-      resultado:null,
-      fecha:null
     };
   },
   created() {
@@ -145,22 +140,9 @@ export default {
       const fechaHoraActual = moment();//fecha de momento base
 
       // Calcular la diferencia en milisegundos entre las dos fechas y horas
-      const diferenciaEnDias = fechaHoraMoment.diff(fechaHoraActual, "hours");
-      console.log(diferenciaEnDias);
-      return diferenciaEnDias;
-    },
-    calcularDif() {
-      // Convertir la fecha y hora específica a un objeto Moment
-      const fechaHoraMoment = moment(this.fecha);//fecha de momento objetivo
-
-      // Obtener la fecha y hora actual
-      const fechaHoraActual = moment();//fecha de momento base
-
-      // Calcular la diferencia en milisegundos entre las dos fechas y horas
-      const diferenciaEnDias = fechaHoraMoment.diff(fechaHoraActual, "hours");
-      console.log(diferenciaEnDias);
-      this.resultado=diferenciaEnDias;
-      return diferenciaEnDias;
+      const diferenciaEnHoras = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnHoras);
+      return diferenciaEnHoras;
     },
   },
 };
