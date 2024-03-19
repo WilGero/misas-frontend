@@ -11,7 +11,7 @@
     <!-- Lista de intenciones -->
     <div v-if="activarMsg" class="col-md-6 m-auto">
       <p class="text-center">
-        No se agrego ninguna intención, por favor agregue al menos una itención
+        No se agrego ninguna intención, por favor agregue al menos una intención
       </p>
     </div>
     <div

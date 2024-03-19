@@ -1,29 +1,32 @@
 <template>
-  <div class="container mt-5">
+  <div class="container mt-4">
+        <input v-model="fecha" type="datetime-local">
+    <button @click="calcularDif">obtener</button>
+    <input v-model="resultado" type="number">
+    <h2 class="text-center mb-4 fs-1 fw-bolder">Misas Disponibles</h2>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
       <!-- Card 1 -->
-      <div class="col" v-for="item in misas" :key="item.id_misa">
+      <div class="col" v-for="misa in misasDisponibles" :key="misa.id_misa">
         <div class="card shadow h-100">
           <div class="card-body">
-            <h5 class="card-title fw-bolder fs-4">{{ item.tipo_misa }}</h5>
+            <h5 class="card-title fw-bolder fs-4">{{ misa.tipo_misa }}</h5>
             <p class="card-text">
               <span class="fw-bold">Fecha: </span
-              >{{ formatearFecha(item.fecha) }}
+              >{{ formatearFecha(misa.fecha) }}
             </p>
             <p class="card-text">
-              <span class="fw-bold">Hora: </span>{{ formatearHora(item.fecha) }}
+              <span class="fw-bold">Hora: </span>{{ formatearHora(misa.fecha) }}
             </p>
 
             <button
               class="btn btn-primary"
-              @click="agregarIntencion(item.id_misa)"
+              @click="agregarIntencion(misa.id_misa)"
             >
               Agregar Intención
             </button>
           </div>
         </div>
       </div>
-      <!-- Puedes agregar más cards según sea necesario -->
     </div>
   </div>
 </template>
@@ -34,6 +37,7 @@ export default {
   data() {
     return {
       misas: [],
+      misasDisponibles: [],
       mostrarAlerta: false,
       idMisa: null,
       tipoMisa: {},
@@ -41,6 +45,9 @@ export default {
       fechaFormateada: "",
       horaFormateada: "",
       ultimaLista: { id: null },
+      fechaHoraActual: null,
+      resultado:null,
+      fecha:null
     };
   },
   created() {
@@ -48,7 +55,7 @@ export default {
   },
   methods: {
     formatearFecha(fechaHora) {
-      return moment(fechaHora).locale("es").format("D, MMMM YYYY");
+      return moment(fechaHora).locale("es").format("D [de] MMMM YYYY");
     },
     formatearHora(fechaHora) {
       return moment(fechaHora).format("h:mm a");
@@ -60,6 +67,20 @@ export default {
           // Manejar la respuesta exitosa
           this.misas = response.data.data;
           console.log(this.misas);
+          for (let i = 0; this.misas.length; i++) {
+              
+            let diferencia=this.calcularDiferenciaFechaHoraEnHoras(this.misas[i].fecha);
+            console.log(
+              diferencia
+            );
+
+            if (
+              diferencia >= 1
+            ) {
+              this.misasDisponibles.push(this.misas[i]);
+            }
+          }
+          console.log(this.misasDisponibles);
         })
         .catch((error) => {
           // Manejar errores
@@ -116,6 +137,49 @@ export default {
         });
       }, 1000);
     },
+    calcularDiferenciaFechaHoraEnHoras(fechaHora) {
+      // Convertir la fecha y hora específica a un objeto Moment
+      const fechaHoraMoment = moment(fechaHora);//fecha de momento objetivo
+
+      // Obtener la fecha y hora actual
+      const fechaHoraActual = moment();//fecha de momento base
+
+      // Calcular la diferencia en milisegundos entre las dos fechas y horas
+      const diferenciaEnDias = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnDias);
+      return diferenciaEnDias;
+    },
+    calcularDif() {
+      // Convertir la fecha y hora específica a un objeto Moment
+      const fechaHoraMoment = moment(this.fecha);//fecha de momento objetivo
+
+      // Obtener la fecha y hora actual
+      const fechaHoraActual = moment();//fecha de momento base
+
+      // Calcular la diferencia en milisegundos entre las dos fechas y horas
+      const diferenciaEnDias = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnDias);
+      this.resultado=diferenciaEnDias;
+      return diferenciaEnDias;
+    },
   },
 };
 </script>
+<style scoped>
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+.container {
+  padding-top: 50px;
+}
+.misas-container {
+  margin-top: 20px;
+}
+.misas-container .card {
+  margin-bottom: 20px;
+}
+.card-body {
+  background-color: #f8f9fa;
+}
+</style>

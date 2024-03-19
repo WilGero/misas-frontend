@@ -1,5 +1,10 @@
 <template>
-  <div class="container my-2">
+  <div class="container my-4 position-relative">
+    <div class="position-absolute top-0 left-0">
+      <button class="btn btn-secondary acciones" @click="irAtras">
+        <i class="fas fa-arrow-left"></i> Atrás
+      </button>
+    </div>
     <div class="factura">
       <!-- Encabezado de la factura -->
       <div class="factura-header">
@@ -92,6 +97,9 @@ export default {
     imprimirFactura() {
       // Lógica para imprimir factura
       window.print();
+    },
+    irAtras() {
+      this.$router.go(-1);
     },
   },
 };
