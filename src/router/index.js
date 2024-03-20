@@ -145,7 +145,7 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
-
+// funcion que itera todas las rutas
 router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requiresAuth)
   if (protectedRoute && !localStorage.getItem('auth')) {
