@@ -6,7 +6,7 @@
           <i class="fas fa-arrow-left"></i> Volver Atrás
         </button>
       </div>
-      <h1 class="text-center my-5 ">Listado de Intenciones</h1>
+      <h1 class="text-center my-5">Listado de Intenciones</h1>
     </div>
     <!-- Lista de intenciones -->
     <div v-if="activarMsg" class="col-md-6 m-auto">
@@ -23,7 +23,7 @@
       <div class="intencion-item">
         <div class="row align-items-center">
           <div class="col-md-2">
-            <p class="fs-4 fw-bold ">{{ index + 1 }}</p>
+            <p class="fs-4 fw-bold">{{ index + 1 }}</p>
           </div>
           <div class="col-md-4">
             <h4>Ofrece: {{ item.razon }}</h4>
@@ -35,8 +35,11 @@
           </div>
           <div class="col-md-3 text-end">
             <div class="btn-group">
-              <button class="btn btn-warning btn-sm text-white" @click="editarIntencion(item.id)">
-                <i class="fas fa-edit me-2" ></i> Editar
+              <button
+                class="btn btn-warning btn-sm text-white"
+                @click="editarIntencion(item.id)"
+              >
+                <i class="fas fa-edit me-2"></i> Editar
               </button>
               <button
                 class="btn btn-danger"
@@ -67,7 +70,11 @@
       </div>
       <div class="col-auto">
         <div v-if="!activarMsg">
-          <button class="btn btn-primary btn-lg" :class="{ disabled: disabled }" @click="crearSesionPago">
+          <button
+            class="btn btn-primary btn-lg"
+            :class="{ disabled: disabled }"
+            @click="pagar"
+          >
             <i class="fas fa-credit-card"></i> Pagar
           </button>
         </div>
@@ -112,6 +119,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -121,8 +129,11 @@ export default {
       msgBoton: "Cancelar",
       mostrarAlerta: false,
       idIntencion: null,
-      disabled:false
+      disabled: false,
     };
+  },
+  computed: {
+    ...mapState(["auth"]),
   },
   created() {
     this.getIntenciones();
@@ -177,17 +188,20 @@ export default {
         }
       }
     },
-    editarIntencion(intencionId){
-      this.$router.push({name:'editarIntencion',params:{intencionId:intencionId}});
+    editarIntencion(intencionId) {
+      this.$router.push({
+        name: "editarIntencion",
+        params: { intencionId: intencionId },
+      });
     },
     async crearSesionPago() {
-      console.log(this.$route.params.listaId)
+      console.log(this.$route.params.listaId);
       await this.axios
         .post("/pagos/create-checkout-session/" + this.$route.params.listaId)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.sesion = response.data;
-          this.disabled=true;
+          this.disabled = true;
           console.log(this.sesion);
           window.location.href = this.sesion.url;
         })
@@ -195,6 +209,16 @@ export default {
           // Manejar errores
           console.error("Error al crear la sesion de pago:", error);
         });
+    },
+    pagar() {
+      if (this.auth.data.rol_id === 8) {
+        this.$router.push({
+          name: "intencionPagada",
+          params: { listaId: this.$route.params.listaId },
+        });
+      }else{
+        this.crearSesionPago();
+      }
     },
   },
 };

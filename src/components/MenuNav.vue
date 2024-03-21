@@ -2,7 +2,9 @@
   <!-- Navbar principal -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
+      <img class="img-thumbnail img-fluid me-2" width="100" height="100" src="../assets/logo-parro.jpeg" alt="logo">
       <a class="navbar-brand" href="#"
+      
         >Parroquia Inmaculada <br> 
         Concepción - Vinto</a
       >

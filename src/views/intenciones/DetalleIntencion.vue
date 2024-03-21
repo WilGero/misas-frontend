@@ -50,7 +50,7 @@
       </table>
       <!-- Acciones -->
       <div class="acciones btn-group">
-        <button class="btn btn-danger">Exportar a PDF</button>
+        <!-- <button class="btn btn-danger">Exportar a PDF</button> -->
         <button class="btn btn-primary" @click="imprimirFactura">
           Imprimir
         </button>

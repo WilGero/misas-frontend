@@ -147,7 +147,7 @@ const routes = [
     }
   },
   {
-    path: '/listado-intenciones-misa',
+    path: '/listado-intenciones-misa/:misaId',
     name: 'listadoIntencionesMisa',
     component: () => import('../views/intencionesSecre/ListadoIntencionesMisa.vue'),
     meta: {

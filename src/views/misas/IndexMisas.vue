@@ -41,8 +41,11 @@
                 <td>
                   <div class="btn-group">
                     <router-link
-                      class="btn btn-primary btn-sm "
-                      :to="{ name: 'listadoIntencionesMisa'}"
+                      class="btn btn-primary btn-sm"
+                      :to="{
+                        name: 'listadoIntencionesMisa',
+                        params: { misaId: item.id_misa },
+                      }"
                     >
                       Intenciones
                     </router-link>
@@ -112,6 +115,7 @@ export default {
       idMisa: null,
       tipoMisa: {},
       msgBoton: "Cancelar",
+      respuesta: [],
     };
   },
   created() {
@@ -133,7 +137,13 @@ export default {
         .get("/misas/listado")
         .then((response) => {
           // Manejar la respuesta exitosa
-          this.misas = response.data.data;
+          this.respuesta = response.data.data;
+          console.log(this.respuesta);
+          for (let i = 0; i<this.respuesta.length; i++) {
+            if (this.respuesta[i].estado === 1) {
+              this.misas.push(this.respuesta[i]);
+            }
+          }
           console.log(this.misas);
         })
         .catch((error) => {
