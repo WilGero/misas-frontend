@@ -2,12 +2,15 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-12 d-flex justify-content-end">
-        <router-link class="btn btn-warning btn-sm" :to="{name:'intencionesNoPagadas'}">
-          Ver Intenciones no pagadas
+        <router-link
+          class="btn btn-success btn-sm"
+          :to="{ name: 'intencionesPagadas' }"
+        >
+          Ver Intenciones pagadas
         </router-link>
       </div>
       <div class="col-12">
-        <h2 class="text-center mb-4">Lista de Intenciones Pagadas</h2>
+        <h2 class="text-center mb-4">Lista de Intenciones No Pagadas</h2>
       </div>
     </div>
     <div class="table-responsive">
@@ -30,7 +33,10 @@
               intención
             </p>
           </div>
-          <tr v-for="(item, index) in listasIntencionesPagadas" :key="item.id">
+          <tr
+            v-for="(item, index) in listasIntencionesNoPagadas"
+            :key="item.id"
+          >
             <th>{{ index + 1 }}</th>
             <td>{{ formatearFecha(item.created_at) }}</td>
             <td>{{ formatearHora(item.created_at) }}</td>
@@ -38,9 +44,9 @@
             <td>{{ formatearFecha(item.fecha) }}</td>
             <td>{{ formatearHora(item.fecha) }}</td>
             <td>
-              <button class="btn btn-ver-detalle" @click="verDetalle(item.id)">
-                Ver Detalle
-              </button>
+              <router-link class="btn btn-ver-detalle" :to="{name:'listadoIntenciones',params:{misaId:item.misa_id,listaId:item.id}}">
+                Pagar
+              </router-link>
             </td>
           </tr>
         </tbody>
@@ -55,7 +61,7 @@ export default {
   data() {
     return {
       listasIntenciones: [],
-      listasIntencionesPagadas: [],
+      listasIntencionesNoPagadas: [],
       activarMsg: false,
     };
   },
@@ -77,8 +83,13 @@ export default {
           this.listasIntenciones = response.data.data;
           console.log(this.listasIntenciones);
           for (let i = 0; i < this.listasIntenciones.length; i++) {
-            if (this.listasIntenciones[i].estado_pago === 1 && this.listasIntenciones[i].estado_misa === 1) {
-              this.listasIntencionesPagadas.unshift(this.listasIntenciones[i]);
+            if (
+              this.listasIntenciones[i].estado_pago === 0 &&
+              this.listasIntenciones[i].estado_misa === 1
+            ) {
+              this.listasIntencionesNoPagadas.unshift(
+                this.listasIntenciones[i]
+              );
             }
           }
           console.log(this.listasIntencionesPagadas);

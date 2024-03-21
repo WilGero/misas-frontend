@@ -1,6 +1,28 @@
 <template>
-  <menu-nav></menu-nav>
-  <router-view />
+  <section class="arriba">
+    <menu-nav></menu-nav>
+  </section>
+  <section class="margen-arriba">
+    <router-view />
+  </section>
+  <footer class="mt-5">
+    <div class="container text-center">
+      <p>Parroquia Inmaculada Concepción</p>
+      <p>Dirección: 123 Calle Principal, Ciudad, País</p>
+      <p>Teléfono: (123) 456-7890</p>
+      <p>
+        <a href="#" class="footer-link"
+          ><i class="fab fa-facebook footer-icon"></i
+        ></a>
+        <a href="#" class="footer-link"
+          ><i class="fab fa-whatsapp footer-icon"></i
+        ></a>
+        <a href="#" class="footer-link"
+          ><i class="fab fa-instagram footer-icon"></i
+        ></a>
+      </p>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -13,7 +35,8 @@ export default {
   data() {
     return {};
   },
-  created(){
+
+  created() {
     this.setAuth();
   },
   methods: {
@@ -41,5 +64,30 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+body {
+  margin-bottom: 100px; /* Para dejar espacio para el pie de página */
+}
+footer {
+  width: 100%;
+  background-color: #f8f9fa;
+  padding: 20px 0;
+}
+.footer-icon {
+  font-size: 24px;
+  margin-right: 10px;
+}
+.footer-link {
+  color: #495057;
+  text-decoration: none;
+}
+.arriba{
+  position: fixed;
+  top:0;
+  width: 100%;
+  z-index: 1000;
+}
+.margen-arriba{
+  margin-top: 6%;
 }
 </style>

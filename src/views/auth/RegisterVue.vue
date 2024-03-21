@@ -146,7 +146,7 @@ export default {
             this.$router.push({
               name: "login",
             });
-          }, 2000); // 3000 milisegundos = 3 segundos
+          }, 1500); // 3000 milisegundos = 3 segundos
 
         })
         .catch((error) => {

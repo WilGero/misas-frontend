@@ -42,32 +42,36 @@ const routes = [
     children: [
       {
         path: 'agregar',
-        name:'agregarUsuario',
+        name: 'agregarUsuario',
         component: () => import('../views/usuarios/AgregarUser.vue')
 
       }
     ]
     ,
     meta: {
-      requiresAuth: true
+      requiresAuth: true, requiredRole: 2
     }
   },
   {
     path: '/usuarios/:id',
     name: 'usuario',
-    component: () => import('../views/usuarios/DetalleUsuario.vue')
+    component: () => import('../views/usuarios/DetalleUsuario.vue'), meta: {
+      requiresAuth: true, requiredRole: 2
+    }
   },
   {
     path: '/editarUsuario/:id',
     name: 'editarUsuario',
-    component: () => import('../views/usuarios/EditarUser.vue')
+    component: () => import('../views/usuarios/EditarUser.vue'), meta: {
+      requiresAuth: true, requiredRole: 2
+    }
   },
   {
     path: '/misas',
     name: 'misas',
     component: () => import('../views/misas/IndexMisas.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true, requiredRole: 8
     }
   },
   {
@@ -75,7 +79,7 @@ const routes = [
     name: 'agregarMisa',
     component: () => import('../views/misas/AgregarMisa.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true, requiredRole: 8
     }
   },
   {
@@ -83,7 +87,7 @@ const routes = [
     name: 'editarMisa',
     component: () => import('../views/misas/EditarMisa.vue'),
     meta: {
-      requiresAuth: true
+      requiresAuth: true, requiredRole: 8
     }
   },
   {
@@ -135,6 +139,22 @@ const routes = [
     }
   },
   {
+    path: '/intenciones-no-pagadas',
+    name: 'intencionesNoPagadas',
+    component: () => import('../views/intenciones/IntencionesNoPagadas.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/listado-intenciones-misa',
+    name: 'listadoIntencionesMisa',
+    component: () => import('../views/intencionesSecre/ListadoIntencionesMisa.vue'),
+    meta: {
+      requiresAuth: true,requiredRole:8
+    }
+  },
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')
@@ -148,9 +168,22 @@ const router = createRouter({
 // funcion que itera todas las rutas
 router.beforeEach((to, from, next) => {
   const protectedRoute = to.matched.some(record => record.meta.requiresAuth)
+  let rol = null;
+  if (localStorage.getItem('auth')) {
+    rol = JSON.parse(localStorage.getItem('auth')).data.rol_id;
+    console.log(rol);
+  }
   if (protectedRoute && !localStorage.getItem('auth')) {
     next('/login')
-  } else {
+  } else if (to.meta.requiredRole) {
+    if (rol != to.meta.requiredRole) {
+      next('/');
+    }else{
+      next()
+    }    
+
+  }
+  else {
     next()
   }
 })

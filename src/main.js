@@ -16,6 +16,7 @@ import store from './store'
 import axios from 'axios';
 import VueAxios  from 'vue-axios';
 
+// axios.defaults.withCredentials=true;
 // Configurar Axios para incluir el token en las solicitudes
 axios.defaults.baseURL = 'http://localhost:5050/';
 

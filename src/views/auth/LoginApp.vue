@@ -106,6 +106,13 @@ export default {
   computed: {
     ...mapState(["auth"]),
   },
+  // whatch:{
+  //   auth(newValue){
+  //     if(newValue){
+  //       this.axios.defaults.headers.common['Authorization']='Bearer '+newValue.token;
+  //     }
+  //   }
+  // },
   methods: {
     ...mapMutations(["setAuth"]),
     login() {

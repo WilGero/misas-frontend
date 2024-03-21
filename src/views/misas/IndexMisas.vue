@@ -41,6 +41,12 @@
                 <td>
                   <div class="btn-group">
                     <router-link
+                      class="btn btn-primary btn-sm "
+                      :to="{ name: 'listadoIntencionesMisa'}"
+                    >
+                      Intenciones
+                    </router-link>
+                    <router-link
                       class="btn btn-warning"
                       :to="{ name: 'editarMisa', params: { id: item.id_misa } }"
                     >

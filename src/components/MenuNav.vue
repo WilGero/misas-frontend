@@ -67,12 +67,12 @@
                 ><i class="fas fa-list"></i> Intenciones Pagadas</router-link
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="auth.data.rol_id===8">
               <router-link class="nav-link" :to="{ name: 'misas' }"
                 ><i class="fas fa-church"></i> Misas</router-link
               >
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="auth.data.rol_id===2">
               <router-link class="nav-link" :to="{ name: 'usuarios' }"
                 ><i class="fas fa-users"></i> Usuarios</router-link
               >
@@ -146,6 +146,7 @@ export default {
 nav {
   background-color: #001f3f;
 }
+
 @media (max-width: 991.98px) {
   .navbar-expand-lg .navbar-collapse {
     background-color: #001f3f; /* Color de fondo del menú desplegable en pantallas pequeñas */

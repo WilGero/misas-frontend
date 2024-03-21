@@ -149,13 +149,7 @@ export default {
         });
     },
     irAtras() {
-      this.$router.push({
-        name: "registrarIntencion",
-        params: {
-          misaId: this.$route.params.misaId,
-          listaId: this.$route.params.listaId,
-        },
-      });
+      this.$router.go(-1);
     },
     guardarIdIntencion(id) {
       this.idIntencion = id;

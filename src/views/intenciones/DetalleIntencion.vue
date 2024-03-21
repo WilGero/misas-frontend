@@ -10,7 +10,13 @@
       <div class="factura-header">
         <div>
           <h1>Factura</h1>
-          <p>Nombre del Cliente: {{ nombreCliente }}</p>
+          <p class="fw-bold">{{ tipoMisa }}</p>
+          <p class="fw-bold">Hora y Fecha: {{ formatearFecha(fechaMisa) }}, {{ formatearHora(fechaMisa)}}</p>
+          <section class="text-start">
+            <p>Nombre del Cliente:  {{ nombreCliente }}</p>
+            <p>Fecha de pago:  {{ formatearFecha(fechaPago) }}</p>
+            <p>Hora de pago:  {{ formatearHora(fechaPago) }}</p>
+          </section>
         </div>
         <img
           src="../../assets/logo-parro.jpeg"
@@ -61,6 +67,9 @@ export default {
       intenciones: [],
       suma: 0,
       nombreCliente: null,
+      tipoMisa: null,
+      fechaPago: null,
+      fechaMisa:null
     };
   },
   created() {
@@ -68,7 +77,7 @@ export default {
   },
   methods: {
     formatearFecha(fechaHora) {
-      return moment(fechaHora).locale("es").format("D, MMMM YYYY");
+      return moment(fechaHora).locale("es").format("D [de] MMMM YYYY");
     },
     formatearHora(fechaHora) {
       return moment(fechaHora).format("h:mm a");
@@ -88,6 +97,10 @@ export default {
             this.suma = this.suma + this.intenciones[i].costo;
           }
           this.nombreCliente = this.intenciones[0].nombre;
+          this.tipoMisa = this.intenciones[0].tipo_misa;
+          this.fechaPago = this.intenciones[0].created_at;
+          this.fechaMisa = this.intenciones[0].fecha;
+
         })
         .catch((error) => {
           // Manejar errores
