@@ -13,22 +13,16 @@
         <h2 class="text-center mb-4">Lista de Intenciones No Pagadas</h2>
       </div>
     </div>
-    <div v-if="activarMsg" class="col-md-6 m-auto">
-            <p class="text-center">
-              No se registro ninguna intención, por favor agregue al menos una
-              intención
-            </p>
-          </div>
+
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
             <th>Nro</th>
-            <th>Fecha de Pago</th>
-            <th>Hora de pago</th>
+            <th>Ofrece</th>
+            <th>Fecha y Hora Pago</th>
             <th>Misa</th>
-            <th>Fecha de misa</th>
-            <th>Hora de misa</th>
+            <th>Fecha y hora de misa</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -38,16 +32,26 @@
             v-for="(item, index) in listasIntencionesNoPagadas"
             :key="item.id"
           >
-            <th>{{ index + 1 }}</th>
-            <td>{{ formatearFecha(item.created_at) }}</td>
-            <td>{{ formatearHora(item.created_at) }}</td>
+          <th>{{ index + 1 }}</th>
+            <td>{{ item.razon }}</td>
+            <td>
+              {{ formatearFecha(item.created_at) }} -
+              {{ formatearHora(item.created_at) }}
+            </td>
             <td>{{ item.tipo_misa }}</td>
-            <td>{{ formatearFecha(item.fecha) }}</td>
-            <td>{{ formatearHora(item.fecha) }}</td>
+            <td>
+              {{ formatearFecha(item.fecha) }} - {{ formatearHora(item.fecha) }}
+            </td>
             <td>
               <router-link class="btn btn-ver-detalle" :to="{name:'listadoIntenciones',params:{misaId:item.misa_id,listaId:item.id}}">
                 Pagar
               </router-link>
+            </td>
+          </tr>
+          <tr v-if="activarMsg">
+            <td colspan="6" class="fs-3" >
+              No se pago por ninguna intención, por favor realice al menos un
+              pago
             </td>
           </tr>
         </tbody>
