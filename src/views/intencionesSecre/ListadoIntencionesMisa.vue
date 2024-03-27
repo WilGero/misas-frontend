@@ -53,6 +53,10 @@
           <td>{{ item.descripcion }}</td>
           <td>{{ item.razon }}</td>
         </tr>
+        <tr v-if="mensaje">
+
+          <td colspan="3" class="fs-3"> {{ mensaje }}</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -64,17 +68,35 @@ export default {
   data() {
     return {
       intencionesMisa: [],
+      misa:{},
       respuesta: [],
       tipoMisa: null,
       fechaHoraMisa: null,
+      mensaje:null
     };
   },
   created() {
+    this.getMisa();
     this.getIntencionesMisa();
   },
   methods: {
     formatDatetimeWithMonthInLetters(datetime) {
       return moment(datetime).locale("es").format("D [de] MMMM YYYY, h:mm a");
+    },
+    async getMisa() {
+      await this.axios
+        .get("/misas/encontrar/" + this.$route.params.misaId)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.misa = response.data.data;
+          this.tipoMisa = this.misa.tipo_misa;
+          this.fechaHoraMisa = this.misa.fecha;
+          console.log(this.misa);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al encontrar misa:", error);
+        });
     },
     async getIntencionesMisa() {
       await this.axios
@@ -82,13 +104,14 @@ export default {
         .then((response) => {
           // Manejar la respuesta exitosa
           this.respuesta = response.data.data;
-          this.tipoMisa = this.respuesta[0].tipo_misa;
-          this.fechaHoraMisa = this.respuesta[0].fecha;
           console.log(this.respuesta);
           for (let i = 0; this.respuesta.length; i++) {
             if (this.respuesta[i].estado === 1) {
               this.intencionesMisa.push(this.respuesta[i]);
             }
+          }
+          if(this.intencionesMisa.length===0){
+            this.mensaje='No se registro ninguna intención'
           }
           console.log(this.intencionesMisa);
         })

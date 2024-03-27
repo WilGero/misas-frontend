@@ -88,6 +88,6 @@ footer {
   z-index: 1000;
 }
 .margen-arriba{
-  margin-top: 6%;
+  margin-top: 10%;
 }
 </style>

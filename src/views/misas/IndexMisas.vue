@@ -25,16 +25,18 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Tipo de misa</th>
+                <th scope="col">Descripción</th>
                 <th scope="col">Fecha</th>
                 <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in misas" :key="item.id_misa">
-                <td scope="row">{{ index + 1 }}</td>
+                <th scope="row">{{ index + 1 }}</th>
                 <td>
                   {{ item.tipo_misa }}
                 </td>
+                <td>{{ item.descripcion }}</td>
                 <td>
                   {{ formatDatetimeWithMonthInLetters(item.fecha) }}
                 </td>
@@ -84,7 +86,7 @@
               v-if="mostrarAlerta"
               class="alert alert-danger alert-dismissible m-4"
             >
-              <span>Misa eliminada satisfactoriamente</span>
+              <span>{{ mensaje }}</span>
             </div>
             <p v-else>Esta seguro de eliminar esta misa?</p>
           </div>
@@ -116,6 +118,7 @@ export default {
       tipoMisa: {},
       msgBoton: "Cancelar",
       respuesta: [],
+      mensaje: "Misa eliminada satisfactoriamente",
     };
   },
   created() {
@@ -132,6 +135,20 @@ export default {
     formatDatetimeWithMonthInLetters(datetime) {
       return moment(datetime).locale("es").format("D, MMMM YYYY, h:mm a");
     },
+    async getIntencionesMisa(id) {
+      console.log(id)
+      await this.axios
+        .get("/misas/encontrar-intenciones/" +id)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.intencionesMisa = response.data.data;
+          console.log(this.intencionesMisa);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar misas:", error);
+        });
+    },
     async getMisas() {
       await this.axios
         .get("/misas/listado")
@@ -139,12 +156,13 @@ export default {
           // Manejar la respuesta exitosa
           this.respuesta = response.data.data;
           console.log(this.respuesta);
-          for (let i = 0; i<this.respuesta.length; i++) {
+          for (let i = 0; i < this.respuesta.length; i++) {
             if (this.respuesta[i].estado === 1) {
               this.misas.push(this.respuesta[i]);
             }
           }
           console.log(this.misas);
+          
         })
         .catch((error) => {
           // Manejar errores
@@ -168,10 +186,12 @@ export default {
     guardarIdMisa(id) {
       this.idMisa = id;
       this.mostrarAlerta = false;
+      this.getIntencionesMisa(this.idMisa);
     },
     async eliminarMisa() {
       this.msgBoton = "Cancelar";
-      if (this.idMisa !== null) {
+      console.log(this.intencionesMisa);
+      if (this.idMisa !== null && this.intencionesMisa.length === 0) {
         try {
           await this.axios.delete("/misas/borrar/" + this.idMisa);
           // Manejar la respuesta exitosa
@@ -186,6 +206,11 @@ export default {
           // Limpia el ID y cierra el modal, independientemente del resultado
           this.idMisa = null;
         }
+      } else {
+        this.mensaje =
+          "No se puede eliminar la misa, porque tiene registrada intenciones";
+        this.mostrarAlerta = true;
+        this.msgBoton = "Cerrar";
       }
     },
   },

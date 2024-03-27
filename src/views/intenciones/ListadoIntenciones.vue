@@ -211,13 +211,13 @@ export default {
         });
     },
     pagar() {
-      if (this.auth.data.rol_id === 8) {
+      if (this.auth.data.rol_id === 3) {
+        this.crearSesionPago();
+      } else {
         this.$router.push({
           name: "intencionPagada",
           params: { listaId: this.$route.params.listaId },
         });
-      }else{
-        this.crearSesionPago();
       }
     },
   },

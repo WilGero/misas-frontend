@@ -42,6 +42,17 @@
                   </option>
                 </select>
               </div>
+              <!-- Descripcion -->
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <textarea
+                  v-model="form.descripcion"
+                  class="form-control"
+                  id="descripcion"
+                  rows="3"
+                  placeholder="Ingrese la descripción de la misa"
+                ></textarea>
+              </div>
               <div class="mb-3">
                 <label for="fecha" class="form-label">Fecha</label>
                 <input
@@ -74,6 +85,7 @@ export default {
   data() {
     return {
       form: {
+        descripcion:null,
         tipo_misa_id: null,
         fecha: null,
         usuario_id: null,

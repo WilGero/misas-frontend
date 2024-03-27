@@ -49,21 +49,21 @@ const routes = [
     ]
     ,
     meta: {
-      requiresAuth: true, requiredRole: 2
+      requiresAuth: true, requiredRole: 1
     }
   },
   {
     path: '/usuarios/:id',
     name: 'usuario',
     component: () => import('../views/usuarios/DetalleUsuario.vue'), meta: {
-      requiresAuth: true, requiredRole: 2
+      requiresAuth: true, requiredRole: 1
     }
   },
   {
     path: '/editarUsuario/:id',
     name: 'editarUsuario',
     component: () => import('../views/usuarios/EditarUser.vue'), meta: {
-      requiresAuth: true, requiredRole: 2
+      requiresAuth: true, requiredRole: 1
     }
   },
   {
@@ -71,7 +71,7 @@ const routes = [
     name: 'misas',
     component: () => import('../views/misas/IndexMisas.vue'),
     meta: {
-      requiresAuth: true, requiredRole: 8
+      requiresAuth: true, requiredRole: 2
     }
   },
   {
@@ -79,7 +79,7 @@ const routes = [
     name: 'agregarMisa',
     component: () => import('../views/misas/AgregarMisa.vue'),
     meta: {
-      requiresAuth: true, requiredRole: 8
+      requiresAuth: true, requiredRole: 2
     }
   },
   {
@@ -87,7 +87,7 @@ const routes = [
     name: 'editarMisa',
     component: () => import('../views/misas/EditarMisa.vue'),
     meta: {
-      requiresAuth: true, requiredRole: 8
+      requiresAuth: true, requiredRole: 2
     }
   },
   {
@@ -151,7 +151,7 @@ const routes = [
     name: 'listadoIntencionesMisa',
     component: () => import('../views/intencionesSecre/ListadoIntencionesMisa.vue'),
     meta: {
-      requiresAuth: true,requiredRole:8
+      requiresAuth: true,requiredRole:2
     }
   },
   {

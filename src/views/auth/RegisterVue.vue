@@ -133,7 +133,7 @@ export default {
         });
     },
     async registrarUsuario() {
-      this.form.rol_id = this.roles[0].id;
+      this.form.rol_id = this.roles[2].id;
       console.log(this.form);
       await this.axios
         .post("/usuarios/agregar", this.form)

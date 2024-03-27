@@ -26,6 +26,7 @@
                   type="text"
                   class="form-control"
                   id="ofrecidaPor"
+                  placeholder="Escribe quien ofrece la intención"
                 />
               </div>
 
@@ -37,6 +38,7 @@
                   class="form-control"
                   id="descripcion"
                   rows="3"
+                  placeholder="Escriba la descripción de la intención"
                 ></textarea>
               </div>
 
@@ -175,6 +177,7 @@ export default {
         usuario_id: null,
         lista_id: null,
       },
+      tiposIntencion:[],
       mensaje: "",
       tipoIntenSelec: null,
       mostrarAlerta: false,

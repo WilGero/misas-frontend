@@ -1,12 +1,19 @@
 <template>
   <div class="container mt-5">
-    <h3 class="fs-1 fw-bold text-success">
+    <div class="position-relative">
+    <div class="position-absolute top-0 left-0">
+        <button class="btn btn-secondary" @click="verIntencionesMisa">
+          <i class="fas fa-arrow-left"></i> Ver Intenciones
+        </button>
+      </div>
+    </div>
+    <h3 class="fs-1 fw-bold t
+    ext-success">
       Su Pago fue realizado satisfactoriamente
     </h3>
     <img
       class="rounded mx-auto d-block"
       src="../../assets/success.png"
-      alt="success"
     />
     <button class="btn btn-info" @click="verDetalle">Ver Detalle</button>
   </div>
@@ -21,6 +28,7 @@ export default {
         estado_pago: 0,
       },
       intenciones: [],
+      misaId:null
     };
   },
   created() {
@@ -35,6 +43,7 @@ export default {
           // Manejar la respuesta exitosa
           this.intenciones = response.data.data;
           console.log(this.intenciones);
+          this.misaId=this.intenciones[0].misa_id;
         })
         .catch((error) => {
           // Manejar errores
@@ -96,6 +105,12 @@ export default {
         },
       });
     },
+    verIntencionesMisa(){
+      this.$router.push({
+        name:'listadoIntencionesMisa',
+        params:{misaId:this.misaId}
+      })
+    }
   },
 };
 </script>

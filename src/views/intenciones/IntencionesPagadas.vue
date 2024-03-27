@@ -2,13 +2,22 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-12 d-flex justify-content-end">
-        <router-link class="btn btn-warning btn-sm" :to="{name:'intencionesNoPagadas'}">
+        <router-link
+          class="btn btn-warning btn-sm"
+          :to="{ name: 'intencionesNoPagadas' }"
+        >
           Ver Intenciones no pagadas
         </router-link>
       </div>
       <div class="col-12">
         <h2 class="text-center mb-4">Lista de Intenciones Pagadas</h2>
       </div>
+      <div v-if="activarMsg" class="col-md-6 m-auto">
+            <p class="text-center">
+              No se pago por ninguna intención, por favor realice al menos un
+              pago
+            </p>
+          </div>
     </div>
     <div class="table-responsive">
       <table class="table table-striped">
@@ -24,12 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <div v-if="activarMsg" class="col-md-6 m-auto">
-            <p class="text-center">
-              No se pago por ninguna intención, por favor agregue al menos una
-              intención
-            </p>
-          </div>
+
           <tr v-for="(item, index) in listasIntencionesPagadas" :key="item.id">
             <th>{{ index + 1 }}</th>
             <td>{{ formatearFecha(item.created_at) }}</td>
@@ -51,6 +55,7 @@
 
 <script>
 import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -58,6 +63,9 @@ export default {
       listasIntencionesPagadas: [],
       activarMsg: false,
     };
+  },
+  computed: {
+    ...mapState(["auth"]),
   },
   created() {
     this.getListasIntenciones();
@@ -77,7 +85,11 @@ export default {
           this.listasIntenciones = response.data.data;
           console.log(this.listasIntenciones);
           for (let i = 0; i < this.listasIntenciones.length; i++) {
-            if (this.listasIntenciones[i].estado_pago === 1 && this.listasIntenciones[i].estado_misa === 1) {
+            if (
+              this.listasIntenciones[i].estado_pago === 1 &&
+              this.listasIntenciones[i].estado_misa === 1 &&
+              this.listasIntenciones[i].usuario_id === this.auth.data.id
+            ) {
               this.listasIntencionesPagadas.unshift(this.listasIntenciones[i]);
             }
           }

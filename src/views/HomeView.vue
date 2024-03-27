@@ -16,6 +16,7 @@
         <div class="card shadow h-100">
           <div class="card-body">
             <h5 class="card-title fw-bolder fs-4">{{ misa.tipo_misa }}</h5>
+            <p class="card-text">{{ misa.descripcion }}</p>
             <p class="card-text">
               <span class="fw-bold">Fecha: </span
               >{{ formatearFecha(misa.fecha) }}

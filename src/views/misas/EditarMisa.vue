@@ -35,6 +35,16 @@
                   </option>
                 </select>
               </div>
+              <!-- Descripcion -->
+              <div class="mb-3">
+                <label for="descripcion" class="form-label">Descripción:</label>
+                <textarea
+                  v-model="misa.descripcion"
+                  class="form-control"
+                  id="descripcion"
+                  rows="3"
+                ></textarea>
+              </div>
               <div class="mb-3">
                 <label for="fecha" class="form-label">Fecha y hora: <span class="mx-2" v-text="formatDatetimeWithMonthInLetters(fechaHora)"></span></label>
                 <input
@@ -141,6 +151,7 @@ export default {
         this.misa.tipo_misa_id = this.tipoMisaSelec;
       }
       this.misa.usuario_id = this.auth.data.id;
+      this.misa.fecha = this.fechaHora;
       console.log(this.auth.data.id);
       console.log(this.misa);
       await this.axios

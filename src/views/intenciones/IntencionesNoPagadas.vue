@@ -13,6 +13,12 @@
         <h2 class="text-center mb-4">Lista de Intenciones No Pagadas</h2>
       </div>
     </div>
+    <div v-if="activarMsg" class="col-md-6 m-auto">
+            <p class="text-center">
+              No se registro ninguna intención, por favor agregue al menos una
+              intención
+            </p>
+          </div>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -27,12 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <div v-if="activarMsg" class="col-md-6 m-auto">
-            <p class="text-center">
-              No se pago por ninguna intención, por favor agregue al menos una
-              intención
-            </p>
-          </div>
+      
           <tr
             v-for="(item, index) in listasIntencionesNoPagadas"
             :key="item.id"
@@ -57,6 +58,7 @@
 
 <script>
 import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -64,6 +66,9 @@ export default {
       listasIntencionesNoPagadas: [],
       activarMsg: false,
     };
+  },
+  computed:{
+    ...mapState(['auth'])
   },
   created() {
     this.getListasIntenciones();
@@ -85,15 +90,16 @@ export default {
           for (let i = 0; i < this.listasIntenciones.length; i++) {
             if (
               this.listasIntenciones[i].estado_pago === 0 &&
-              this.listasIntenciones[i].estado_misa === 1
+              this.listasIntenciones[i].estado_misa === 1 &&
+              this.listasIntenciones[i].usuario_id === this.auth.data.id
             ) {
               this.listasIntencionesNoPagadas.unshift(
                 this.listasIntenciones[i]
               );
             }
           }
-          console.log(this.listasIntencionesPagadas);
-          if (this.listasIntencionesPagadas.length === 0) {
+          console.log(this.listasIntencionesNoPagadas);
+          if (this.listasIntencionesNoPagadas.length === 0) {
             this.activarMsg = true;
           }
         })
