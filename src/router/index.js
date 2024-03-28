@@ -155,6 +155,14 @@ const routes = [
     }
   },
   {
+    path: '/catecumenos',
+    name: 'catecumenos',
+    component: () => import('../views/catequesis/catecumeno/IndexCatecumenos'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')

@@ -1,6 +1,6 @@
 <template>
   <div class="container mt-5">
-    <div class="position-relative">
+    <div v-if="auth.data.id===2" class="position-relative">
     <div class="position-absolute top-0 left-0">
         <button class="btn btn-secondary" @click="verIntencionesMisa">
           <i class="fas fa-arrow-left"></i> Ver Intenciones
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex';
 export default {
   data() {
     return {
@@ -30,6 +31,9 @@ export default {
       intenciones: [],
       misaId:null
     };
+  },
+  computed:{
+    ...mapState(['auth'])
   },
   created() {
     this.getIntenciones();
