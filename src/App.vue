@@ -67,10 +67,23 @@ nav a.router-link-exact-active {
 }
 body {
   margin-bottom: 100px; /* Para dejar espacio para el pie de página */
+  background-color: #4e8693; /* Fallback color */
+  background-image: linear-gradient(
+    to bottom right,
+    #4e8693,
+    #ffffff,
+    #8bc6d0
+  ); /* Gradient */
 }
 footer {
   width: 100%;
-  background-color: #f8f9fa;
+  background-color: #4e8693; /* Fallback color */
+  background-image: linear-gradient(
+    to bottom right,
+    #4e8693,
+    #ffffff,
+    #8bc6d0
+  ); /* Gradient */
   padding: 20px 0;
 }
 .footer-icon {
@@ -81,13 +94,13 @@ footer {
   color: #495057;
   text-decoration: none;
 }
-.arriba{
+.arriba {
   position: fixed;
-  top:0;
+  top: 0;
   width: 100%;
   z-index: 1000;
 }
-.margen-arriba{
+.margen-arriba {
   margin-top: 10%;
 }
 </style>

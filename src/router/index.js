@@ -163,6 +163,15 @@ const routes = [
     }
   },
   {
+    path: '/agregar-catecumeno',
+    name: 'agregarCatecumeno',
+    component: () => import('../views/catequesis/catecumeno/AgregarCatecumeno'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+
+  {
     path: '/:patMatch(.*)',
     name: 'notfound',
     component: () => import('../views/NotFound.vue')
