@@ -29,13 +29,16 @@
             <td>{{ calcularEdad(item.fecha_nacimiento) }}</td>
             <td>
               <!-- Botón de detalles -->
-              <button type="button" class="btn btn-primary me-2">
+              <router-link
+                :to="{
+                  name: 'detalleCatecumeno',
+                  params: { catecumenoId: item.id },
+                }"
+                type="button"
+                class="btn btn-primary me-2"
+              >
                 <i class="fas fa-info-circle"></i> Detalles
-              </button>
-              <!-- Botón de eliminar -->
-              <button type="button" class="btn btn-danger">
-                <i class="fas fa-trash-alt"></i> Eliminar
-              </button>
+              </router-link>
             </td>
           </tr>
           <!-- Agrega más filas según sea necesario -->

@@ -170,7 +170,22 @@ const routes = [
       requiresAuth: true,requiredRole:4
     }
   },
-
+  {
+    path: '/detalle-catecumeno/:catecumenoId',
+    name: 'detalleCatecumeno',
+    component: () => import('../views/catequesis/catecumeno/DetalleCatecumeno'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
+    path: '/editar-catecumeno/:catecumenoId',
+    name: 'editarCatecumeno',
+    component: () => import('../views/catequesis/catecumeno/EditarCatecumeno'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
   {
     path: '/:patMatch(.*)',
     name: 'notfound',

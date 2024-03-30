@@ -1,10 +1,23 @@
 <template>
   <div class="container mt-5">
+    <section>
+      <div
+        v-if="mostrarAlerta"
+        class="alert alert-success alert-dismissible m-4"
+      >
+        <span>Catecumeno actualizado satisfactoriamente</span>
+      </div>
+      <div v-else-if="mostrarAlerta===false" class="alert alert-danger alert-dismissible m-4">
+        <ul class="error-list" v-for="(error, index) in errores" :key="index">
+          <li class="error-list-item">{{ error }}</li>
+        </ul>
+      </div>
+    </section>
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card bg-light ">
+        <div class="card bg-light">
           <div class="card-header">
-            <h3 class="card-title">Registro de Catecumeno</h3>
+            <h3 class="card-title">Editar Catecumeno</h3>
             <button
               class="btn-close"
               aria-label="Close"
@@ -22,7 +35,6 @@
                       type="text"
                       class="form-control"
                       id="nombres"
-                      placeholder="Ingrese los nombres..."
                     />
                   </div>
                 </div>
@@ -34,8 +46,6 @@
                       type="text"
                       class="form-control"
                       id="apellidos"
-                      placeholder="Ingrese los apellidos..."
-
                     />
                   </div>
                 </div>
@@ -49,8 +59,6 @@
                       type="text"
                       class="form-control"
                       id="ci"
-                      placeholder="Ingrese el carnet de identidad..."
-
                     />
                   </div>
                 </div>
@@ -58,7 +66,8 @@
                   <div class="form-group">
                     <label for="fecha-nacimiento">Fecha de Nacimiento</label>
                     <input
-                      v-model="formulario.fecha_nacimiento"
+                      :value="fechaNacimiento"
+                      @input="formulario.fecha_nacimiento = $event.target.value"
                       type="date"
                       class="form-control"
                       id="fecha-nacimiento"
@@ -75,7 +84,6 @@
                       type="number"
                       class="form-control"
                       id="celular"
-                      placeholder="Ingrese un numero de celular..."
                     />
                   </div>
                 </div>
@@ -87,8 +95,6 @@
                       type="text"
                       class="form-control"
                       id="celular-padre"
-                      placeholder="Ingrese otro numero de celular..."
-                      
                     />
                   </div>
                 </div>
@@ -100,7 +106,6 @@
                   type="text"
                   class="form-control"
                   id="direccion"
-                  placeholder="Ej: Urb. Bustillos, nro 15"
                 />
               </div>
               <div class="form-group">
@@ -110,8 +115,6 @@
                   type="text"
                   class="form-control"
                   id="padrinos"
-                  placeholder="Ingrese el nombre de los padrinos..."
-
                 />
               </div>
             </form>
@@ -123,55 +126,9 @@
             <button
               type="submit"
               class="btn btn-primary"
-              data-bs-toggle="modal"
-              data-bs-target="#mi-modal"
-              @click="agregarCatecumeno"
+              @click="actualizarCatecumeno"
             >
-              Registrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- modal para agregar catecumeno-->
-    <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title">Mensaje</h3>
-            <button class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <div
-              v-if="mostrarAlerta"
-              class="alert alert-success alert-dismissible m-4"
-            >
-              <span>Catecumeno agregado satisfactoriamente</span>
-            </div>
-            <div v-else class="alert alert-danger alert-dismissible m-4">
-              <ul
-                class="error-list"
-                v-for="(error, index) in errores"
-                :key="index"
-              >
-                <li class="error-list-item">{{ error }}</li>
-              </ul>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              @click="irAtras"
-            >
-              {{ msgBoton }}</button
-            ><button
-              v-if="mostrarAlerta"
-              class="btn btn-success"
-              data-bs-dismiss="modal"
-              @click="msgBotonNull"
-            >
-              Agregar más
+              Guardar
             </button>
           </div>
         </div>
@@ -181,33 +138,49 @@
 </template>
 
 <script>
+import moment from "moment";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
-      formulario: {
-        nombres: null,
-        apellidos: null,
-        ci: null,
-        fecha_nacimiento: null,
-        celular: null,
-        celular2: null,
-        direccion: null,
-        padrinos: null,
-        usuario_id: null,
-      },
-      mostrarAlerta: false,
+      formulario: {},
+      mostrarAlerta: null,
       errores: [],
       error: null,
       msgBoton: null,
+      fechaNacimiento: null,
     };
   },
   computed: {
     ...mapState(["auth"]),
   },
+  created() {
+    this.getCatecumeno();
+  },
   methods: {
-    async agregarCatecumeno() {
+    formatDate(datetime) {
+      return moment(datetime).locale("es").format("YYYY-MM-DD");
+    },
+    async getCatecumeno() {
+      await this.axios
+        .get("/catecumenos/encontrar/" + this.$route.params.catecumenoId)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.formulario = response.data.data;
+          console.log(this.formulario);
+          this.fechaNacimiento = this.formatDate(
+            this.formulario.fecha_nacimiento
+          );
+          console.log(this.fechaNacimiento);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al encontrar catecumeno:", error);
+        });
+    },
+    async actualizarCatecumeno() {
       this.errores = [];
+      console.log(this.formulario);
       this.formulario.usuario_id = this.auth.data.id;
       if (this.formulario.nombres === (null||"")) {
         this.error = "Se requiere el nombre del catecúmeno";
@@ -233,45 +206,30 @@ export default {
       console.log(this.errores);
       if (this.errores.length === 0) {
         await this.axios
-          .post("/catecumenos/agregar", this.formulario)
+          .put("/catecumenos/actualizar", this.formulario)
           .then((response) => {
-
             // Manejar la respuesta exitosa
             console.log(
-              "catecumeno agregado exitosamente ",
+              "catecumeno actualizado exitosamente ",
               response.data.data
             );
             this.mostrarAlerta = true;
-            this.msgBoton = "Cerrar formulario";
-            this.formulario = {
-              nombres: null,
-              apellidos: null,
-              ci: null,
-              fecha_nacimiento: null,
-              celular: null,
-              celular2: null,
-              direccion: null,
-              padrinos: null,
-              usuario_id: null,
-            };
+            setTimeout(() => {
+              // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+              this.$router.go(-1);
+            }, 1500); // 3000 milisegundos = 2 segundos
           })
           .catch((error) => {
             // Manejar errores
-            console.error("Error al agregar catecumeno:", error);
+            console.error("Error al actualizar catecumeno:", error);
           });
-      } else {
-        this.msgBoton = "Cancelar";
+      }else{
+        this.mostrarAlerta=false;
       }
     },
     irAtras() {
-      if (this.mostrarAlerta || !this.msgBoton) {
-        this.$router.go(-1);
-      }
-      this.msgBoton=null;
+      this.$router.go(-1);
     },
-    msgBotonNull(){
-      this.msgBoton=null;
-    }
   },
 };
 </script>

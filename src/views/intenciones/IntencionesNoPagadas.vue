@@ -50,8 +50,7 @@
           </tr>
           <tr v-if="activarMsg">
             <td colspan="6" class="fs-3" >
-              No se pago por ninguna intención, por favor realice al menos un
-              pago
+              No se tiene intenciones no pagadas
             </td>
           </tr>
         </tbody>
