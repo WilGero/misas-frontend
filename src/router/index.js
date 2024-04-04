@@ -186,6 +186,47 @@ const routes = [
       requiresAuth: true,requiredRole:4
     }
   },
+  // rutas para clases
+  {
+    path: '/clases',
+    name: 'clases',
+    component: () => import('../views/catequesis/clases/IndexClases'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
+    path: '/agregar-clase',
+    name: 'agregarClase',
+    component: () => import('../views/catequesis/clases/AgregarClase'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
+    path: '/detalle-clase/:claseId',
+    name: 'detalleClase',
+    component: () => import('../views/catequesis/clases/DetalleClase'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
+    path: '/editar-clase/:claseId',
+    name: 'editarClase',
+    component: () => import('../views/catequesis/clases/EditarClase'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
+    path: '/asistencia-clase/:claseId',
+    name: 'asistenciaClase',
+    component: () => import('../views/catequesis/clases/AsistenciaClase'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
   {
     path: '/:patMatch(.*)',
     name: 'notfound',

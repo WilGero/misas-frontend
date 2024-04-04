@@ -15,7 +15,8 @@
             <th>Nro</th>
             <th>Nombres</th>
             <th>Apellidos</th>
-            <th>CI</th>
+            <!-- <th>CI</th> -->
+            <th>Celular</th>
             <th>Edad</th>
             <th>Acciones</th>
           </tr>
@@ -25,7 +26,8 @@
             <td>{{ index + 1 }}</td>
             <td>{{ item.nombres }}</td>
             <td>{{ item.apellidos }}</td>
-            <td>{{ item.ci }}</td>
+            <!-- <td>{{ item.ci }}</td> -->
+            <td>{{ item.celular }}</td>
             <td>{{ calcularEdad(item.fecha_nacimiento) }}</td>
             <td>
               <!-- Botón de detalles -->

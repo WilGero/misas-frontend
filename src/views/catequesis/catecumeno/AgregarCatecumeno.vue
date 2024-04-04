@@ -2,7 +2,7 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card bg-light ">
+        <div class="card bg-light">
           <div class="card-header">
             <h3 class="card-title">Registro de Catecumeno</h3>
             <button
@@ -35,25 +35,11 @@
                       class="form-control"
                       id="apellidos"
                       placeholder="Ingrese los apellidos..."
-
                     />
                   </div>
                 </div>
               </div>
               <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="ci">CI</label>
-                    <input
-                      v-model="formulario.ci"
-                      type="text"
-                      class="form-control"
-                      id="ci"
-                      placeholder="Ingrese el carnet de identidad..."
-
-                    />
-                  </div>
-                </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="fecha-nacimiento">Fecha de Nacimiento</label>
@@ -65,8 +51,6 @@
                     />
                   </div>
                 </div>
-              </div>
-              <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="celular">Celular</label>
@@ -79,6 +63,24 @@
                     />
                   </div>
                 </div>
+              </div>
+              <div><button type="button" class="btn btn-light btn-sm" @click="mostrarMasCampos">Mostrar más campos...</button></div>
+              <!-- Mostrar mas campos -->
+              <section v-if="activeBoton">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="ci">CI</label>
+                    <input
+                      v-model="formulario.ci"
+                      type="text"
+                      class="form-control"
+                      id="ci"
+                      placeholder="Ingrese el carnet de identidad..."
+                    />
+                  </div>
+                </div>
+
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="celular-padre">Celular del Padre/Madre</label>
@@ -88,7 +90,6 @@
                       class="form-control"
                       id="celular-padre"
                       placeholder="Ingrese otro numero de celular..."
-                      
                     />
                   </div>
                 </div>
@@ -111,9 +112,9 @@
                   class="form-control"
                   id="padrinos"
                   placeholder="Ingrese el nombre de los padrinos..."
-
                 />
               </div>
+            </section>
             </form>
           </div>
           <div class="card-footer text-center">
@@ -200,6 +201,7 @@ export default {
       errores: [],
       error: null,
       msgBoton: null,
+      activeBoton: false,
     };
   },
   computed: {
@@ -209,33 +211,32 @@ export default {
     async agregarCatecumeno() {
       this.errores = [];
       this.formulario.usuario_id = this.auth.data.id;
-      if (this.formulario.nombres === (null||"")) {
+      if (this.formulario.nombres === (null || "")) {
         this.error = "Se requiere el nombre del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.apellidos === (null||"")) {
+      if (this.formulario.apellidos === (null || "")) {
         this.error = "Se requiere el apellido del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.ci === (null||"")) {
-        this.error = "Se requiere el carnet de indentidad del catecúmeno";
-        this.errores.push(this.error);
-      }
-      if (this.formulario.fecha_nacimiento === (null||"")) {
+      // if (this.formulario.ci === (null||"")) {
+      //   this.error = "Se requiere el carnet de indentidad del catecúmeno";
+      //   this.errores.push(this.error);
+      // }
+      if (this.formulario.fecha_nacimiento === (null || "")) {
         this.error = "Se requiere la fecha de nacimiento del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.direccion === (null||"")) {
-        this.error = "Se requiere la dirección de donde vive el catecúmeno";
-        this.errores.push(this.error);
-      }
+      // if (this.formulario.direccion === (null||"")) {
+      //   this.error = "Se requiere la dirección de donde vive el catecúmeno";
+      //   this.errores.push(this.error);
+      // }
       console.log(this.formulario);
       console.log(this.errores);
       if (this.errores.length === 0) {
         await this.axios
           .post("/catecumenos/agregar", this.formulario)
           .then((response) => {
-
             // Manejar la respuesta exitosa
             console.log(
               "catecumeno agregado exitosamente ",
@@ -267,10 +268,13 @@ export default {
       if (this.mostrarAlerta || !this.msgBoton) {
         this.$router.go(-1);
       }
-      this.msgBoton=null;
+      this.msgBoton = null;
     },
-    msgBotonNull(){
-      this.msgBoton=null;
+    msgBotonNull() {
+      this.msgBoton = null;
+    },
+    mostrarMasCampos(){
+      this.activeBoton=!this.activeBoton;
     }
   },
 };

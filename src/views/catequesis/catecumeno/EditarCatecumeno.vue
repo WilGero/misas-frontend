@@ -190,18 +190,18 @@ export default {
         this.error = "Se requiere el apellido del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.ci === (null||"")) {
-        this.error = "Se requiere el carnet de indentidad del catecúmeno";
-        this.errores.push(this.error);
-      }
+      // if (this.formulario.ci === (null||"")) {
+      //   this.error = "Se requiere el carnet de indentidad del catecúmeno";
+      //   this.errores.push(this.error);
+      // }
       if (this.formulario.fecha_nacimiento === (null||"")) {
         this.error = "Se requiere la fecha de nacimiento del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.direccion === (null||"")) {
-        this.error = "Se requiere la dirección de donde vive el catecúmeno";
-        this.errores.push(this.error);
-      }
+      // if (this.formulario.direccion === (null||"")) {
+      //   this.error = "Se requiere la dirección de donde vive el catecúmeno";
+      //   this.errores.push(this.error);
+      // }
       console.log(this.formulario);
       console.log(this.errores);
       if (this.errores.length === 0) {

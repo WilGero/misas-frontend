@@ -172,12 +172,13 @@ export default {
         try {
           await this.axios.delete("/intenciones/borrar/" + this.idIntencion);
           // Manejar la respuesta exitosa
-          console.log("entencion eliminada con exito");
+          console.log("intencion eliminada con exito");
           this.mostrarAlerta = true;
           this.msgBoton = "Cerrar";
-          this.intenciones = this.intenciones.filter(
-            (intencion) => intencion.id != this.idIntencion
-          );
+          // this.intenciones = this.intenciones.filter(
+          //   (intencion) => intencion.id != this.idIntencion
+          // );
+          this.suma=0;
           this.getIntenciones();
         } catch (error) {
           // Manejar errores

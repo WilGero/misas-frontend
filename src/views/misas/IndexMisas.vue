@@ -133,7 +133,7 @@ export default {
       return moment(datetime).fromNow();
     },
     formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime).locale("es").format("D, MMMM YYYY, h:mm a");
+      return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY, h:mm a");
     },
     async getIntencionesMisa(id) {
       console.log(id)

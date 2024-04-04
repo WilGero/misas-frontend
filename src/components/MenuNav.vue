@@ -75,6 +75,11 @@
               >
             </li>
             <li class="nav-item" v-if="auth.data.rol_id===4">
+              <router-link class="nav-link" :to="{ name: 'clases' }"
+                ><i class="fas fa-chalkboard"></i> Clases</router-link
+              >
+            </li>
+            <li class="nav-item" v-if="auth.data.rol_id===4">
               <router-link class="nav-link" :to="{ name: 'catecumenos' }"
                 ><i class="fas fa-user-graduate"></i> Catecumenos</router-link
               >

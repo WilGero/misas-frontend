@@ -46,9 +46,10 @@
                 ></textarea>
               </div>
               <div class="mb-3">
-                <label for="fecha" class="form-label">Fecha y hora: <span class="mx-2" v-text="formatDatetimeWithMonthInLetters(fechaHora)"></span></label>
+                <label for="fecha" class="form-label">Fecha y hora: </label>
                 <input
-                  v-model="fechaHora"
+                  :value="fechaHora"
+                  @input="misa.fecha = $event.target.value"
                   type="datetime-local"
                   id="fecha"
                   class="form-control"
@@ -96,6 +97,9 @@ export default {
     this.getMisa();
   },
   methods: {
+    formatDateTime(datetime) {
+      return moment(datetime).format("YYYY-MM-DDTHH:MM");
+    },
     formatDatetimeWithMonthInLetters(datetime) {
       return moment(datetime).locale("es").format("D, MMMM YYYY, h:mm a");
     },
@@ -123,7 +127,8 @@ export default {
           this.misa = response.data.data;
           console.log(this.misa);
           this.tipoMisaSelec = this.misa.tipo_misa_id;
-          this.fechaHora=this.misa.fecha;
+          console.log(this.misa.fecha);
+          this.fechaHora = this.formatDateTime(this.misa.fecha);
           console.log(this.fechaHora);
           this.getTipoMisa();
         })
