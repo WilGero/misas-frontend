@@ -5,6 +5,12 @@
       <span>Misa actualizada satisfactoriamente</span>
       <button class="btn-close" @click="cerrarAlerta"></button>
     </div>
+    <!-- Alerta error de formulario -->
+    <div v-if="mostrarAlerta2" class="alert alert-danger alert-dismissible m-4">
+      <ul class="error-list" v-for="(error, index) in errores" :key="index">
+        <li class="error-list-item">{{ error }}</li>
+      </ul>
+    </div>
     <div class="row justify-content-center">
       <div class="col-md-8">
         <div class="card">
@@ -86,6 +92,7 @@ export default {
       tiposMisa: [],
       tipoMisaSelec: null,
       mostrarAlerta: false,
+      mostrarAlerta2: false,
       fechaHora: null,
     };
   },
@@ -97,6 +104,18 @@ export default {
     this.getMisa();
   },
   methods: {
+    calcularDiferenciaFechaHoraEnHoras(fechaHora) {
+      // Convertir la fecha y hora específica a un objeto Moment
+      const fechaHoraMoment = moment(fechaHora); //fecha de momento objetivo
+
+      // Obtener la fecha y hora actual
+      const fechaHoraActual = moment(); //fecha de momento base
+
+      // Calcular la diferencia en milisegundos entre las dos fechas y horas
+      const diferenciaEnHoras = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnHoras);
+      return diferenciaEnHoras;
+    },
     formatDateTime(datetime) {
       return moment(datetime).format("YYYY-MM-DDTHH:MM");
     },
@@ -152,30 +171,49 @@ export default {
         });
     },
     async actualizarMisa() {
+      this.errores = [];
       if (this.tipoMisaSelec !== null) {
         this.misa.tipo_misa_id = this.tipoMisaSelec;
-      }
+      }0
       this.misa.usuario_id = this.auth.data.id;
-      this.misa.fecha = this.fechaHora;
-      console.log(this.auth.data.id);
-      console.log(this.misa);
-      await this.axios
-        .put("/misas/actualizar", this.misa)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          console.log("misa actualizada exitosamente ", response.data.data);
-          this.mostrarAlerta = true;
-          setTimeout(() => {
-            // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
-            this.$router.push({
-              name: "misas",
-            });
-          }, 1500); // 3000 milisegundos = 2 segundos
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al actualizar misa:", error);
-        });
+      console.log(this.form);
+      if (this.misa.tipo_misa_id === null) {
+        this.error = "Se requiere de un tipo de misa";
+        this.errores.push(this.error);
+      }
+      const dif = this.calcularDiferenciaFechaHoraEnHoras(this.misa.fecha);
+      if (this.misa.fecha === null) {
+        this.error = "Se requiere la fecha y hora de la misa";
+        this.errores.push(this.error);
+      } else if (dif < 2) {
+        this.error = "Ingrese una fecha y hora mas actual";
+        this.errores.push(this.error);
+      }
+      if (this.errores.length === 0) {
+        await this.axios
+          .put("/misas/actualizar", this.misa)
+          .then((response) => {
+            // Manejar la respuesta exitosa
+            console.log("misa actualizada exitosamente ", response.data.data);
+            this.mostrarAlerta = true;
+            setTimeout(() => {
+              // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+              this.$router.push({
+                name: "misas",
+              });
+            }, 1500); // 3000 milisegundos = 2 segundos
+          })
+          .catch((error) => {
+            // Manejar errores
+            console.error("Error al actualizar misa:", error);
+          });
+      } else {
+        this.mostrarAlerta2 = true;
+        setTimeout(() => {
+          // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+          this.mostrarAlerta2 = false;
+        }, 1500); //
+      }
     },
     cerrarFormulario() {
       this.$router.push({ name: "misas" });

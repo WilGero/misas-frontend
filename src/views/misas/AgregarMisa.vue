@@ -1,16 +1,16 @@
 <template>
-  <!-- Alerta de registro exitoso -->
-  <div v-if="mostrarAlerta" class="alert alert-success alert-dismissible m-4">
-    <span>Misa registrada satisfactoriamente</span>
-    <button class="btn-close" @click="cerrarAlerta"></button>
-  </div>
-  <!-- Alerta error de formulario -->
-  <div v-if="mostrarAlerta2" class="alert alert-danger alert-dismissible m-4">
-    <ul class="error-list" v-for="(error, index) in errores" :key="index">
-      <li class="error-list-item">{{ error }}</li>
-    </ul>
-  </div>
   <div class="container mt-5">
+    <!-- Alerta de registro exitoso -->
+    <div v-if="mostrarAlerta" class="alert alert-success alert-dismissible m-4">
+      <span>Misa registrada satisfactoriamente</span>
+      <button class="btn-close" @click="cerrarAlerta"></button>
+    </div>
+    <!-- Alerta error de formulario -->
+    <div v-if="mostrarAlerta2" class="alert alert-danger alert-dismissible m-4">
+      <ul class="error-list" v-for="(error, index) in errores" :key="index">
+        <li class="error-list-item">{{ error }}</li>
+      </ul>
+    </div>
     <div class="row justify-content-center">
       <div class="col-md-6">
         <!-- formulario de registro de usuarios -->
@@ -85,7 +85,7 @@ export default {
   data() {
     return {
       form: {
-        descripcion:null,
+        descripcion: null,
         tipo_misa_id: null,
         fecha: null,
         usuario_id: null,
@@ -125,7 +125,7 @@ export default {
         });
     },
     async agregarMisa() {
-      this.errores=[];
+      this.errores = [];
       if (this.tipoMisaSelec !== null) {
         this.form.tipo_misa_id = this.tipoMisaSelec;
       }

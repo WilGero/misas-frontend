@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row justify-content-center mt-5">
-      <div class="col-md-6">
+      <div class="col-md-8">
         <div class="card">
           <div
             class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
@@ -15,17 +15,32 @@
             ></button>
           </div>
           <div class="card-body">
-            <p>
-              <strong>{{ clase.nombre }}</strong>
-            </p>
-            <p><strong>tema:</strong> {{ clase.tema }}</p>
-            <p>
-              <strong>Fecha y hora: </strong
-              >{{ formatDatetimeWithMonthInLetters(clase.fecha_hora) }}
-            </p>
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  <strong>{{ nombre }}</strong>
+                </p>
+                <p><strong>tema:</strong> {{ tema }}</p>
+                <p>
+                  <strong>Fecha y hora: </strong
+                  >{{ formatDatetimeWithMonthInLetters(fechaHora) }}
+                </p>
 
-            <p><strong>Descripcion:</strong> {{ clase.descripcion }}</p>
-            <p><strong>Observaciones:</strong> {{ clase.observaciones }}</p>
+                <p><strong>Descripcion:</strong> {{ descripcion }}</p>
+                <p><strong>Observaciones:</strong> {{ observaciones }}</p>
+              </div>
+              <div class="col-md-6">
+                <p>
+                  <strong>Estadística de la clase</strong>
+                </p>
+                <span>Catecúmenos:</span>
+                <p><strong>Presentes:</strong> {{ presentes }}</p>
+
+                <p><strong>Atrasos:</strong> {{ atrasos }}</p>
+                <p><strong>Permisos:</strong> {{ permisos }}</p>
+                <p><strong>Faltas:</strong> {{ faltas }}</p>
+              </div>
+            </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
             <router-link
@@ -59,6 +74,7 @@
           </div>
         </div>
       </div>
+      <div class="col-md-6"></div>
     </div>
     <!-- modal para eliminar catecumeno-->
     <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
@@ -105,27 +121,46 @@ import moment from "moment";
 export default {
   data() {
     return {
+      claseCatecumenos: [],
       clase: {},
       mostrarAlerta: false,
       msgBtn: "Cancelar",
       mensaje: null,
+      nombre: null,
+      tema: null,
+      fechaHora: null,
+      descripcion: null,
+      observaciones: null,
+      presentes: 0,
+      atrasos: 0,
+      permisos: 0,
+      faltas: 0,
     };
   },
   created() {
+    this.getClaseCatecumenos();
     this.getClase();
   },
   methods: {
     async eliminarClase() {
-      try {
-        await this.axios.delete("/clases/borrar/" + this.$route.params.claseId);
-        // Manejar la respuesta exitosa
-        console.log("clase eliminada con éxito");
-        this.mostrarAlerta = true;
-        this.msgBtn = "Cerrar";
-        this.mensaje = "Clase eliminada con éxito";
-      } catch (error) {
-        // Manejar errores
-        console.error("Error al eliminar clase:", error);
+      console.log(this.claseCatecumenos.length);
+      if (this.claseCatecumenos.length === 0) {
+        try {
+          await this.axios.delete(
+            "/clases/borrar/" + this.$route.params.claseId
+          );
+          // Manejar la respuesta exitosa
+          console.log("clase eliminada con éxito");
+          this.mostrarAlerta = true;
+          this.msgBtn = "Cerrar";
+          this.mensaje = "Clase eliminada con éxito";
+        } catch (error) {
+          // Manejar errores
+          console.error("Error al eliminar clase:", error);
+        }
+      }else{
+        this.mostrarAlerta=true;
+        this.mensaje="No se puede eliminar la clase, porque contiene asistencias";
       }
     },
     formatDatetimeWithMonthInLetters(datetime) {
@@ -133,12 +168,42 @@ export default {
         .locale("es")
         .format("D [de] MMMM [del] YYYY, h:mm a");
     },
-    async getClase() {
+    async getClaseCatecumenos() {
       await this.axios
         .get("/clases/encontrar/" + this.$route.params.claseId)
         .then((response) => {
           // Manejar la respuesta exitosa
+          this.claseCatecumenos = response.data.data;
+
+          for (let i = 0; i < this.claseCatecumenos.length; i++) {
+            if (this.claseCatecumenos[i].asistencia_id === 1) {
+              this.presentes += 1;
+            } else if (this.claseCatecumenos[i].asistencia_id === 2) {
+              this.atrasos += 1;
+            } else if (this.claseCatecumenos[i].asistencia_id === 3) {
+              this.permisos += 1;
+            } else {
+              this.faltas += 1;
+            }
+          }
+          console.log(this.claseCatecumenos);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al encontrar la clase:", error);
+        });
+    },
+    async getClase() {
+      await this.axios
+        .get("/clases/encontrar2/" + this.$route.params.claseId)
+        .then((response) => {
+          // Manejar la respuesta exitosa
           this.clase = response.data.data;
+          this.nombre = this.clase.nombre;
+          this.tema = this.clase.tema;
+          this.fechaHora = this.clase.fecha_hora;
+          this.descripcion = this.clase.descripcion;
+          this.observaciones = this.clase.observaciones;
           console.log(this.clase);
         })
         .catch((error) => {

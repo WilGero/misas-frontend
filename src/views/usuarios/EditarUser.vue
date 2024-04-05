@@ -81,26 +81,7 @@
                 </div>
               </div>
             </div> -->
-            <div class="col-12">
-              <div class="row m-0">
-                <label
-                  for="rol_nombre"
-                  class="form-label my-0 px-0 col-2 d-flex justify-content-end"
-                  ><i
-                    class="fas fa-child py-2 px-4 bg-warning rounded rounded-end-0"
-                  ></i>
-                </label>
-                <div class="col-10 px-0">
-                  <input
-                    v-model="rol.nombre"
-                    id="rol_nombre"
-                    class="form-control rounded-start-0"
-                    type="text"
-                    disabled
-                  />
-                </div>
-              </div>
-            </div>
+
             <div class="col-12">
               <div class="row m-0">
                 <label
@@ -164,9 +145,7 @@ export default {
           // Manejar la respuesta exitosa
           this.roles = response.data.data;
 
-          // Agregar la opción predeterminada "Seleccione un rol"
-          this.roles.unshift({ id: null, nombre: "Seleccione otro rol..." });
-          console.log(this.roles);
+                    console.log(this.roles);
         })
         .catch((error) => {
           // Manejar errores
@@ -180,6 +159,7 @@ export default {
           // Manejar la respuesta exitosa
           this.usuario = response.data.data;
           console.log(this.usuario);
+          this.rolSeleccionado=this.usuario.rol_id;
           this.getRol();
         })
         .catch((error) => {

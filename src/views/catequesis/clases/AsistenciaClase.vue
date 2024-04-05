@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="position relative mt-2">
-      <div class="position-absolute top-0 left-0">
+  <div class="container position-relative">
+      <div class="position-absolute mt-2 top-0 left-0">
         <button class="btn btn-secondary" @click="irAtras">
           <i class="fas fa-arrow-left"></i> Atrás
         </button>
       </div>
-    </div>
-    <span class="fs-3 text-start">tema: {{ clase.tema }}</span>
-    <h2>Lista de Catecumenos</h2>
+    <h2>Catequesis de {{ nombre }}</h2>
+      <span class="fs-3 text-start me-5"><strong>Tema:</strong> {{temaClase }}</span>
+    <span class="fs-4">{{ formatDatetimeWithMonthInLetters(fechaHoraClase) }}</span>
+    <h3>Lista de Catecumenos</h3>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -80,7 +80,7 @@
                 </button>
               </section>
             </td>
-            <td>
+            <td class="fs-4">
               {{ item.estadoAsistencia }}
             </td>
           </tr>
@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import moment from "moment";
 export default {
   data() {
     return {
@@ -106,6 +107,9 @@ export default {
         clase_id: null,
         catecumeno_id: null,
       },
+      temaClase:null,
+      fechaHoraClase:null,
+      nombre:null
     };
   },
   created() {
@@ -115,6 +119,9 @@ export default {
   },
 
   methods: {
+    formatDatetimeWithMonthInLetters(datetime) {
+      return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY, h:mm a");
+    },
     async getAsistencias() {
       await this.axios
         .get("/asistencias/listado")
@@ -176,15 +183,18 @@ export default {
     },
     async getClase() {
       await this.axios
-        .get("/clases/encontrar/" + this.$route.params.claseId)
+        .get("/clases/encontrar2/" + this.$route.params.claseId)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.clase = response.data.data;
+          this.nombre = this.clase.nombre;
+          this.temaClase = this.clase.tema;
+          this.fechaHoraClase = this.clase.fecha_hora;
           console.log(this.clase);
         })
         .catch((error) => {
           // Manejar errores
-          console.error("Error al encontrar catecumeno:", error);
+          console.error("Error al encontrar la clase:", error);
         });
     },
     async agregarAsistencia(formulario) {

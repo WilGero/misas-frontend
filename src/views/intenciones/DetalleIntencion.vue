@@ -9,7 +9,7 @@
       <!-- Encabezado de la factura -->
       <div class="factura-header">
         <div>
-          <h1>Factura</h1>
+          <h1 class="mt-5">Factura</h1>
           <p class="fw-bold">{{ tipoMisa }}</p>
           <p class="fw-bold">Hora y Fecha: {{ formatearFecha(fechaMisa) }}, {{ formatearHora(fechaMisa)}}</p>
           <section class="text-start">

@@ -144,7 +144,7 @@ export default {
     },
     async getClase() {
       await this.axios
-        .get("/clases/encontrar/" + this.$route.params.claseId)
+        .get("/clases/encontrar2/" + this.$route.params.claseId)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.formulario = response.data.data;
@@ -166,8 +166,12 @@ export default {
         this.error = "Se requiere el tema de la clase...";
         this.errores.push(this.error);
       }
+      const dif = this.calcularDiferenciaFechaHoraEnHoras(this.formulario.fecha_hora);
       if (this.formulario.fecha_hora === (null || "")) {
-        this.error = "Se requiere la fecha y hora de la clase...";
+        this.error = "Se requiere la fecha y hora de la clase";
+        this.errores.push(this.error);
+      }else if (dif < 2) {
+        this.error = "Ingrese una fecha y hora mas actual";
         this.errores.push(this.error);
       }
       delete this.formulario.nombre;

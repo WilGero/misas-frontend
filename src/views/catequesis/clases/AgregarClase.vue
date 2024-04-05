@@ -151,6 +151,7 @@
 
 <script>
 import { mapState } from "vuex";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -172,6 +173,18 @@ export default {
     ...mapState(["auth"]),
   },
   methods: {
+    calcularDiferenciaFechaHoraEnHoras(fechaHora) {
+      // Convertir la fecha y hora específica a un objeto Moment
+      const fechaHoraMoment = moment(fechaHora); //fecha de momento objetivo
+
+      // Obtener la fecha y hora actual
+      const fechaHoraActual = moment(); //fecha de momento base
+
+      // Calcular la diferencia en milisegundos entre las dos fechas y horas
+      const diferenciaEnHoras = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnHoras);
+      return diferenciaEnHoras;
+    },
     async agregarClase() {
       this.errores = [];
       this.formulario.catequesis_id = 2;
@@ -179,8 +192,12 @@ export default {
         this.error = "Se requiere el nombre del tema";
         this.errores.push(this.error);
       }
+      const dif = this.calcularDiferenciaFechaHoraEnHoras(this.formulario.fecha_hora);
       if (this.formulario.fecha_hora === (null || "")) {
         this.error = "Se requiere la fecha y hora de la clase";
+        this.errores.push(this.error);
+      }else if (dif < 2) {
+        this.error = "Ingrese una fecha y hora mas actual";
         this.errores.push(this.error);
       }
       console.log(this.formulario);
