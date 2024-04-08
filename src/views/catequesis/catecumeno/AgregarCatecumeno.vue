@@ -211,11 +211,11 @@ export default {
     async agregarCatecumeno() {
       this.errores = [];
       this.formulario.usuario_id = this.auth.data.id;
-      if (this.formulario.nombres === (null || "")) {
+      if (this.formulario.nombres === null) {
         this.error = "Se requiere el nombre del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.apellidos === (null || "")) {
+      if (this.formulario.apellidos === null ) {
         this.error = "Se requiere el apellido del catecúmeno";
         this.errores.push(this.error);
       }
@@ -223,7 +223,7 @@ export default {
       //   this.error = "Se requiere el carnet de indentidad del catecúmeno";
       //   this.errores.push(this.error);
       // }
-      if (this.formulario.fecha_nacimiento === (null || "")) {
+      if (this.formulario.fecha_nacimiento === null ) {
         this.error = "Se requiere la fecha de nacimiento del catecúmeno";
         this.errores.push(this.error);
       }

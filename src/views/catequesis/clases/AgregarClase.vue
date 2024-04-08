@@ -188,12 +188,13 @@ export default {
     async agregarClase() {
       this.errores = [];
       this.formulario.catequesis_id = 2;
-      if (this.formulario.tema === (null || "")) {
+      console.log(this.formulario);
+      if (this.formulario.tema ===null) {
         this.error = "Se requiere el nombre del tema";
         this.errores.push(this.error);
       }
       const dif = this.calcularDiferenciaFechaHoraEnHoras(this.formulario.fecha_hora);
-      if (this.formulario.fecha_hora === (null || "")) {
+      if (this.formulario.fecha_hora === null) {
         this.error = "Se requiere la fecha y hora de la clase";
         this.errores.push(this.error);
       }else if (dif < 2) {
