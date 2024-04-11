@@ -139,6 +139,18 @@ export default {
     this.getClase();
   },
   methods: {
+    calcularDiferenciaFechaHoraEnHoras(fechaHora) {
+      // Convertir la fecha y hora específica a un objeto Moment
+      const fechaHoraMoment = moment(fechaHora); //fecha de momento objetivo
+
+      // Obtener la fecha y hora actual
+      const fechaHoraActual = moment(); //fecha de momento base
+
+      // Calcular la diferencia en milisegundos entre las dos fechas y horas
+      const diferenciaEnHoras = fechaHoraMoment.diff(fechaHoraActual, "hours");
+      console.log(diferenciaEnHoras);
+      return diferenciaEnHoras;
+    },
     formatDateTime(datetime) {
       return moment(datetime).locale("es").format("YYYY-MM-DDTHH:MM");
     },

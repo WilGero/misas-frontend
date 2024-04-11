@@ -1,13 +1,17 @@
 <template>
   <div class="container position-relative">
-      <div class="position-absolute mt-2 top-0 left-0">
-        <button class="btn btn-secondary" @click="irAtras">
-          <i class="fas fa-arrow-left"></i> Atrás
-        </button>
-      </div>
+    <div class="position-absolute mt-2 top-0 left-0">
+      <button class="btn btn-secondary" @click="irAtras">
+        <i class="fas fa-arrow-left"></i> Atrás
+      </button>
+    </div>
     <h2>Catequesis de {{ nombre }}</h2>
-      <span class="fs-3 text-start me-5"><strong>Tema:</strong> {{temaClase }}</span>
-    <span class="fs-4">{{ formatDatetimeWithMonthInLetters(fechaHoraClase) }}</span>
+    <span class="fs-3 text-start me-5"
+      ><strong>Tema:</strong> {{ temaClase }}</span
+    >
+    <span class="fs-4">{{
+      formatDatetimeWithMonthInLetters(fechaHoraClase)
+    }}</span>
     <h3>Lista de Catecumenos</h3>
     <div class="table-responsive">
       <table class="table table-striped">
@@ -22,7 +26,7 @@
         </thead>
         <tbody>
           <tr
-            v-for="(item, index) in catecumenos"
+            v-for="(item, index) in catecumenosClase"
             :key="'catecumeno' + item.id"
           >
             <td>{{ index + 1 }}</td>
@@ -31,49 +35,25 @@
             <td>
               <section class="btn-group">
                 <button
-                  @click="
-                    marcarAsistencia(
-                      item.id,
-                      asistencias[0].id,
-                      asistencias[0].tipo
-                    )
-                  "
+                  @click="actualizarAsistencia(item.id, asistencias[0].id)"
                   class="btn btn-success btn-attendance"
                 >
                   <i class="fas fa-check"></i>
                 </button>
                 <button
-                  @click="
-                    marcarAsistencia(
-                      item.id,
-                      asistencias[1].id,
-                      asistencias[1].tipo
-                    )
-                  "
+                  @click="actualizarAsistencia(item.id, asistencias[1].id)"
                   class="btn btn-warning btn-attendance"
                 >
                   <i class="fas fa-clock"></i>
                 </button>
                 <button
-                  @click="
-                    marcarAsistencia(
-                      item.id,
-                      asistencias[2].id,
-                      asistencias[2].tipo
-                    )
-                  "
+                  @click="actualizarAsistencia(item.id, asistencias[2].id)"
                   class="btn btn-info btn-attendance"
                 >
                   <i class="fas fa-user-clock"></i>
                 </button>
                 <button
-                  @click="
-                    marcarAsistencia(
-                      item.id,
-                      asistencias[3].id,
-                      asistencias[3].tipo
-                    )
-                  "
+                  @click="actualizarAsistencia(item.id, asistencias[3].id)"
                   class="btn btn-danger btn-attendance"
                 >
                   <i class="fas fa-times"></i>
@@ -81,7 +61,7 @@
               </section>
             </td>
             <td class="fs-4">
-              {{ item.estadoAsistencia }}
+              {{ item.tipo }}
             </td>
           </tr>
           <!-- Aquí puedes agregar más filas con otros estudiantes -->
@@ -99,7 +79,7 @@ export default {
       asistencias: [],
       clase: {},
       respuestas: [],
-      catecumenos: [],
+      catecumenosClase: [],
       catecumeno: {},
       estadoAsistencia: null,
       formulario: {
@@ -107,20 +87,22 @@ export default {
         clase_id: null,
         catecumeno_id: null,
       },
-      temaClase:null,
-      fechaHoraClase:null,
-      nombre:null
+      temaClase: null,
+      fechaHoraClase: null,
+      nombre: null,
     };
   },
   created() {
     this.getAsistencias();
-    this.getCatecumenos();
+    this.getCatecumenosClase();
     this.getClase();
   },
 
   methods: {
     formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY, h:mm a");
+      return moment(datetime)
+        .locale("es")
+        .format("D [de] MMMM [del] YYYY, h:mm a");
     },
     async getAsistencias() {
       await this.axios
@@ -135,46 +117,13 @@ export default {
           console.error("Error al listar asistencias:", error);
         });
     },
-    async getCatecumenos() {
+    async getCatecumenosClase() {
       await this.axios
-        .get("/catecumenos/listado")
+        .get("/catecumenos/listado/" + this.$route.params.claseId)
         .then((response) => {
           // Manejar la respuesta exitosa
-          this.catecumenos = response.data.data;
-          console.log(this.catecumenos);
-          for (let i = 0; i < this.catecumenos.length; i++) {
-            if (this.catecumenos[i].clase_id == this.$route.params.claseId) {
-              if (this.catecumenos[i].asistencia_id === 1) {
-                this.catecumenos[i].estadoAsistencia = "Presente";
-              } else if (this.catecumenos[i].asistencia_id === 2) {
-                this.catecumenos[i].estadoAsistencia = "Atraso";
-              } else if (this.catecumenos[i].asistencia_id === 3) {
-                this.catecumenos[i].estadoAsistencia = "Permiso";
-              } else {
-                this.catecumenos[i].estadoAsistencia = "Falta";
-              }
-            } else {
-              this.catecumenos[i].estadoAsistencia = null;
-            }
-          }
-
-          console.log(this.catecumenos);
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al listar catecumenos:", error);
-        });
-    },
-    async getCatecumeno(catecumenoId) {
-      console.log(
-        "este es el catecumeno id dentro de getCatecumeno():" + catecumenoId
-      );
-      await this.axios
-        .get("/catecumenos/encontrar/" + catecumenoId)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          this.catecumeno = response.data.data;
-          console.log(this.catecumeno);
+          this.catecumenosClase = response.data.data;
+          console.log(this.catecumenoClase);
         })
         .catch((error) => {
           // Manejar errores
@@ -197,36 +146,20 @@ export default {
           console.error("Error al encontrar la clase:", error);
         });
     },
-    async agregarAsistencia(formulario) {
-      console.log("este es el formulario para agregar" + formulario);
 
-      await this.axios
-        .post("/catecumenos-clase/agregar", formulario)
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          console.log(
-            "asistencia registrada exitosamente ",
-            response.data.data
-          );
-
-          this.getCatecumenos();
+    actualizarAsistencia(id, asistencia) {
+      this.axios
+        .put("/catecumenos-clase/actualizar-asistencia", {
+          id: id,
+          asistencia_id: asistencia,
         })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al registrar la asistencia:", error);
-        });
-    },
-    async actualizarAsistencia(formulario) {
-      console.log("este es el formulario para actualizar" + formulario);
-      await this.axios
-        .put("/catecumenos-clase/actualizar", formulario)
         .then((response) => {
           // Manejar la respuesta exitosa
           console.log(
             "asistencia del catecumeno actualizada exitosamente ",
             response.data.data
           );
-          this.getCatecumenos();
+          this.getCatecumenosClase();
         })
         .catch((error) => {
           // Manejar errores
@@ -235,26 +168,6 @@ export default {
             error
           );
         });
-    },
-    async marcarAsistencia(catecumenoId, asistenciaId) {
-      this.formulario = {
-        asistencia_id: asistenciaId,
-        clase_id: this.$route.params.claseId,
-        catecumeno_id: catecumenoId,
-      };
-      console.log("este es el id del catecumeno:" + catecumenoId);
-      //  el await nos sirve para que el campo catecmeno.asistencia_id no sea undefined
-      await this.getCatecumeno(catecumenoId);
-      console.log("este es el catecumeno" + this.catecumeno);
-      console.log(
-        "esta es la asistencia id del catecumeno:" +
-          this.catecumeno.asistencia_id
-      );
-      if (this.catecumeno.asistencia_id === null) {
-        this.agregarAsistencia(this.formulario);
-      } else {
-        this.actualizarAsistencia(this.formulario);
-      }
     },
     irAtras() {
       this.$router.go(-1);

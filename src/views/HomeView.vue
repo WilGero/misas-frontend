@@ -77,7 +77,7 @@ export default {
           // Manejar la respuesta exitosa
           this.misas = response.data.data;
           console.log(this.misas);
-          for (let i = 0; this.misas.length; i++) {
+          for (let i = 0; i<this.misas.length; i++) {
             let diferencia = this.calcularDiferenciaFechaHoraEnHoras(
               this.misas[i].fecha
             );

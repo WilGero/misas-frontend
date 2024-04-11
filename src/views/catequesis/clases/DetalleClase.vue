@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <span class="fs-2">{{ catecumenosLength }}</span> <br />
+    <span class="fs-2">{{ claseCatecumenosLength }}</span>
+
     <div class="row justify-content-center mt-5">
       <div class="col-md-8">
         <div class="card">
@@ -43,14 +46,9 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-            <router-link
-              :to="{
-                name: 'asistenciaClase',
-                params: { claseId: $route.params.claseId },
-              }"
-              class="btn btn-info me-2"
-              >Asistencia</router-link
-            >
+            <button class="btn btn-info me-2" @click="irAsistencia">
+              Asistencia
+            </button>
             <router-link
               :to="{
                 name: 'editarClase',
@@ -135,39 +133,16 @@ export default {
       atrasos: 0,
       permisos: 0,
       faltas: 0,
+      catecumenosLength: null,
+      claseCatecumenosLength: null,
     };
   },
   created() {
     this.getClaseCatecumenos();
+    this.getCatecumenos();
     this.getClase();
   },
   methods: {
-    async eliminarClase() {
-      console.log(this.claseCatecumenos.length);
-      if (this.claseCatecumenos.length === 0) {
-        try {
-          await this.axios.delete(
-            "/clases/borrar/" + this.$route.params.claseId
-          );
-          // Manejar la respuesta exitosa
-          console.log("clase eliminada con éxito");
-          this.mostrarAlerta = true;
-          this.msgBtn = "Cerrar";
-          this.mensaje = "Clase eliminada con éxito";
-        } catch (error) {
-          // Manejar errores
-          console.error("Error al eliminar clase:", error);
-        }
-      }else{
-        this.mostrarAlerta=true;
-        this.mensaje="No se puede eliminar la clase, porque contiene asistencias";
-      }
-    },
-    formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime)
-        .locale("es")
-        .format("D [de] MMMM [del] YYYY, h:mm a");
-    },
     async getClaseCatecumenos() {
       await this.axios
         .get("/clases/encontrar/" + this.$route.params.claseId)
@@ -186,12 +161,68 @@ export default {
               this.faltas += 1;
             }
           }
+          this.claseCatecumenosLength = this.claseCatecumenos.length;
           console.log(this.claseCatecumenos);
         })
         .catch((error) => {
           // Manejar errores
           console.error("Error al encontrar la clase:", error);
         });
+    },
+
+    async getCatecumenos() {
+      await this.axios
+        .get("/catecumenos/listado")
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.catecumenos = response.data.data;
+          console.log(this.catecumenos);
+          this.catecumenosLength = this.catecumenos.length;
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar catecumenos:", error);
+        });
+    },
+    async agregarCatecumenoClase(formulario) {
+      console.log("Este es el formulario para agregar", formulario);
+
+      try {
+        const response = await this.axios.post(
+          "/catecumenos-clase/agregar",
+          formulario
+        );
+        console.log("Asistencia registrada exitosamente", response.data.data);
+      } catch (error) {
+        console.error("Error al registrar la asistencia:", error);
+      }
+    },
+    async eliminarClase() {
+      console.log(this.claseCatecumenos.length);
+      if (this.claseCatecumenos.length === 0) {
+        try {
+          await this.axios.delete(
+            "/clases/borrar/" + this.$route.params.claseId
+          );
+          // Manejar la respuesta exitosa
+          console.log("clase eliminada con éxito");
+          this.mostrarAlerta = true;
+          this.msgBtn = "Cerrar";
+          this.mensaje = "Clase eliminada con éxito";
+        } catch (error) {
+          // Manejar errores
+          console.error("Error al eliminar clase:", error);
+        }
+      } else {
+        this.mostrarAlerta = true;
+        this.mensaje =
+          "No se puede eliminar la clase, porque contiene asistencias";
+      }
+    },
+    formatDatetimeWithMonthInLetters(datetime) {
+      return moment(datetime)
+        .locale("es")
+        .format("D [de] MMMM [del] YYYY, h:mm a");
     },
     async getClase() {
       await this.axios
@@ -210,6 +241,23 @@ export default {
           // Manejar errores
           console.error("Error al encontrar la clase:", error);
         });
+    },
+    irAsistencia() {
+      console.log(this.claseCatecumenos.length);
+      if (this.claseCatecumenos.length === 0) {
+        console.log(this.catecumenos.length);
+        for (let i = 0; i < this.catecumenos.length; i++) {
+          this.formulario = {
+            clase_id: this.$route.params.claseId,
+            catecumeno_id: this.catecumenos[i].id,
+          };
+          this.agregarCatecumenoClase(this.formulario);
+        }
+      }
+      this.$router.push({
+        name: "asistenciaClase",
+        params: { claseId: this.$route.params.claseId },
+      });
     },
     irAtras() {
       this.$router.go(-1);

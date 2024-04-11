@@ -58,8 +58,8 @@
         </div>
       </div>
     </div>
-      <!-- modal para eliminar catecumeno-->
-      <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
+    <!-- modal para eliminar catecumeno-->
+    <div class="modal fade" id="mi-modal" data-bs-backdrop="static">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
@@ -73,10 +73,16 @@
             >
               <span>{{ mensaje }}</span>
             </div>
-            <p class="fw-bold text-danger" v-else>¿Esta seguro de eliminar el catecúmeno?</p>
+            <p class="fw-bold text-danger" v-else>
+              ¿Esta seguro de eliminar el catecúmeno?
+            </p>
           </div>
           <div class="modal-footer">
-            <button  class="btn btn-secondary" @click="cerrarModal" data-bs-dismiss="modal">
+            <button
+              class="btn btn-secondary"
+              @click="cerrarModal"
+              data-bs-dismiss="modal"
+            >
               {{ msgBtn }}</button
             ><button
               v-if="!mostrarAlerta"
@@ -97,29 +103,51 @@ import moment from "moment";
 export default {
   data() {
     return {
+      claseCatecumenos: [],
       catecumeno: {},
-      mostrarAlerta:false,
-      msgBtn:"Cancelar",
-      mensaje:null
-
+      mostrarAlerta: false,
+      msgBtn: "Cancelar",
+      mensaje: null,
     };
   },
   created() {
     this.getCatecumeno();
+    this.getClaseCatecumenos();
   },
   methods: {
+    async getClaseCatecumenos() {
+      await this.axios
+        .get("/clases/encontrar/" + this.$route.params.claseId)
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.claseCatecumenos = response.data.data;
+          console.log(this.claseCatecumenos);
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al encontrar la clase:", error);
+        });
+    },
+
     async eliminarCatecumeno() {
+      if (this.claseCatecumenos.lenght === 0) {
         try {
-          await this.axios.delete("/catecumenos/borrar/" + this.$route.params.catecumenoId);
+          await this.axios.delete(
+            "/catecumenos/borrar/" + this.$route.params.catecumenoId
+          );
           // Manejar la respuesta exitosa
           console.log("catecumeno eliminado con éxito");
           this.mostrarAlerta = true;
-          this.msgBtn="Cerrar";
-          this.mensaje="Catecumeno eliminado con éxito";
+          this.msgBtn = "Cerrar";
+          this.mensaje = "Catecumeno eliminado con éxito";
         } catch (error) {
           // Manejar errores
           console.error("Error al eliminar catecumeno:", error);
-        } 
+        }
+      }else{
+        this.mostrarAlerta = true;
+        this.mensaje = "No se puede eliminar el catecumeno porque tiene asistencias";
+      }
     },
     formatDatetimeWithMonthInLetters(datetime) {
       return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY");
@@ -138,13 +166,13 @@ export default {
         });
     },
     irAtras() {
-            this.$router.go(-1);
+      this.$router.go(-1);
     },
-    cerrarModal(){
-        if(this.msgBtn==="Cerrar"){
-            this.$router.go(-1);
-        }
-    }
+    cerrarModal() {
+      if (this.msgBtn === "Cerrar") {
+        this.$router.go(-1);
+      }
+    },
   },
 };
 </script>
