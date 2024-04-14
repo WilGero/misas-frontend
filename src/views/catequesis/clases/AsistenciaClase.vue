@@ -14,24 +14,24 @@
     }}</span>
     <h3>Lista de Catecumenos</h3>
     <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
+      <table class="table table-bordered  table-hover ">
+        <thead class="table-success">
           <tr>
             <th>Nro</th>
-            <th>Nombres</th>
-            <th>Apellidos</th>
+            <th class="ps-4 text-start ">Nombres</th>
+            <th class="ps-4 text-start ">Apellidos</th>
             <th>Asistencia</th>
             <th>Estado</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="table-light">
           <tr
             v-for="(item, index) in catecumenosClase"
             :key="'catecumeno' + item.id"
           >
             <td>{{ index + 1 }}</td>
-            <td>{{ item.nombres }}</td>
-            <td>{{ item.apellidos }}</td>
+            <td class="ps-4 text-start">{{ item.nombres }}</td>
+            <td class="ps-4 text-start">{{ item.apellidos }}</td>
             <td>
               <section class="btn-group">
                 <button

@@ -1,8 +1,7 @@
 <template>
   <div class="container">
-    <span class="fs-2">{{ catecumenosLength }}</span> <br />
-    <span class="fs-2">{{ claseCatecumenosLength }}</span>
-
+    <!-- <button @click="fCatecumenosNuevos">obtener catecuemnos nuevos</button>
+    <p>{{ catecumenosNuevos }}</p> -->
     <div class="row justify-content-center mt-5">
       <div class="col-md-8">
         <div class="card">
@@ -135,6 +134,7 @@ export default {
       faltas: 0,
       catecumenosLength: null,
       claseCatecumenosLength: null,
+      catecumenosNuevos: [],
     };
   },
   created() {
@@ -149,7 +149,6 @@ export default {
         .then((response) => {
           // Manejar la respuesta exitosa
           this.claseCatecumenos = response.data.data;
-
           for (let i = 0; i < this.claseCatecumenos.length; i++) {
             if (this.claseCatecumenos[i].asistencia_id === 1) {
               this.presentes += 1;
@@ -157,10 +156,20 @@ export default {
               this.atrasos += 1;
             } else if (this.claseCatecumenos[i].asistencia_id === 3) {
               this.permisos += 1;
-            } else {
+            } else if (this.claseCatecumenos[i].asistencia_id === 4) {
               this.faltas += 1;
             }
           }
+          // this.presentes = this.claseCatecumenos.reduce(
+          //   (accumulador, valor) => {
+          //     if (valor.asistencia_id === 1) {
+          //       return accumulador + 1; // Devolver el valor acumulado incrementado en 1
+          //     } else {
+          //       return accumulador; // Devolver el valor acumulado sin cambios
+          //     }
+          //   },
+          //   0
+          // );
           this.claseCatecumenosLength = this.claseCatecumenos.length;
           console.log(this.claseCatecumenos);
         })
@@ -183,6 +192,20 @@ export default {
           // Manejar errores
           console.error("Error al listar catecumenos:", error);
         });
+    },
+    fCatecumenosNuevos() {
+      this.catecumenosNuevos = this.catecumenos
+        .filter(
+          (estudiante) => !this.claseCatecumenos.some((e) => e.catecumeno_id === estudiante.id)
+        )
+        // .concat(
+        //   this.claseCatecumenos.filter(
+        //     (estudiante) => !.some((e) => e.id === estudiante.id)
+        //   )
+        // );
+      // for(let i=0;i<this.catecumenos.length;i++){
+      //   this.catecumenosNuevos = this.catecumenos.filter(estudiante => estudiante.id === 27);
+      // }
     },
     async agregarCatecumenoClase(formulario) {
       console.log("Este es el formulario para agregar", formulario);
@@ -244,6 +267,8 @@ export default {
     },
     irAsistencia() {
       console.log(this.claseCatecumenos.length);
+      this.fCatecumenosNuevos();
+      console.log(this.catecumenosNuevos);
       if (this.claseCatecumenos.length === 0) {
         console.log(this.catecumenos.length);
         for (let i = 0; i < this.catecumenos.length; i++) {
@@ -253,6 +278,14 @@ export default {
           };
           this.agregarCatecumenoClase(this.formulario);
         }
+      }else if(this.catecumenosNuevos.length>0){
+        for (let i = 0; i < this.catecumenosNuevos.length; i++) {
+          this.formulario = {
+            clase_id: this.$route.params.claseId,
+            catecumeno_id: this.catecumenosNuevos[i].id,
+          };
+          this.agregarCatecumenoClase(this.formulario);
+        }       
       }
       this.$router.push({
         name: "asistenciaClase",
