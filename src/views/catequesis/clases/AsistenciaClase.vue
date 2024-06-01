@@ -12,9 +12,10 @@
     <span class="fs-4">{{
       formatDatetimeWithMonthInLetters(fechaHoraClase)
     }}</span>
+    <button class="btn btn-success " @click="exportTableToExcel">Excel</button>
     <h3>Lista de Catecumenos</h3>
     <div class="table-responsive">
-      <table class="table table-bordered  table-hover ">
+      <table ref="table" class="table table-bordered  table-hover ">
         <thead class="table-success">
           <tr>
             <th>Nro</th>
@@ -73,6 +74,8 @@
 
 <script>
 import moment from "moment";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 export default {
   data() {
     return {
@@ -99,6 +102,19 @@ export default {
   },
 
   methods: {
+    exportTableToExcel() {
+      // Obtener la referencia de la tabla
+      const table = this.$refs.table;
+
+      // Convertir la tabla a un libro de trabajo (workbook)
+      const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+      // Generar un archivo Excel binario
+      const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+      // Guardar el archivo usando FileSaver
+      saveAs(new Blob([wbout], { type: 'application/octet-stream' }), 'tabla.xlsx');
+    },
     formatDatetimeWithMonthInLetters(datetime) {
       return moment(datetime)
         .locale("es")
