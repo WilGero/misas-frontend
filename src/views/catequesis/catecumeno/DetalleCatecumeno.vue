@@ -33,6 +33,7 @@
             <p><strong>Padrinos:</strong> {{ catecumeno.padrinos }}</p>
           </div>
           <div class="card-footer d-flex justify-content-end">
+            <button class="btn btn-primary me-2" @click="irAsistenciasCatecumeno">Asistencias</button>
             <button
               type="button"
               class="btn btn-danger me-2"
@@ -144,9 +145,10 @@ export default {
           // Manejar errores
           console.error("Error al eliminar catecumeno:", error);
         }
-      }else{
+      } else {
         this.mostrarAlerta = true;
-        this.mensaje = "No se puede eliminar el catecumeno porque tiene asistencias";
+        this.mensaje =
+          "No se puede eliminar el catecumeno porque tiene asistencias";
       }
     },
     formatDatetimeWithMonthInLetters(datetime) {
@@ -164,6 +166,12 @@ export default {
           // Manejar errores
           console.error("Error al encontrar catecumeno:", error);
         });
+    },
+    irAsistenciasCatecumeno() {
+      this.$router.push({
+        name: "asistenciasCatecumeno",
+        params: { catecumenoId: this.$route.params.catecumenoId },
+      });
     },
     irAtras() {
       this.$router.go(-1);

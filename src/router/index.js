@@ -179,6 +179,14 @@ const routes = [
     }
   },
   {
+    path: '/asistencias-catecumeno/:catecumenoId',
+    name: 'asistenciasCatecumeno',
+    component: () => import('../views/catequesis/catecumeno/AsistenciasCatecumeno'),
+    meta: {
+      requiresAuth: true,requiredRole:4
+    }
+  },
+  {
     path: '/editar-catecumeno/:catecumenoId',
     name: 'editarCatecumeno',
     component: () => import('../views/catequesis/catecumeno/EditarCatecumeno'),
