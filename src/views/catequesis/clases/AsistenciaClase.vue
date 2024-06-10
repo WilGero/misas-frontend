@@ -5,6 +5,7 @@
         <i class="fas fa-arrow-left"></i> Atrás
       </button>
     </div>
+    <button class="btn btn-success " @click="exportTableToExcel"><i class="fas fa-file-excel"></i> Excel</button>
     <h2>Catequesis de {{ nombre }}</h2>
     <span class="fs-3 text-start me-5"
       ><strong>Tema:</strong> {{ temaClase }}</span
@@ -12,7 +13,6 @@
     <span class="fs-4">{{
       formatDatetimeWithMonthInLetters(fechaHoraClase)
     }}</span>
-    <button class="btn btn-success " @click="exportTableToExcel">Excel</button>
     <h3>Lista de Catecumenos</h3>
     <div class="table-responsive">
       <table ref="table" class="table table-bordered  table-hover ">

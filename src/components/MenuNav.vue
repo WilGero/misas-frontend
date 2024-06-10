@@ -84,6 +84,11 @@
                 ><i class="fas fa-user-graduate"></i> Catecumenos</router-link
               >
             </li>
+            <li class="nav-item" v-if="auth.data.rol_id===4">
+              <router-link class="nav-link" :to="{ name: 'estadisticas' }"
+                ><i class="fas fa-chart-bar"></i>Estadísticas</router-link
+              >
+            </li>
             <li class="nav-item" v-if="auth.data.rol_id===1">
               <router-link class="nav-link" :to="{ name: 'usuarios' }"
                 ><i class="fas fa-users"></i> Usuarios</router-link

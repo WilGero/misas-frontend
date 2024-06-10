@@ -151,7 +151,7 @@ const routes = [
     name: 'listadoIntencionesMisa',
     component: () => import('../views/intencionesSecre/ListadoIntencionesMisa.vue'),
     meta: {
-      requiresAuth: true,requiredRole:2
+      requiresAuth: true, requiredRole: 2
     }
   },
   {
@@ -159,7 +159,7 @@ const routes = [
     name: 'catecumenos',
     component: () => import('../views/catequesis/catecumeno/IndexCatecumenos'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -167,7 +167,7 @@ const routes = [
     name: 'agregarCatecumeno',
     component: () => import('../views/catequesis/catecumeno/AgregarCatecumeno'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -175,7 +175,7 @@ const routes = [
     name: 'detalleCatecumeno',
     component: () => import('../views/catequesis/catecumeno/DetalleCatecumeno'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -183,7 +183,7 @@ const routes = [
     name: 'asistenciasCatecumeno',
     component: () => import('../views/catequesis/catecumeno/AsistenciasCatecumeno'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -191,7 +191,7 @@ const routes = [
     name: 'editarCatecumeno',
     component: () => import('../views/catequesis/catecumeno/EditarCatecumeno'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   // rutas para clases
@@ -200,7 +200,7 @@ const routes = [
     name: 'clases',
     component: () => import('../views/catequesis/clases/IndexClases'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -208,7 +208,7 @@ const routes = [
     name: 'agregarClase',
     component: () => import('../views/catequesis/clases/AgregarClase'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -216,7 +216,7 @@ const routes = [
     name: 'detalleClase',
     component: () => import('../views/catequesis/clases/DetalleClase'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -224,7 +224,7 @@ const routes = [
     name: 'editarClase',
     component: () => import('../views/catequesis/clases/EditarClase'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -232,7 +232,15 @@ const routes = [
     name: 'asistenciaClase',
     component: () => import('../views/catequesis/clases/AsistenciaClase'),
     meta: {
-      requiresAuth: true,requiredRole:4
+      requiresAuth: true, requiredRole: 4
+    }
+  },
+  {
+    path: '/estadisticas',
+    name: 'estadisticas',
+    component: () => import('../views/catequesis/EstadisticasVue'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
     }
   },
   {
@@ -259,9 +267,9 @@ router.beforeEach((to, from, next) => {
   } else if (to.meta.requiredRole) {
     if (rol != to.meta.requiredRole) {
       next('/');
-    }else{
+    } else {
       next()
-    }    
+    }
 
   }
   else {
