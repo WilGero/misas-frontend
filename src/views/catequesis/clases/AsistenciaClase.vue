@@ -123,14 +123,15 @@ export default {
     this.getClase();
   },
   methods: {
-    handleButtonClick(item, idAsistencia) {
+    handleButtonClick(item, idxAsistencia) {
+      // idxAsistencia representa el indice de la lista de tipos de asistencias
       console.log(`Este es el item: ${item}`);
-      if (item.max_permiso === 0) {
+      if (item.max_permiso === 0 && idxAsistencia === 2) {
         this.message = "Permisos";
-      } else if (item.max_falta === 0) {
+      } else if (item.max_falta === 0 && idxAsistencia === 3) {
         this.message = "Faltas";
       } else {
-        this.actualizarAsistencia(item, this.asistencias[idAsistencia].id);
+        this.actualizarAsistencia(item, this.asistencias[idxAsistencia].id);
         // El modal se abrirá automáticamente debido a los atributos de Bootstrap
       }
     },
@@ -202,32 +203,37 @@ export default {
         console.log(
           `Permisos actuales: ${item.max_permiso}, Faltas actuales: ${item.max_falta}`
         );
-        if (asistencia === 3) {
-          if(item.asistencia_id !== 3){
-            item.max_permiso -= 1;
-          }
-        } else if (asistencia === 4) {
-          item.max_falta -= 1;
-        } else {
-          if (item.asistencia_id === 3) {
-            item.max_permiso += 1;
-          }else if(item.asistencia_id === 4){
-            item.max_falta += 1;
-          }
+        const maxPermiso = item.max_permiso;
+        const maxFalta = item.max_falta;
+        // asistencia es el id del tipo de asistencia
+        //  condicional que dependiendo si es una falta o un permiso aunmeta el valor maximo
+        if (item.asistencia_id === 3) {
+          item.max_permiso += 1;
+        } else if (item.asistencia_id === 4) {
+          item.max_falta += 1;
         }
-        const maxResponse = await this.axios.put(
-          "/catecumenos/actualizar-max",
-          {
-            id: item.catecumeno_id,
-            max_permiso: item.max_permiso,
-            max_falta: item.max_falta,
-          }
-        );
-        console.log(
-          "Permisos y faltas actualizados exitosamente",
-          maxResponse.data.data
-        );
+        // condicional que evalua si los atrbiutos max_permiso y max_falta cambian su valor
 
+        if (asistencia === 3) {
+            item.max_permiso -= 1;
+        } else if (asistencia === 4) {
+            item.max_falta -= 1;
+        }
+        // Condicional de acuerdo si cambiaron los valores de max_permiso y max_falta se actualziara los valores en la BdD
+        if (maxPermiso !== item.max_permiso || maxFalta !== item.max_falta) {
+          const maxResponse = await this.axios.put(
+            "/catecumenos/actualizar-max",
+            {
+              id: item.catecumeno_id,
+              max_permiso: item.max_permiso,
+              max_falta: item.max_falta,
+            }
+          );
+          console.log(
+            "Permisos y faltas actualizados exitosamente",
+            maxResponse.data.data
+          );
+        }
         const asistenciaResponse = await this.axios.put(
           "/catecumenos-clase/actualizar-asistencia",
           {
