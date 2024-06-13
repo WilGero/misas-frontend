@@ -16,6 +16,15 @@
       formatDatetimeWithMonthInLetters(fechaHoraClase)
     }}</span>
     <h3>Lista de Catecumenos</h3>
+    <!-- Barra de búsqueda -->
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar..."
+        v-model="searchQuery"
+      />
+    </div>
     <div class="table-responsive">
       <table ref="table" class="table table-bordered table-hover">
         <thead class="table-success">
@@ -29,7 +38,7 @@
         </thead>
         <tbody class="table-light">
           <tr
-            v-for="(item, index) in catecumenosClase"
+            v-for="(item, index) in filteredCatecumenosClase"
             :key="'catecumeno' + item.id"
           >
             <td>{{ index + 1 }}</td>
@@ -115,12 +124,25 @@ export default {
       fechaHoraClase: null,
       nombre: null,
       message: null,
+      searchQuery: "", // Añadir searchQuery al estado
     };
   },
   created() {
     this.getAsistencias();
     this.getCatecumenosClase();
     this.getClase();
+  },
+  computed:{
+    filteredCatecumenosClase() {
+      // Filtrar catecumenosClase basado en searchQuery
+      return this.catecumenosClase.filter((item) => {
+        const term = this.searchQuery.toLowerCase();
+        return (
+          item.nombres.toLowerCase().includes(term) ||
+          item.apellidos.toLowerCase().includes(term)
+        );
+      });
+    },
   },
   methods: {
     handleButtonClick(item, idxAsistencia) {
@@ -215,9 +237,9 @@ export default {
         // condicional que evalua si los atrbiutos max_permiso y max_falta cambian su valor
 
         if (asistencia === 3) {
-            item.max_permiso -= 1;
+          item.max_permiso -= 1;
         } else if (asistencia === 4) {
-            item.max_falta -= 1;
+          item.max_falta -= 1;
         }
         // Condicional de acuerdo si cambiaron los valores de max_permiso y max_falta se actualziara los valores en la BdD
         if (maxPermiso !== item.max_permiso || maxFalta !== item.max_falta) {
