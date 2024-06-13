@@ -8,6 +8,15 @@
         >
       </section>
     </div>
+    <!-- Barra de búsqueda -->
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Buscar..."
+        v-model="searchQuery"
+      />
+    </div>
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
         <thead>
@@ -22,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in catecumenos" :key="item.id">
+          <tr v-for="(item, index) in filteredCatecumenosClase" :key="item.id">
             <td>{{ index + 1 }}</td>
             <td>{{ item.nombres }}</td>
             <td>{{ item.apellidos }}</td>
@@ -56,10 +65,23 @@ export default {
   data() {
     return {
       catecumenos: [],
+      searchQuery: "", // Añadir searchQuery al estado
     };
   },
   created() {
     this.getCatecumenos();
+  },
+  computed:{
+    filteredCatecumenosClase() {
+      // Filtrar catecumenosClase basado en searchQuery
+      return this.catecumenos.filter((item) => {
+        const term = this.searchQuery.toLowerCase();
+        return (
+          item.nombres.toLowerCase().includes(term) ||
+          item.apellidos.toLowerCase().includes(term)
+        );
+      });
+    },
   },
   methods: {
     async getCatecumenos() {
