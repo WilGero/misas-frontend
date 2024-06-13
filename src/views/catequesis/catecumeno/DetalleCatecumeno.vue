@@ -14,26 +14,63 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="card-body">
-            <p><strong>Nombres:</strong> {{ catecumeno.nombres }}</p>
-            <p><strong>Apellidos:</strong> {{ catecumeno.apellidos }}</p>
-            <p><strong>CI:</strong> {{ catecumeno.ci }}</p>
-            <p>
-              <strong>Fecha de Nacimiento: </strong
-              >{{
-                formatDatetimeWithMonthInLetters(catecumeno.fecha_nacimiento)
-              }}
-            </p>
-            <p><strong>Celular:</strong> {{ catecumeno.celular }}</p>
-            <p>
-              <strong>Celular del Padre/Madre:</strong>
-              {{ catecumeno.celular2 }}
-            </p>
-            <p><strong>Dirección:</strong> {{ catecumeno.direccion }}</p>
-            <p><strong>Padrinos:</strong> {{ catecumeno.padrinos }}</p>
+          <div class="card-body text-start p-4">
+            <div class="d-flex">
+              <div class="me-4">
+                <p><strong>Nombres:</strong> {{ catecumeno.nombres }}</p>
+                <p><strong>Apellidos:</strong> {{ catecumeno.apellidos }}</p>
+                <p><strong>CI:</strong> {{ catecumeno.ci }}</p>
+                <p>
+                  <strong>Fecha de Nacimiento: </strong
+                  >{{
+                    formatDatetimeWithMonthInLetters(
+                      catecumeno.fecha_nacimiento
+                    )
+                  }}
+                </p>
+                <p><strong>Celular:</strong> {{ catecumeno.celular }}</p>
+                <p>
+                  <strong>Celular del Padre/Madre:</strong>
+                  {{ catecumeno.celular2 }}
+                </p>
+                <p><strong>Dirección:</strong> {{ catecumeno.direccion }}</p>
+                <p><strong>Padrinos:</strong> {{ catecumeno.padrinos }}</p>
+              </div>
+              <div class="">
+                <div class="row g-3 mb-4">
+                  <div class="col-8">
+                    <strong>Máximo de permisos:</strong>
+                  </div>
+                  <div class="col-4">
+                    <input
+                      class="form-control fs-4"
+                      type="number"
+                      v-model="catecumeno.max_permiso"
+                      disabled
+                    />
+                  </div>
+                </div>
+                <p class="text-center">
+                  Aumentar permisos
+                  <button
+                    class="btn btn-primary px-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#mi-modal2"
+                    @click="reiniciarEstados"
+                  >
+                    +
+                  </button>
+                </p>
+              </div>
+            </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-            <button class="btn btn-primary me-2" @click="irAsistenciasCatecumeno">Asistencias</button>
+            <button
+              class="btn btn-primary me-2"
+              @click="irAsistenciasCatecumeno"
+            >
+              Asistencias
+            </button>
             <button
               type="button"
               class="btn btn-danger me-2"
@@ -96,6 +133,43 @@
         </div>
       </div>
     </div>
+    <!-- modal para aumentar permisos-->
+    <div class="modal fade" id="mi-modal2" data-bs-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title">Alerta!!!</h3>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div
+              v-if="mostrarAlerta"
+              class="alert alert-success alert-dismissible m-4"
+            >
+              <span>{{ mensaje }}</span>
+            </div>
+            <p class="fw-bold text-warning fs-4" v-else>
+              ¿Estas seguro de aumentar un permiso extra?
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              @click="cerrarModal"
+              data-bs-dismiss="modal"
+            >
+              {{ msgBtn }}</button
+            ><button
+              v-if="!mostrarAlerta"
+              class="btn btn-primary"
+              @click="aumentarPermiso"
+            >
+              Aumentar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -129,7 +203,6 @@ export default {
           console.error("Error al encontrar la clase:", error);
         });
     },
-
     async eliminarCatecumeno() {
       if (this.claseCatecumenos.lenght === 0) {
         try {
@@ -150,6 +223,30 @@ export default {
         this.mensaje =
           "No se puede eliminar el catecumeno porque tiene asistencias";
       }
+    },
+    async aumentarPermiso() {
+      try {
+        await this.axios.put("/catecumenos/aumentar-per", {
+          id: this.$route.params.catecumenoId,
+          max_permiso: this.catecumeno.max_permiso + 1,
+        });
+        // Manejar la respuesta exitosa
+        console.log("permiso aumentado con éxito");
+        this.mostrarAlerta = true;
+        this.msgBtn = "Aceptar";
+        this.mensaje = "Permiso Aumentado con éxito";
+        this.getCatecumeno();
+        // setTimeout(() => {
+
+        //   }, 1500);
+      } catch (error) {
+        // Manejar errores
+        console.error("Error al aumentar permiso:", error);
+      }
+    },
+    reiniciarEstados() {
+      this.mostrarAlerta = false;
+      this.msgBtn = "Cancelar";
     },
     formatDatetimeWithMonthInLetters(datetime) {
       return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY");
