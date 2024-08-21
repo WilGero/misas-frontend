@@ -66,7 +66,7 @@
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'intencionesPagadas' }"
-                ><i class="fas fa-list"></i> Intenciones Pagadas</router-link
+                ><i class="fas fa-list"></i> Intenciones</router-link
               >
             </li>
             <li class="nav-item" v-if="auth.data.rol_id===2">

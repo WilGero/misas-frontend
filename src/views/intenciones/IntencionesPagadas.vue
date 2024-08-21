@@ -39,7 +39,7 @@
             </td>
             <td>
               <button class="btn btn-ver-detalle" @click="verDetalle(item.id)">
-                Ver Detalle
+                Ver Recibo
               </button>
             </td>
           </tr>
