@@ -39,17 +39,30 @@
             <td>{{ item.celular }}</td>
             <td>{{ calcularEdad(item.fecha_nacimiento) }}</td>
             <td>
-              <!-- Botón de detalles -->
-              <router-link
-                :to="{
-                  name: 'detalleCatecumeno',
-                  params: { catecumenoId: item.id },
-                }"
-                type="button"
-                class="btn btn-primary me-2"
-              >
-                <i class="fas fa-info-circle"></i> Detalles
-              </router-link>
+              <div class="btn-group">
+                <!-- Botón de detos del catecumeno -->
+                <router-link
+                  :to="{
+                    name: 'detalleCatecumeno',
+                    params: { catecumenoId: item.id },
+                  }"
+                  type="button"
+                  class="btn btn-secondary"
+                >
+                  <i class="fas fa-info-circle"></i> Datos
+                </router-link>
+                <!-- Botón de asistencia del catecumeno -->
+                <router-link
+                  :to="{
+                    name: 'asistenciasCatecumeno',
+                    params: { catecumenoId: item.id },
+                  }"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  <i class="fas fa-user-check"></i> Asistencia
+                </router-link>
+              </div>
             </td>
           </tr>
           <!-- Agrega más filas según sea necesario -->
@@ -71,7 +84,7 @@ export default {
   created() {
     this.getCatecumenos();
   },
-  computed:{
+  computed: {
     filteredCatecumenosClase() {
       // Filtrar catecumenosClase basado en searchQuery
       return this.catecumenos.filter((item) => {

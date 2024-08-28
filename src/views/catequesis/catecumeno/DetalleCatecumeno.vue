@@ -65,13 +65,7 @@
             </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-            <button
-              class="btn btn-primary me-2"
-              @click="irAsistenciasCatecumeno"
-            >
-              Asistencias
-            </button>
-            <button
+           <button
               type="button"
               class="btn btn-danger me-2"
               data-bs-toggle="modal"
@@ -264,12 +258,7 @@ export default {
           console.error("Error al encontrar catecumeno:", error);
         });
     },
-    irAsistenciasCatecumeno() {
-      this.$router.push({
-        name: "asistenciasCatecumeno",
-        params: { catecumenoId: this.$route.params.catecumenoId },
-      });
-    },
+
     irAtras() {
       this.$router.go(-1);
     },
