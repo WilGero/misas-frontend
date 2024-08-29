@@ -1,9 +1,17 @@
 <template>
   <div class="container">
-    <h2>Asistencias</h2>
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
         <thead>
+          <tr>
+            <th colspan="4" class="bgr"><h2 class="fw-bold text-light">Asistencias</h2></th>
+            <th class="bgr fs-3" colspan="3">{{ nombreCatecumeno }}</th>
+          </tr>
+          <tr>
+            <th colspan="4" class="text-end fw-bold">Multa Total:</th>
+            <th class="fw-bolder bg-warning fs-4">{{ multaTotal }} Bs</th>
+            <th colspan="2"></th>
+          </tr>
           <tr>
             <th>Nro</th>
             <th>Clases</th>
@@ -53,10 +61,7 @@
               }}
             </td>
           </tr>
-          <tr>
-            <td colspan="4" class="text-end fw-bold">Multa Total:</td>
-            <td class="fw-bolder bg-warning fs-4">{{ multaTotal }}</td>
-          </tr>
+
           <!-- Agrega más filas según sea necesario -->
         </tbody>
       </table>
@@ -70,6 +75,7 @@ export default {
     return {
       asistencias: [],
       multaTotal: 0,
+      nombreCatecumeno:null
     };
   },
   created() {
@@ -88,6 +94,7 @@ export default {
           // Manejar la respuesta exitosa
           this.multaTotal = 0;
           this.asistencias = response.data.data;
+          this.nombreCatecumeno=this.asistencias[0].nombres;
           console.log(this.asistencias);
           for (let i = 0; i < this.asistencias.length; i++) {
             if (this.asistencias[i].estado_multa === 0) {
@@ -125,3 +132,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .bgr{
+    background:#2993D5
+  }
+</style>
