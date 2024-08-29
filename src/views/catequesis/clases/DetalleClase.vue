@@ -46,7 +46,7 @@
           </div>
           <div class="card-footer d-flex justify-content-end">
             <button class="btn btn-info me-2" @click="irAsistencia">
-              Asistencia
+              <i class="fas fa-calendar-check"></i>
             </button>
             <router-link
               :to="{
@@ -89,7 +89,7 @@
               <span>{{ mensaje }}</span>
             </div>
             <p class="fw-bold text-danger" v-else>
-              ¿Esta seguro de eliminar el catecúmeno?
+              ¿Esta seguro de eliminar la clase?
             </p>
           </div>
           <div class="modal-footer">
@@ -143,6 +143,7 @@ export default {
     this.getClase();
   },
   methods: {
+    // metodo para listar los catecumenos que asistieron a una clase
     async getClaseCatecumenos() {
       await this.axios
         .get("/clases/encontrar/" + this.$route.params.claseId)
@@ -160,17 +161,7 @@ export default {
               this.faltas += 1;
             }
           }
-          // this.presentes = this.claseCatecumenos.reduce(
-          //   (accumulador, valor) => {
-          //     if (valor.asistencia_id === 1) {
-          //       return accumulador + 1; // Devolver el valor acumulado incrementado en 1
-          //     } else {
-          //       return accumulador; // Devolver el valor acumulado sin cambios
-          //     }
-          //   },
-          //   0
-          // );
-          this.claseCatecumenosLength = this.claseCatecumenos.length;
+          // this.claseCatecumenosLength = this.claseCatecumenos.length;
           console.log(this.claseCatecumenos);
         })
         .catch((error) => {
@@ -178,7 +169,6 @@ export default {
           console.error("Error al encontrar la clase:", error);
         });
     },
-
     async getCatecumenos() {
       await this.axios
         .get("/catecumenos/listado")
@@ -194,15 +184,15 @@ export default {
         });
     },
     fCatecumenosNuevos() {
-      this.catecumenosNuevos = this.catecumenos
-        .filter(
-          (estudiante) => !this.claseCatecumenos.some((e) => e.catecumeno_id === estudiante.id)
-        )
-        // .concat(
-        //   this.claseCatecumenos.filter(
-        //     (estudiante) => !.some((e) => e.id === estudiante.id)
-        //   )
-        // );
+      this.catecumenosNuevos = this.catecumenos.filter(
+        (estudiante) =>
+          !this.claseCatecumenos.some((e) => e.catecumeno_id === estudiante.id)
+      );
+      // .concat(
+      //   this.claseCatecumenos.filter(
+      //     (estudiante) => !.some((e) => e.id === estudiante.id)
+      //   )
+      // );
       // for(let i=0;i<this.catecumenos.length;i++){
       //   this.catecumenosNuevos = this.catecumenos.filter(estudiante => estudiante.id === 27);
       // }
@@ -278,14 +268,14 @@ export default {
           };
           this.agregarCatecumenoClase(this.formulario);
         }
-      }else if(this.catecumenosNuevos.length>0){
+      } else if (this.catecumenosNuevos.length > 0) {
         for (let i = 0; i < this.catecumenosNuevos.length; i++) {
           this.formulario = {
             clase_id: this.$route.params.claseId,
             catecumeno_id: this.catecumenosNuevos[i].id,
           };
           this.agregarCatecumenoClase(this.formulario);
-        }       
+        }
       }
       this.$router.push({
         name: "asistenciaClase",

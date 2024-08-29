@@ -2,6 +2,7 @@
   <div class="container mt-4">
     <div class="d-flex m-2 justify-content-around">
       <h1>Clases de la catequesis</h1>
+      {{ claseCatecumenos.length }}
       <section>
         <router-link :to="{ name: 'agregarClase' }" class="btn btn-success"
           ><i class="fas fa-plus"></i> Agregar</router-link
@@ -24,17 +25,23 @@
             <td>{{ item.tema }}</td>
             <td>{{ formatDatetimeWithMonthInLetters(item.fecha_hora) }}</td>
             <td>
-              <!-- Botón de detalles -->
-              <router-link
-                :to="{
-                  name: 'detalleClase',
-                  params: { claseId: item.id },
-                }"
-                type="button"
-                class="btn btn-primary me-2"
-              >
-                <i class="fas fa-info-circle"></i> Detalles
-              </router-link>
+              <div class="btn-group">
+                <!-- Botón para a ir a registrar asistencias de la clase -->
+                <button class="btn btn-info" @click="irAsistencia(item.id)">
+                  <i class="fas fa-calendar-check"></i> Asistencia
+                </button>
+                <!-- Botón de detalles -->
+                <router-link
+                  :to="{
+                    name: 'detalleClase',
+                    params: { claseId: item.id },
+                  }"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  <i class="fas fa-info-circle"></i> Detalles
+                </router-link>
+              </div>
             </td>
           </tr>
           <!-- Agrega más filas según sea necesario -->
@@ -50,14 +57,21 @@ export default {
   data() {
     return {
       clases: [],
+      claseCatecumenos: [],
+      catecumenos: [],
+      catecumenosNuevos: [],
+      claseId: null,
     };
   },
   created() {
     this.getClases();
+    this.getCatecumenos();
   },
   methods: {
     formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY, h:mm a");
+      return moment(datetime)
+        .locale("es")
+        .format("D [de] MMMM [del] YYYY, h:mm a");
     },
     async getClases() {
       await this.axios
@@ -71,6 +85,95 @@ export default {
           // Manejar errores
           console.error("Error al listar las clases:", error);
         });
+    },
+    async getClaseCatecumenos(idClase) {
+      this.claseId = idClase;
+      try {
+        const response = await this.axios.get(
+          `/clases/encontrar/${this.claseId}`
+        );
+        this.claseCatecumenos = response.data.data;
+        console.log(this.claseCatecumenos);
+      } catch (error) {
+        console.error("Error al encontrar la clase:", error);
+      }
+    },
+    async getCatecumenos() {
+      await this.axios
+        .get("/catecumenos/listado")
+        .then((response) => {
+          // Manejar la respuesta exitosa
+          this.catecumenos = response.data.data;
+          console.log(this.catecumenos);
+          // this.catecumenosLength = this.catecumenos.length;
+        })
+        .catch((error) => {
+          // Manejar errores
+          console.error("Error al listar catecumenos:", error);
+        });
+    },
+    fCatecumenosNuevos() {
+      this.catecumenosNuevos = this.catecumenos.filter(
+        (estudiante) =>
+          !this.claseCatecumenos.some((e) => e.catecumeno_id === estudiante.id)
+      );
+      // .concat(
+      //   this.claseCatecumenos.filter(
+      //     (estudiante) => !.some((e) => e.id === estudiante.id)
+      //   )
+      // );
+      // for(let i=0;i<this.catecumenos.length;i++){
+      //   this.catecumenosNuevos = this.catecumenos.filter(estudiante => estudiante.id === 27);
+      // }
+    },
+    async agregarCatecumenoClase(formulario) {
+      console.log("Este es el formulario para agregar", formulario);
+
+      try {
+        const response = await this.axios.post(
+          "/catecumenos-clase/agregar",
+          formulario
+        );
+        console.log("Asistencia registrada exitosamente", response.data.data);
+      } catch (error) {
+        console.error("Error al registrar la asistencia:", error);
+      }
+    },
+    irAsistencia(idClase) {
+      this.claseId = idClase;
+      console.log(this.claseId);
+      // llamar al metodo getClaseCatecumenos
+      this.getClaseCatecumenos(idClase);
+      // se espera 0.5 segundos para que se ejecute el metodo getClaseCatecumenos
+      setTimeout(() => {
+        console.log(this.claseCatecumenos.length);
+        this.fCatecumenosNuevos();
+        console.log(this.catecumenosNuevos);
+        // agrega catecumenos solo si la lista esta vacia
+        if (this.claseCatecumenos.length === 0) {
+          console.log(this.catecumenos.length);
+          for (let i = 0; i < this.catecumenos.length; i++) {
+            this.formulario = {
+              clase_id: idClase,
+              catecumeno_id: this.catecumenos[i].id,
+            };
+            this.agregarCatecumenoClase(this.formulario);
+          }
+        } else if (this.catecumenosNuevos.length > 0) {
+          for (let i = 0; i < this.catecumenosNuevos.length; i++) {
+            this.formulario = {
+              clase_id: idClase,
+              catecumeno_id: this.catecumenosNuevos[i].id,
+            };
+            this.agregarCatecumenoClase(this.formulario);
+          }
+        }
+        this.$router.push({
+          name: "asistenciaClase",
+          params: { claseId: idClase },
+        });
+        // Cambia "nombreDeLaRuta" con el nombre de la ruta a la que deseas redirigir
+      }, 500);
     },
   },
 };
