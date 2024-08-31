@@ -5,10 +5,10 @@
         <h2 class="fs-1">Examenes</h2>
       </div>
       <div class="col">
-        <button class="btn btn-success">
+        <router-link :to="{ name: 'nuevoExamen' }" class="btn btn-success">
           <i class="fas fa-plus"></i>
           Nuevo
-        </button>
+        </router-link>
       </div>
     </div>
     <div class="row">
@@ -27,7 +27,19 @@
               <td>{{ index + 1 }}</td>
               <td>{{ item.titulo }}</td>
               <td>{{ formatearFecha(item.fecha) }}</td>
-              <td></td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-primary">
+                    <i class="fas fa-file-alt"></i>
+                  </button>
+                  <button class="btn btn-warning">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-danger">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
