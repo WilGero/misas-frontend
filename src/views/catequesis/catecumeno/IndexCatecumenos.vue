@@ -19,7 +19,7 @@
     </div>
     <div class="table-responsive">
       <table class="table table-hover table-bordered">
-        <thead>
+        <thead class="table-light">
           <tr>
             <th>Nro</th>
             <th>Nombres</th>

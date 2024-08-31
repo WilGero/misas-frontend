@@ -236,6 +236,14 @@ const routes = [
     }
   },
   {
+    path: '/examenes',
+    name: 'examenes',
+    component: () => import('../views/catequesis/examen/IndexExamenes'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
+  {
     path: '/estadisticas',
     name: 'estadisticas',
     component: () => import('../views/catequesis/EstadisticasVue'),
