@@ -252,6 +252,14 @@ const routes = [
     }
   },
   {
+    path: '/editar-examen/:examenId',
+    name: 'editarExamen',
+    component: () => import('../views/catequesis/examen/EditarExamen'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
+  {
     path: '/estadisticas',
     name: 'estadisticas',
     component: () => import('../views/catequesis/EstadisticasVue'),

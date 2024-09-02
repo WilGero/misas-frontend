@@ -32,9 +32,9 @@
                   <button class="btn btn-primary">
                     <i class="fas fa-file-alt"></i>
                   </button>
-                  <button class="btn btn-warning">
+                  <router-link :to="{name:'editarExamen',params:{examenId:item.id}}" class="btn btn-warning">
                     <i class="fas fa-edit"></i>
-                  </button>
+                  </router-link>
                   <button class="btn btn-danger">
                     <i class="fas fa-trash"></i>
                   </button>
