@@ -260,6 +260,14 @@ const routes = [
     }
   },
   {
+    path: '/notas-examen/:examenId',
+    name: 'notasExamen',
+    component: () => import('../views/catequesis/examen/NotasExamen'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
+  {
     path: '/estadisticas',
     name: 'estadisticas',
     component: () => import('../views/catequesis/EstadisticasVue'),

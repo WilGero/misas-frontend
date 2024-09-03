@@ -1,5 +1,6 @@
 <template>
   <div class="container mt-4">
+    {{ cateucmenos }}
     <div class="d-flex m-2 justify-content-around">
       <h1>Clases de la catequesis</h1>
       {{ claseCatecumenos.length }}
