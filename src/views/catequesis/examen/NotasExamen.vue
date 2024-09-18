@@ -20,6 +20,7 @@
         v-model="searchQuery"
       />
     </div>
+    {{ formulario }}
     <div class="table-responsive">
       <table ref="table" class="table table-bordered table-hover">
         <thead class="table-success">
@@ -45,12 +46,15 @@
                   class="form-control"
                   type="number"
                   :value="item.nota"
-                  v-if="activar && indice==index"
+                  @input="notaExamen = $event.target.value"
+                  v-if="activar && indice == index"
                 />
-                <button class="btn btn-success ms-2" @click="agregarCalificacion(index)">
-                  <i v-if="activar && indice==index" class="fas fa-save"></i>
-                  <i v-else class="fas fa-pencil-alt"></i
-                  >
+                <button
+                  class="btn btn-success ms-2"
+                  @click="agregarCalificacion(index, item.catecumeno_id)"
+                >
+                  <i v-if="activar && indice == index" class="fas fa-save"></i>
+                  <i v-else class="fas fa-pencil-alt"></i>
                 </button>
               </div>
             </td>
@@ -81,7 +85,8 @@ export default {
       message: null,
       searchQuery: "", // Añadir searchQuery al estado
       activar: false, //para activar el boton de registro de calificacion
-      indice:null,//para guardar el indice de la fila
+      indice: null, //para guardar el indice de la fila
+      notaExamen: null,
     };
   },
   created() {
@@ -147,67 +152,43 @@ export default {
           console.error("Error al encontrar la clase:", error);
         });
     },
-    async actualizarAsistencia(item, asistencia) {
+    async actualizarCalificacion(catecumenoId) {
       try {
-        console.log(
-          `Permisos actuales: ${item.max_permiso}, Faltas actuales: ${item.max_falta}`
-        );
-        const maxPermiso = item.max_permiso;
-        const maxFalta = item.max_falta;
-        // asistencia es el id del tipo de asistencia
-        //  condicional que dependiendo si es una falta o un permiso aunmeta el valor maximo
-        if (item.asistencia_id === 3) {
-          item.max_permiso += 1;
-        } else if (item.asistencia_id === 4) {
-          item.max_falta += 1;
+        this.formulario = {
+          catecumeno_id: catecumenoId,
+          examen_id: this.$route.params.examenId,
+          nota: this.notaExamen,
+        };
+        if(this.notaExamen === null){ //si notaExamen es nulo no actualizar
+          return;
         }
-        // condicional que evalua si los atrbiutos max_permiso y max_falta cambian su valor
-
-        if (asistencia === 3) {
-          item.max_permiso -= 1;
-        } else if (asistencia === 4) {
-          item.max_falta -= 1;
-        }
-        // Condicional de acuerdo si cambiaron los valores de max_permiso y max_falta se actualziara los valores en la BdD
-        if (maxPermiso !== item.max_permiso || maxFalta !== item.max_falta) {
-          const maxResponse = await this.axios.put(
-            "/catecumenos/actualizar-max",
-            {
-              id: item.catecumeno_id,
-              max_permiso: item.max_permiso,
-              max_falta: item.max_falta,
-            }
-          );
-          console.log(
-            "Permisos y faltas actualizados exitosamente",
-            maxResponse.data.data
-          );
-        }
-        const asistenciaResponse = await this.axios.put(
-          "/catecumenos-clase/actualizar-asistencia",
-          {
-            id: item.id,
-            asistencia_id: asistencia,
-          }
+        const response = await this.axios.put(
+          "catecumenos-examen/actualizar",
+          this.formulario
         );
-
-        console.log(
-          "Asistencia actualizada exitosamente",
-          asistenciaResponse.data.data
-        );
-
-        await this.getCatecumenosExamen();
+        console.log("Nota actualizada exitosamente ", response.data.data);
+      
+        // this.mostrarAlerta = true;
+        // setTimeout(() => {
+        //   this.$router.go(-1);
+        // }, 1500);
       } catch (error) {
-        console.error(
-          "Error al actualizar la asistencia del catecumeno:",
-          error
-        );
+        console.error("Error al actualizar la nota:", error);
       }
     },
-    agregarCalificacion(index){
+    async agregarCalificacion(index, catecumenoId) {
       // console.log(index);
-      this.indice=index;
-      this.activar=!this.activar;
+      // console.log(`catecumeno id: ${catecumenoId}`)
+      //  console.log(`examen id: ${this.$route.params.examenId}`);
+      // console.log(`esta es la nota: ${this.notaExamen}`)
+      this.indice = index;
+      this.activar = !this.activar;
+
+      if (!this.activar) {
+        await this.actualizarCalificacion(catecumenoId);
+        this.notaExamen=null;
+        this.getCatecumenosExamen();
+      }
     },
     irAtras() {
       this.$router.go(-1);
