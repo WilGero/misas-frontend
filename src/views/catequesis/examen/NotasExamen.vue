@@ -8,7 +8,7 @@
     <button class="btn btn-success" @click="exportTableToExcel">
       <i class="fas fa-file-excel"></i> Excel
     </button>
-    <h2>Examen -  {{ titulo }}</h2>
+    <h2>Examen - {{ titulo }}</h2>
     <span class="fs-4">{{ formatDateWithMonthInLetters(fechaExamen) }}</span>
     <h3>Lista de Catecumenos</h3>
     <!-- Barra de búsqueda -->
@@ -27,8 +27,8 @@
             <th>Nro</th>
             <th class="ps-4 text-start">Nombres</th>
             <th class="ps-4 text-start">Apellidos</th>
-            <th>Nota</th>
-            <th>Estado</th>
+            <th>Agregar Calificación</th>
+            <th>Calificacion</th>
           </tr>
         </thead>
         <tbody class="table-light">
@@ -39,8 +39,22 @@
             <td>{{ index + 1 }}</td>
             <td class="ps-4 text-start">{{ item.nombres }}</td>
             <td class="ps-4 text-start">{{ item.apellidos }}</td>
-            <td class="px-5"> <input class="form-control" type="number" :value="item.nota"></td>
-            <td class="fs-4"></td>
+            <td class="px-5">
+              <div class="d-flex justify-content-center">
+                <input
+                  class="form-control"
+                  type="number"
+                  :value="item.nota"
+                  v-if="activar && indice==index"
+                />
+                <button class="btn btn-success ms-2" @click="agregarCalificacion(index)">
+                  <i v-if="activar && indice==index" class="fas fa-save"></i>
+                  <i v-else class="fas fa-pencil-alt"></i
+                  >
+                </button>
+              </div>
+            </td>
+            <td class="fs-4">{{ item.nota }}</td>
           </tr>
           <!-- Aquí puedes agregar más filas con otros estudiantes -->
         </tbody>
@@ -66,6 +80,8 @@ export default {
       fechaExamen: null,
       message: null,
       searchQuery: "", // Añadir searchQuery al estado
+      activar: false, //para activar el boton de registro de calificacion
+      indice:null,//para guardar el indice de la fila
     };
   },
   created() {
@@ -187,6 +203,11 @@ export default {
           error
         );
       }
+    },
+    agregarCalificacion(index){
+      // console.log(index);
+      this.indice=index;
+      this.activar=!this.activar;
     },
     irAtras() {
       this.$router.go(-1);
