@@ -39,7 +39,7 @@
             <td>{{ index + 1 }}</td>
             <td class="ps-4 text-start">{{ item.nombres }}</td>
             <td class="ps-4 text-start">{{ item.apellidos }}</td>
-            <td class="px-5"> <input class="form-control" type="number"></td>
+            <td class="px-5"> <input class="form-control" type="number" :value="item.nota"></td>
             <td class="fs-4"></td>
           </tr>
           <!-- Aquí puedes agregar más filas con otros estudiantes -->
