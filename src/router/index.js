@@ -270,7 +270,21 @@ const routes = [
   {
     path: '/estadisticas',
     name: 'estadisticas',
-    component: () => import('../views/catequesis/EstadisticasVue'),
+    component: () => import('../views/catequesis/estadistica/EstadisticasVue'),
+    children: [
+      {
+        path: '',
+        name: 'multas',
+        component: () => import('../views/catequesis/estadistica/MultasVue')
+
+      },
+      {
+        path: 'calificaciones',
+        name: 'calificaciones',
+        component: () => import('../views/catequesis/estadistica/ExamenesVue')
+
+      },
+    ],
     meta: {
       requiresAuth: true, requiredRole: 4
     }

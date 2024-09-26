@@ -90,7 +90,7 @@
               >
             </li>
             <li class="nav-item" v-if="auth.data.rol_id===4">
-              <router-link class="nav-link" :to="{ name: 'estadisticas' }"
+              <router-link class="nav-link" to="/estadisticas"
                 ><i class="fas fa-chart-bar"></i>Estadísticas</router-link
               >
             </li>
