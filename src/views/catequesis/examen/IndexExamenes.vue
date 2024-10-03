@@ -163,6 +163,7 @@ export default {
 
         this.mostrarAlerta = true;
         this.mensaje = "Examen eliminado con éxito";
+        this.getExamenes();
       } catch (error) {
         console.error("Error al eliminar el examen:", error);
       }

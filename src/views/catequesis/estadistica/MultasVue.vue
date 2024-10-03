@@ -5,7 +5,7 @@
         <tr>
           <td colspan="7" class="fs-5 fw-bold">Multas Pendientes</td>
         </tr>
-        <tr>
+        <tr class="table-group-divider">
           <th scope="col">Nro</th>
           <th scope="col">Nombres</th>
           <th scope="col">Apellidos</th>
@@ -15,7 +15,7 @@
           <th class="table-secondary" scope="col">Multa Total (bs)</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="table-group-divider">
         <tr v-for="(item, index) in catecumenos" :key="index">
           <td scope="row">{{ index + 1 }}</td>
           <td>{{ item.nombres }}</td>
