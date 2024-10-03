@@ -30,12 +30,11 @@
             <th>{{ index + 1 }}</th>
             <td>{{ item.razon }}</td>
             <td>
-              {{ formatearFecha(item.created_at) }} -
-              {{ formatearHora(item.created_at) }}
+              {{ formatDateTime(item.created_at) }}
             </td>
             <td>{{ item.tipo_misa }}</td>
             <td>
-              {{ formatearFecha(item.fecha) }} - {{ formatearHora(item.fecha) }}
+              {{ formatDateTime(item.fecha) }}
             </td>
             <td>
               <button class="btn btn-ver-detalle" @click="verDetalle(item.id)">
@@ -56,9 +55,16 @@
 </template>
 
 <script>
-import moment from "moment";
+import useFormatDate from "@/composables/useFormatDate";
+
 import { mapState } from "vuex";
 export default {
+  setup(){
+    const {formatDateTime}=useFormatDate();
+    return{
+      formatDateTime,
+    }
+  },
   data() {
     return {
       listasIntenciones: [],
@@ -73,12 +79,6 @@ export default {
     this.getListasIntenciones();
   },
   methods: {
-    formatearFecha(fechaHora) {
-      return moment(fechaHora).locale("es").format("D [de] MMMM YYYY");
-    },
-    formatearHora(fechaHora) {
-      return moment(fechaHora).format("h:mm a");
-    },
     async getListasIntenciones() {
       await this.axios
         .get("/lista-intenciones/listado")

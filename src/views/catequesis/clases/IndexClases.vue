@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-4">
-    {{ cateucmenos }}
     <div class="d-flex m-2 justify-content-around">
       <h1>Clases de la catequesis</h1>
       {{ claseCatecumenos.length }}
@@ -24,7 +23,7 @@
           <tr v-for="(item, index) in clases" :key="item.id">
             <td>{{ index + 1 }}</td>
             <td>{{ item.tema }}</td>
-            <td>{{ formatDatetimeWithMonthInLetters(item.fecha_hora) }}</td>
+            <td>{{ formatDateTime(item.fecha_hora) }}</td>
             <td>
               <div class="btn-group">
                 <!-- Botón para a ir a registrar asistencias de la clase -->
@@ -53,8 +52,15 @@
 </template>
 
 <script>
-import moment from "moment";
+// import {ref} from "vue;"
+import useFormatDate from '@/composables/useFormatDate';
 export default {
+  setup() {
+    const {formatDateTime}=useFormatDate();
+    return{
+      formatDateTime,
+    }
+  },
   data() {
     return {
       clases: [],
@@ -69,11 +75,6 @@ export default {
     this.getCatecumenos();
   },
   methods: {
-    formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime)
-        .locale("es")
-        .format("D [de] MMMM [del] YYYY, h:mm a");
-    },
     async getClases() {
       await this.axios
         .get("/clases/listado")

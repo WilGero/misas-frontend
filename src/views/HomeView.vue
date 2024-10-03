@@ -18,11 +18,10 @@
             <h5 class="card-title fw-bolder fs-4">{{ misa.tipo_misa }}</h5>
             <p class="card-text">{{ misa.descripcion }}</p>
             <p class="card-text">
-              <span class="fw-bold">Fecha: </span
-              >{{ formatearFecha(misa.fecha) }}
+              <span class="fw-bold">Fecha: </span>{{ formatDate(misa.fecha) }}
             </p>
             <p class="card-text">
-              <span class="fw-bold">Hora: </span>{{ formatearHora(misa.fecha) }}
+              <span class="fw-bold">Hora: </span>{{ formatTime(misa.fecha) }}
             </p>
 
             <button
@@ -40,9 +39,18 @@
 </template>
 
 <script>
-import moment from "moment";
 import { mapState } from "vuex";
+import useFormatDate from "@/composables/useFormatDate";
 export default {
+  setup() {
+    const { formatDate, formatTime, calcularDiferenciaFechaHoraEnHoras } =
+      useFormatDate();
+    return {
+      formatDate,
+      formatTime,
+      calcularDiferenciaFechaHoraEnHoras,
+    };
+  },
   data() {
     return {
       misas: [],
@@ -64,12 +72,6 @@ export default {
     this.getMisas();
   },
   methods: {
-    formatearFecha(fechaHora) {
-      return moment(fechaHora).locale("es").format("D [de] MMMM YYYY");
-    },
-    formatearHora(fechaHora) {
-      return moment(fechaHora).format("h:mm a");
-    },
     async getMisas() {
       await this.axios
         .get("/misas/listado")
@@ -77,7 +79,7 @@ export default {
           // Manejar la respuesta exitosa
           this.misas = response.data.data;
           console.log(this.misas);
-          for (let i = 0; i<this.misas.length; i++) {
+          for (let i = 0; i < this.misas.length; i++) {
             let diferencia = this.calcularDiferenciaFechaHoraEnHoras(
               this.misas[i].fecha
             );
@@ -143,18 +145,6 @@ export default {
           params: { misaId: id, listaId: this.ultimaLista.id },
         });
       }, 1000);
-    },
-    calcularDiferenciaFechaHoraEnHoras(fechaHora) {
-      // Convertir la fecha y hora específica a un objeto Moment
-      const fechaHoraMoment = moment(fechaHora); //fecha de momento objetivo
-
-      // Obtener la fecha y hora actual
-      const fechaHoraActual = moment(); //fecha de momento base
-
-      // Calcular la diferencia en milisegundos entre las dos fechas y horas
-      const diferenciaEnHoras = fechaHoraMoment.diff(fechaHoraActual, "hours");
-      console.log(diferenciaEnHoras);
-      return diferenciaEnHoras;
     },
   },
 };

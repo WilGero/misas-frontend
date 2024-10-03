@@ -38,7 +38,7 @@
                 </td>
                 <td>{{ item.descripcion }}</td>
                 <td>
-                  {{ formatDatetimeWithMonthInLetters(item.fecha) }}
+                  {{ formatDateTime(item.fecha) }}
                 </td>
                 <td>
                   <div class="btn-group">
@@ -108,8 +108,15 @@
 </template>
 
 <script>
-import moment from "moment";
+import useFormatDate from '@/composables/useFormatDate';
+
 export default {
+  setup(){
+    const {formatDateTime}=useFormatDate();
+    return{
+      formatDateTime,
+    }
+  },
   data() {
     return {
       misas: [],
@@ -125,16 +132,6 @@ export default {
     this.getMisas();
   },
   methods: {
-    formatDate(datetime) {
-      return moment(datetime).format("YYYY-MM-DD HH:mm:ss");
-      // Puedes personalizar el formato según tus necesidades
-    },
-    formatRelativeTime(datetime) {
-      return moment(datetime).fromNow();
-    },
-    formatDatetimeWithMonthInLetters(datetime) {
-      return moment(datetime).locale("es").format("D [de] MMMM [del] YYYY, h:mm a");
-    },
     async getIntencionesMisa(id) {
       console.log(id)
       await this.axios

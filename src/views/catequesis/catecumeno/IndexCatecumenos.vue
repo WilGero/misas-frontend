@@ -75,6 +75,11 @@
 <script>
 import moment from "moment";
 export default {
+  setup(){
+    return{
+      
+    }
+  },
   data() {
     return {
       catecumenos: [],

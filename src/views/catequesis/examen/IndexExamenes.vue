@@ -28,7 +28,7 @@
             <tr v-for="(item, index) in examenes" :key="item.id">
               <td>{{ index + 1 }}</td>
               <td>{{ item.titulo }}</td>
-              <td>{{ formatearFecha(item.fecha) }}</td>
+              <td>{{ formatDate(item.fecha) }}</td>
               <td>
                 <div class="btn-group">
                   <button
@@ -102,8 +102,14 @@
 </template>
 
 <script>
-import moment from "moment";
+import useFormatDate from '@/composables/useFormatDate';
 export default {
+  setup(){
+    const {formatDate}=useFormatDate();
+    return{
+      formatDate,
+    }
+  },
   data() {
     return {
       examenes: [],
@@ -127,9 +133,6 @@ export default {
       } catch (error) {
         console.error("Error al listar examenes:", error);
       }
-    },
-    formatearFecha(fecha) {
-      return moment(fecha).locale("es").format("D [de] MMMM [del] YYYY");
     },
     async getExamenCatecumenos() {
       try {
