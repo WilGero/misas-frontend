@@ -29,7 +29,10 @@
             <th class="ps-4 text-start">Nombres</th>
             <th class="ps-4 text-start">Apellidos</th>
             <th>Agregar Calificación</th>
-            <th>Calificacion</th>
+            <th>Puntos extras</th>
+            <th>Nota</th>
+            <th>Puntos</th>
+            <th>Nota Final</th>
           </tr>
         </thead>
         <tbody class="table-light">
@@ -58,7 +61,29 @@
                 </button>
               </div>
             </td>
-            <td class="fs-4">{{ item.nota }}</td>
+            <!-- puntos extras -->
+            <td>
+              <div class="d-flex justify-content-center">
+                <input
+                  class="form-control"
+                  type="number"
+                  :value="item.puntos"
+                  @input="puntos = $event.target.value"
+                  v-if="activar2 && indice == index"
+                />
+                <button
+                  class="btn btn-primary ms-2"
+                  @click="agregarPuntos(index, item.catecumeno_id)"
+                >
+                  <i v-if="activar2 && indice == index" class="fas fa-save"></i>
+                  <i v-else class="fas fa-pencil-alt"></i>
+                </button>
+              </div>
+            </td>
+            <td>{{ item.nota }}</td>
+            <td>{{ item.puntos }}</td>
+
+            <td class="fs-4">{{ item.nota_final }}</td>
           </tr>
           <!-- Aquí puedes agregar más filas con otros estudiantes -->
         </tbody>
@@ -84,9 +109,11 @@ export default {
       fechaExamen: null,
       message: null,
       searchQuery: "", // Añadir searchQuery al estado
-      activar: false, //para activar el boton de registro de calificacion
+      activar: false, //para activar el boton de registro de nota
+      activar2: false, //para activar el boton de registro de puntos
       indice: null, //para guardar el indice de la fila
       notaExamen: null,
+      puntos: null,
     };
   },
   created() {
@@ -152,22 +179,48 @@ export default {
           console.error("Error al encontrar la clase:", error);
         });
     },
-    async actualizarCalificacion(catecumenoId) {
+    async actualizarNota(catecumenoId) {
       try {
         this.formulario = {
           catecumeno_id: catecumenoId,
           examen_id: this.$route.params.examenId,
           nota: this.notaExamen,
         };
-        if(this.notaExamen === null){ //si notaExamen es nulo no actualizar
+        if (this.notaExamen === null) {
+          //si notaExamen es nulo no actualizar
           return;
         }
         const response = await this.axios.put(
-          "catecumenos-examen/actualizar",
+          "catecumenos-examen/actualizar-nota",
           this.formulario
         );
         console.log("Nota actualizada exitosamente ", response.data.data);
-      
+
+        // this.mostrarAlerta = true;
+        // setTimeout(() => {
+        //   this.$router.go(-1);
+        // }, 1500);
+      } catch (error) {
+        console.error("Error al actualizar la nota:", error);
+      }
+    },
+    async actualizarPuntos(catecumenoId) {
+      try {
+        this.formulario = {
+          catecumeno_id: catecumenoId,
+          examen_id: this.$route.params.examenId,
+          puntos: this.puntos,
+        };
+        if (this.puntos === null) {
+          //si notaExamen es nulo no actualizar
+          return;
+        }
+        const response = await this.axios.put(
+          "catecumenos-examen/actualizar-puntos",
+          this.formulario
+        );
+        console.log("Nota actualizada exitosamente ", response.data.data);
+
         // this.mostrarAlerta = true;
         // setTimeout(() => {
         //   this.$router.go(-1);
@@ -185,11 +238,26 @@ export default {
       this.activar = !this.activar;
 
       if (!this.activar) {
-        await this.actualizarCalificacion(catecumenoId);
-        this.notaExamen=null;
+        await this.actualizarNota(catecumenoId);
+        this.notaExamen = null;
         this.getCatecumenosExamen();
       }
     },
+    async agregarPuntos(index, catecumenoId) {
+      // console.log(index);
+      // console.log(`catecumeno id: ${catecumenoId}`)
+      //  console.log(`examen id: ${this.$route.params.examenId}`);
+      // console.log(`esta es la nota: ${this.notaExamen}`)
+      this.indice = index;
+      this.activar2 = !this.activar2;
+
+      if (!this.activar2) {
+        await this.actualizarPuntos(catecumenoId);
+        this.notaExamen = null;
+        this.getCatecumenosExamen();
+      }
+    },
+
     irAtras() {
       this.$router.go(-1);
     },

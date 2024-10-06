@@ -27,6 +27,7 @@
             <!-- <th>CI</th> -->
             <th>Celular</th>
             <th>Edad</th>
+            <th>Permisos disponibles</th>
             <th>Acciones</th>
           </tr>
         </thead>
@@ -38,6 +39,7 @@
             <!-- <td>{{ item.ci }}</td> -->
             <td>{{ item.celular }}</td>
             <td>{{ calcularEdad(item.fecha_nacimiento) }}</td>
+            <td>{{ item.max_permiso }}</td>
             <td>
               <div class="btn-group">
                 <!-- Botón de detos del catecumeno -->

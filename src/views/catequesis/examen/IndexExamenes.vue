@@ -162,7 +162,7 @@ export default {
 
       try {
         await this.axios.delete(`/examenes/borrar/${this.examenId}`);
-        console.log("Examen eliminada con éxito");
+        console.log("Examen eliminado con éxito");
 
         this.mostrarAlerta = true;
         this.mensaje = "Examen eliminado con éxito";
@@ -221,6 +221,9 @@ export default {
           this.agregarCatecumenoExamen({
             examen_id: idExamen,
             catecumeno_id: catecumeno.id,
+            nota: 0,
+            puntos: 0,
+            nota_final: 0
           });
         });
 

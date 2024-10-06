@@ -1,13 +1,26 @@
 <template>
   <div class="table-responsive">
-    {{ catecumenos.length }}
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nro</th>
+          <th scope="col">Título</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(examen, index) in examenes" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ examen }}</td>
+        </tr>
+      </tbody>
+    </table>
     <table class="table table-hover table-dark">
       <thead>
         <tr>
           <th colspan="9" class="fs-5 fw-bold">Calificaciones</th>
         </tr>
         <tr class="table-group-divider">
-          <th scope="col" >Nro</th>
+          <th scope="col">Nro</th>
           <th scope="col">Nombres</th>
           <th scope="col">Apellidos</th>
           <th scope="col">
@@ -38,7 +51,14 @@
           <td>{{ item.notas[2] }}</td>
           <td>{{ item.notas[3] }}</td>
           <td>{{ item.notas[4] }}</td>
-          <td class="table-success fw-bolder">{{ item.promedio }}</td>
+          <td
+            :class="
+              item.promedio < 51 ? 'table-danger text-danger' : 'table-success'
+            "
+            class="fw-bolder"
+          >
+            {{ item.promedio }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -51,6 +71,7 @@ export default {
       // lista: ["Nro 1", "Nro 2", "Nro 3", "Nro 4", "Nro 5", "Nro 6", "Nro 7"],
       catecumenoExamenes: [],
       catecumenos: [],
+      examenes: [],
     };
   },
   created() {
@@ -67,8 +88,10 @@ export default {
         this.catecumenoExamenes = response.data.data.map((obj) => ({
           ...obj,
           notas: [],
-          promedio:0
+          promedio: 0,
         }));
+        this.crearListaExamenes(this.catecumenoExamenes);
+
         // Procesa la asistencia
         for (let i = 0; i < this.catecumenoExamenes.length; i++) {
           let item = this.catecumenoExamenes[i];
@@ -79,17 +102,19 @@ export default {
             item.id === this.catecumenoExamenes[i + 1].id
           ) {
             i++;
-            notas.push(item.nota);
+            notas.push(item.nota_final);
             item = this.catecumenoExamenes[i];
           }
           // Añadir el catecúmeno al resultado final
-          notas.push(item.nota);
-          const suma = notas.reduce((acumulador, valorActual) => acumulador + valorActual, 0);
+          notas.push(item.nota_final);
+          const suma = notas.reduce(
+            (acumulador, valorActual) => acumulador + valorActual,
+            0
+          );
           item.notas = notas;
-          item.promedio=suma/notas.length;
+          item.promedio = suma / notas.length;
           this.catecumenos.push(item);
         }
-
         console.log(this.catecumenos);
       } catch (error) {
         console.error(
@@ -97,6 +122,16 @@ export default {
           error
         );
       }
+    },
+    crearListaExamenes(listaObjetos) {
+      this.examenes = Object.values(
+        listaObjetos.reduce((acumulador, objeto) => {
+          if (!acumulador[objeto.titulo]) {
+            acumulador[objeto.titulo] = objeto;
+          }
+          return acumulador;
+        }, {})
+      ).map((objeto) => objeto.titulo);
     },
   },
 };
