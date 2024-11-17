@@ -1,10 +1,10 @@
 <template>
   <div class="container p-4">
-      <!-- Alerta de registro exitoso -->
-  <div v-if="mostrarAlerta" class="alert alert-success alert-dismissible m-4">
-    <span>Usuario registrado satisfactoriamente</span>
-    <button class="btn-close" @click="cerrarAlerta"></button>
-  </div>
+    <!-- Alerta de registro exitoso -->
+    <div v-if="mostrarAlerta" class="alert alert-success alert-dismissible m-4">
+      <span>Usuario registrado satisfactoriamente</span>
+      <button class="btn-close" @click="cerrarAlerta"></button>
+    </div>
 
     <div class="card shadow bg-light w-50 w-sm-100 m-auto border border-3">
       <div class="card-header">
@@ -112,12 +112,14 @@ export default {
       },
       roles: [],
       mostrarPassword: false,
-      mostrarAlerta:false
+      mostrarAlerta: false,
+      msgError: "",
     };
   },
-  created(){
+  created() {
     this.getRoles();
   },
+
   methods: {
     async getRoles() {
       await this.axios
@@ -147,7 +149,6 @@ export default {
               name: "login",
             });
           }, 1500); // 3000 milisegundos = 3 segundos
-
         })
         .catch((error) => {
           // Manejar errores
@@ -157,9 +158,9 @@ export default {
     cambiarMostrarPassword() {
       this.mostrarPassword = !this.mostrarPassword;
     },
-    cerrarAlerta(){
-      this.mostrarAlerta=false;
-    }
+    cerrarAlerta() {
+      this.mostrarAlerta = false;
+    },
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="table-responsive">
-    <table class="table table-hover table-dark">
+    <table class="table table-hover table-primary">
       <thead>
         <tr>
           <td colspan="7" class="fs-5 fw-bold">Multas Pendientes</td>

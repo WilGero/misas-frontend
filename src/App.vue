@@ -1,5 +1,5 @@
 <template>
-  <section class="arriba">
+  <section class="arriba mb-5">
     <menu-nav></menu-nav>
   </section>
   <section class="margen-arriba">
@@ -100,7 +100,14 @@ footer {
   width: 100%;
   z-index: 1000;
 }
+
 .margen-arriba {
   margin-top: 10%;
+}
+@media (max-width: 576px) {
+  /* Estilos para pantallas de menos de 576px */
+  .margen-arriba {
+    margin-top: 20%;
+}
 }
 </style>

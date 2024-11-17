@@ -14,10 +14,10 @@
         </tr>
       </tbody>
     </table>
-    <table class="table table-hover table-dark">
+    <table class="table table-hover table-warning">
       <thead>
         <tr>
-          <th colspan="9" class="fs-5 fw-bold">Calificaciones</th>
+          <th colspan="10" class="fs-5 fw-bold">Calificaciones</th>
         </tr>
         <tr class="table-group-divider">
           <th scope="col">Nro</th>
@@ -38,6 +38,7 @@
           <th scope="col">Nro-3</th>
           <th scope="col">Nro-4</th>
           <th scope="col">Nro-5</th>
+          <th scope="col">Nro-6</th>
           <th rowspan="2" scope="col" class="table-primary">Promedio</th>
         </tr>
       </thead>
@@ -51,6 +52,8 @@
           <td>{{ item.notas[2] }}</td>
           <td>{{ item.notas[3] }}</td>
           <td>{{ item.notas[4] }}</td>
+          <td>{{ item.notas[5] }}</td>
+
           <td
             :class="
               item.promedio < 51 ? 'table-danger text-danger' : 'table-success'
@@ -112,7 +115,7 @@ export default {
             0
           );
           item.notas = notas;
-          item.promedio = suma / notas.length;
+          item.promedio = Math.round(suma / notas.length);
           this.catecumenos.push(item);
         }
         console.log(this.catecumenos);

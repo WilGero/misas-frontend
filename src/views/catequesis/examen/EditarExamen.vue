@@ -21,6 +21,7 @@
         <div class="card bg-light">
           <div class="card-header">
             <h3 class="card-title">Editar Examen</h3>
+            {{ formulario }}
             <button
               class="btn-close"
               aria-label="Close"
