@@ -5,7 +5,7 @@
       {{ claseCatecumenos.length }}
       <section>
         <router-link :to="{ name: 'agregarClase' }" class="btn btn-success"
-          ><i class="fas fa-plus"></i> Agregar</router-link
+          ><i class="fas fa-plus"></i><span class="d-none d-md-block">Agregar</span></router-link
         >
       </section>
     </div>

@@ -1,11 +1,14 @@
 <template>
   <!-- Navbar principal -->
   <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <img class="img-thumbnail img-fluid me-2" width="100" height="100" src="../assets/logo-parro.jpeg" alt="logo">
-      <a class="navbar-brand" href="#"
-      
-        >Parroquia Inmaculada <br> 
+    <div class="container-fluid">
+      <img
+        class="img-thumbnail img-fluid me-2"
+        src="../assets/logo-parro.jpeg"
+        alt="logo"
+      />
+      <a class="navbar-brand d-none d-md-block" href="#"
+        >Parroquia Inmaculada <br />
         Concepción - Vinto</a
       >
       <!-- Menú hamburguesa para pantallas pequeñas -->
@@ -69,32 +72,32 @@
                 ><i class="fas fa-list"></i> Intenciones</router-link
               >
             </li>
-            <li class="nav-item" v-if="auth.data.rol_id===2">
+            <li class="nav-item" v-if="auth.data.rol_id === 2">
               <router-link class="nav-link" :to="{ name: 'misas' }"
                 ><i class="fas fa-church"></i> Misas</router-link
               >
             </li>
-            <li class="nav-item" v-if="auth.data.rol_id===4">
+            <li class="nav-item" v-if="auth.data.rol_id === 4">
               <router-link class="nav-link" :to="{ name: 'clases' }"
                 ><i class="fas fa-chalkboard"></i> Clases</router-link
               >
             </li>
-            <li class="nav-item" v-if="auth.data.rol_id===4">
+            <li class="nav-item" v-if="auth.data.rol_id === 4">
               <router-link class="nav-link" :to="{ name: 'catecumenos' }"
                 ><i class="fas fa-user-graduate"></i> Catecumenos</router-link
               >
             </li>
-            <li class="nav-item" v-if="auth.data.rol_id===4">
+            <li class="nav-item" v-if="auth.data.rol_id === 4">
               <router-link class="nav-link" :to="{ name: 'examenes' }"
                 ><i class="fas fa-pen"></i> Examenes</router-link
               >
             </li>
-            <li class="nav-item" v-if="auth.data.rol_id===4">
+            <li class="nav-item" v-if="auth.data.rol_id === 4">
               <router-link class="nav-link" to="/estadisticas"
                 ><i class="fas fa-chart-bar"></i>Estadísticas</router-link
               >
             </li>
-            <li class="nav-item" v-if="auth.data.rol_id===1">
+            <li class="nav-item" v-if="auth.data.rol_id === 1">
               <router-link class="nav-link" :to="{ name: 'usuarios' }"
                 ><i class="fas fa-users"></i> Usuarios</router-link
               >
@@ -168,10 +171,20 @@ export default {
 nav {
   background-color: #001f3f;
 }
+nav > div > img {
+  height: 100px;
+  width: 100px;
+}
 
 @media (max-width: 991.98px) {
   .navbar-expand-lg .navbar-collapse {
     background-color: #001f3f; /* Color de fondo del menú desplegable en pantallas pequeñas */
+  }
+}
+@media (max-width: 576px) {
+  nav > div > img {
+    height: 50px;
+    width: 50px;
   }
 }
 </style>

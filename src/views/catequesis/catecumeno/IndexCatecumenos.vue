@@ -3,8 +3,8 @@
     <div class="d-flex m-2 justify-content-around">
       <h1>Tabla de Catecumenos</h1>
       <section>
-        <router-link :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
-          ><i class="fas fa-user-plus"></i> Agregar</router-link
+        <router-link aria-label="Agregar" title="Nuevo" :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
+          ><i class="fas fa-user-plus"></i><span class="d-none">Agregar</span></router-link
         >
       </section>
     </div>

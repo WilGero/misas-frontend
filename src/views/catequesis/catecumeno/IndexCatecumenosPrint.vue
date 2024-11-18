@@ -2,18 +2,16 @@
   <div class="container mt-4">
     <div class="d-flex m-2 justify-content-around">
       <h1>Tabla de Catecumenos</h1>
-      <section>
+      <section class="btn-group h-25">
         <router-link :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
-          ><i class="fas fa-user-plus"></i> Agregar</router-link
+          ><i class="fas fa-user-plus"></i> <span class="d-none d-lg-block">Agregar</span></router-link
         >
+        <button @click="imprimirNombresApellidos" class="btn btn-primary">
+        <i class="fas fa-print"></i> <span class="d-none d-lg-block">Imprimir</span>
+        </button>
       </section>
     </div>
-    <!-- Botón para imprimir nombres y apellidos -->
-    <div class="text-end mb-3">
-      <button @click="imprimirNombresApellidos" class="btn btn-primary">
-        <i class="fas fa-print"></i> Imprimir Nombres y Apellidos
-      </button>
-    </div>
+
     <!-- Barra de búsqueda -->
     <div class="mb-3">
       <input
