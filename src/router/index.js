@@ -273,9 +273,15 @@ const routes = [
     component: () => import('../views/catequesis/estadistica/EstadisticasVue'),
     children: [
       {
-        path: '',
+        path: 'multas',
         name: 'multas',
         component: () => import('../views/catequesis/estadistica/MultasVue')
+
+      },
+      {
+        path: 'general',
+        name: 'general',
+        component: () => import('../views/catequesis/estadistica/GeneralVue')
 
       },
       {

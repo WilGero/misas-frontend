@@ -1,15 +1,34 @@
 <template>
   <div class="container">
     <div class="d-flex justify-content-end">
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <router-link
-            class="nav-link"
-            to="/estadisticas"
-            exact
-            exact-active-class="active"
-            >Multas</router-link
+      <ul class="nav bg-dark">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
           >
+          Balance
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <router-link
+                class="dropdown-item"
+                :to="{name:'multas'}"
+                exact
+                >Multas</router-link
+              >
+            </li>
+            <li><router-link
+                class="dropdown-item"
+                :to="{name:'general'}"
+                exact
+                >General</router-link
+              ></li>
+          </ul>
         </li>
         <li class="nav-item">
           <router-link
@@ -47,10 +66,8 @@ export default {
       multaTotal: 0,
     };
   },
-  created() {
-  },
+  created() {},
   methods: {
-
     printSection() {
       const printContent = document.getElementById("printable").innerHTML;
       const originalContent = document.body.innerHTML;
