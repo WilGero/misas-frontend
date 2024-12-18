@@ -1,10 +1,9 @@
 <template>
   <div class="table-responsive">
-    <table class="table table-hover table-primary">
-      <thead>
-        <tr>
-          <td colspan="7" class="fs-5 fw-bold">Multas Pendientes</td>
-        </tr>
+    <h2 class="d-none d-print-block text-center">CONFIRMACIÓN 2023 </h2>
+    <table class="table table-hover table-bordered caption-top">
+      <caption class="text-center text-bg-dark bg-opacity-75">Multas pendientes</caption>
+      <thead class="table-secondary">
         <tr class="table-group-divider">
           <th scope="col">Nro</th>
           <th scope="col">Nombres</th>
@@ -17,7 +16,7 @@
       </thead>
       <tbody class="table-group-divider">
         <tr v-for="(item, index) in catecumenos" :key="index">
-          <td scope="row">{{ index + 1 }}</td>
+          <td class="table-secondary" scope="row">{{ index + 1 }}</td>
           <td>{{ item.nombres }}</td>
           <td>{{ item.apellidos }}</td>
           <td>{{ item.atrasos }}</td>
@@ -156,3 +155,6 @@ export default {
   },
 };
 </script>
+<style>
+
+</style>

@@ -1,19 +1,8 @@
 <template>
   <div class="container mt-4">
-    <div class="d-flex m-2 justify-content-around">
-      <h1>Tabla de Catecumenos</h1>
-      <section class="btn-group h-25">
-        <router-link :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
-          ><i class="fas fa-user-plus"></i> <span class="d-none d-lg-block">Agregar</span></router-link
-        >
-        <button @click="imprimirNombresApellidos" class="btn btn-primary">
-        <i class="fas fa-print"></i> <span class="d-none d-lg-block">Imprimir</span>
-        </button>
-      </section>
-    </div>
-
-    <!-- Barra de búsqueda -->
-    <div class="mb-3">
+    <div class="row m-2 align-items-center">
+       <!-- Barra de búsqueda -->
+    <div class="col-12 col-lg-8 mb-3">
       <input
         type="text"
         class="form-control"
@@ -21,27 +10,39 @@
         v-model="searchQuery"
       />
     </div>
+      <section class="col-12 col-lg-4 btn-group h-25 py-4">
+        <router-link :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
+          ><i class="fas fa-user-plus"></i> <span class="d-none d-md-block">Nuevo</span></router-link
+        >
+        <button @click="imprimirNombresApellidos" class="btn btn-primary">
+        <i class="fas fa-print"></i> <span class="d-none d-md-block">Imprimir</span>
+        </button>
+      </section>
+    </div>
+
+   
     <div class="table-responsive">
-      <table class="table table-hover table-bordered">
-        <thead class="table-light">
+      <table class="table table-hover table-bordered caption-top">
+        <caption class="text-center text-bg-dark bg-opacity-75">Lista de Catecúmenos</caption>
+        <thead class="table-secondary">
           <tr>
             <th>Nro</th>
             <th>Nombres</th>
             <th>Apellidos</th>
-            <th>Celular</th>
-            <th>Edad</th>
-            <th>Permisos disponibles</th>
+            <th class="d-none d-lg-table-cell">Celular</th>
+            <th class="d-none d-lg-table-cell">Edad</th>
+            <th class="d-none d-md-table-cell">Permisos disponibles</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, index) in filteredCatecumenosClase" :key="item.id">
-            <td>{{ index + 1 }}</td>
+            <td class="table-secondary">{{ index + 1 }}</td>
             <td>{{ item.nombres }}</td>
             <td>{{ item.apellidos }}</td>
-            <td>{{ item.celular }}</td>
-            <td>{{ calcularEdad(item.fecha_nacimiento) }}</td>
-            <td>{{ item.max_permiso }}</td>
+            <td class="d-none d-lg-table-cell">{{ item.celular }}</td>
+            <td class="d-none d-lg-table-cell">{{ calcularEdad(item.fecha_nacimiento) }}</td>
+            <td class="d-none d-md-table-cell">{{ item.max_permiso }}</td>
             <td>
               <div class="btn-group">
                 <router-link
@@ -52,7 +53,7 @@
                   type="button"
                   class="btn btn-secondary"
                 >
-                  <i class="fas fa-info-circle"></i> Datos
+                  <i class="fas fa-info-circle"></i> <span class="d-none d-lg-block">Datos</span>
                 </router-link>
                 <router-link
                   :to="{
@@ -62,7 +63,7 @@
                   type="button"
                   class="btn btn-primary"
                 >
-                  <i class="fas fa-user-check"></i> Asistencia
+                  <i class="fas fa-user-check"></i> <span class="d-none d-lg-block">Asistencia</span>
                 </router-link>
               </div>
             </td>
@@ -133,22 +134,22 @@ export default {
           <head>
             <title>Confirmación - 2024</title>
             <style>
-              body { font-family: Arial, sans-serif; padding: 20px; }
-              h1 { text-align: center; }
-              table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+              body { font-family: Arial, sans-serif; padding: 5px; }
+              h3,h4 { text-align: center; }
+              table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size:14px}
               th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
               th { background-color: #f2f2f2; }
             </style>
           </head>
           <body>
-            <h1>Confirmación - 2024</h1>
+            <h3>Parroquia Inmaculada Concepción de Vinto</h3>
+            <h4>Confirmación - 2024</h4>
             <table>
               <thead>
                 <tr>
                   <th>Nro</th>
                   <th>Nombres</th>
                   <th>Apellidos</th>
-                  <th>Asistencia</th>
                 </tr>
               </thead>
               <tbody>
@@ -172,4 +173,5 @@ export default {
 .table-responsive {
   overflow-x: auto;
 }
+
 </style>

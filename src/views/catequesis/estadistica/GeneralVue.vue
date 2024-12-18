@@ -16,6 +16,14 @@ export default {
           description: "Impresión de hojas",
           costo: 20,
         },
+        {
+          description: "25 rosarios",
+          costo: 75,
+        },
+        {
+          description: "25 folletos para rezar el rosario",
+          costo: 60,
+        },
       ],
     };
   },
@@ -136,9 +144,12 @@ export default {
           </tbody>
         </table>
       </div>
-      <div class="table-responsive">
+      <div class="col-12 col-lg-10 mx-auto table-responsive">
             <MultasCatecumenos/>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+
+</style>
