@@ -203,6 +203,15 @@ const routes = [
       requiresAuth: true, requiredRole: 4
     }
   },
+    // rutas para catequesis
+    {
+      path: '/catequesis',
+      name: 'catequesis',
+      component: () => import('../views/catequesis/catequesis/IndexCatequesis.vue'),
+      meta: {
+        requiresAuth: true, requiredRole: 4
+      }
+    },
   {
     path: '/agregar-clase',
     name: 'agregarClase',
