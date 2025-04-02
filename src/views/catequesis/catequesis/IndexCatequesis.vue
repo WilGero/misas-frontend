@@ -32,11 +32,10 @@
           <div class="card-body">
             <h5 class="card-title fw-bolder fs-4">{{ item.nombre }}</h5>
             <p class="card-text">{{ item.requisitos }}</p>
-            <button
-              class="btn btn-primary"
-            >
-              Seleccionar
-            </button>
+ 
+            <router-link class="btn btn-primary" :to="{ name: 'opciones',params:{catequesisId:item.id} }"
+                > Seleccionar</router-link
+              >
           </div>
         </div>
       </div>

@@ -1,10 +1,17 @@
 <template>
   <div class="container mt-4">
+    <button class="btn btn-warning" @click="getCatecumenos">obtener</button>
+    {{ $route.params.catequesisId }}
     <div class="d-flex m-2 justify-content-around">
       <h1>Tabla de Catecumenos</h1>
       <section>
-        <router-link aria-label="Agregar" title="Nuevo" :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
-          ><i class="fas fa-user-plus"></i><span class="d-none">Agregar</span></router-link
+        <router-link
+          aria-label="Agregar"
+          title="Nuevo"
+          :to="{ name: 'agregarCatecumeno' }"
+          class="btn btn-success"
+          ><i class="fas fa-user-plus"></i
+          ><span class="d-none">Agregar</span></router-link
         >
       </section>
     </div>
@@ -77,10 +84,8 @@
 <script>
 import moment from "moment";
 export default {
-  setup(){
-    return{
-      
-    }
+  setup() {
+    return {};
   },
   data() {
     return {
@@ -88,7 +93,7 @@ export default {
       searchQuery: "", // Añadir searchQuery al estado
     };
   },
-  created() {
+  mounted() {
     this.getCatecumenos();
   },
   computed: {
@@ -106,7 +111,12 @@ export default {
   methods: {
     async getCatecumenos() {
       await this.axios
-        .get("/catecumenos/listado")
+        .get(
+          "/catecumenos/listado/" +
+            this.$route.params.catequesisId +
+            "/" +
+            this.$route.params.gestionId
+        )
         .then((response) => {
           // Manejar la respuesta exitosa
           this.catecumenos = response.data.data;

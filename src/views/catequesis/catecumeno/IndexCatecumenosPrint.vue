@@ -1,8 +1,9 @@
 <template>
   <div class="container mt-4">
+    {{$route.params.catequesisId}}
     <div class="row m-2 align-items-center">
        <!-- Barra de búsqueda -->
-    <div class="col-12 col-lg-8 mb-3">
+       <div class="col-12 col-lg-8 mb-3">
       <input
         type="text"
         class="form-control"
@@ -100,12 +101,19 @@ export default {
   methods: {
     async getCatecumenos() {
       await this.axios
-        .get("/catecumenos/listado")
+        .get(
+          "/catecumenos/listado/" +
+            this.$route.params.catequesisId +
+            "/" +
+            this.$route.params.gestionId
+        )
         .then((response) => {
+          // Manejar la respuesta exitosa
           this.catecumenos = response.data.data;
           console.log(this.catecumenos);
         })
         .catch((error) => {
+          // Manejar errores
           console.error("Error al listar catecumenos:", error);
         });
     },
