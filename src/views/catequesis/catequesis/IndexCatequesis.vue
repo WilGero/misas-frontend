@@ -5,16 +5,6 @@
         class="d-flex justify-content-around align-items-center text-bg-primary bg-opacity-75"
       >
         <h2 class="fs-1 ">Catequesis</h2>
-        <section class="p-2">
-          <router-link
-            aria-label="Agregar"
-            title="Nuevo"
-            :to="{ name: 'agregarCatecumeno' }"
-            class="btn btn-success"
-            ><i class="fas fa-plus"></i
-            ><span class="d-none">Agregar</span></router-link
-          >
-        </section>
       </section>
       <!-- Barra de búsqueda -->
     <div class="mb-3">

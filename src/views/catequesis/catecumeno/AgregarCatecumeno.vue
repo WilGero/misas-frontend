@@ -64,57 +64,55 @@
                   </div>
                 </div>
               </div>
-              <div><button type="button" class="btn btn-light btn-sm" @click="mostrarMasCampos">Mostrar más campos...</button></div>
+              <div>
+                <button
+                  type="button"
+                  class="btn btn-light btn-sm"
+                  @click="mostrarMasCampos"
+                >
+                  Mostrar más campos...
+                </button>
+              </div>
               <!-- Mostrar mas campos -->
               <section v-if="activeBoton">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="ci">CI</label>
-                    <input
-                      v-model="formulario.ci"
-                      type="text"
-                      class="form-control"
-                      id="ci"
-                      placeholder="Ingrese el carnet de identidad..."
-                    />
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="ci">CI</label>
+                      <input
+                        v-model="formulario.ci"
+                        type="text"
+                        class="form-control"
+                        id="ci"
+                        placeholder="Ingrese el carnet de identidad..."
+                      />
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-6">
-                  <div class="form-group">
-                    <label for="celular-padre">Celular del Padre/Madre</label>
-                    <input
-                      v-model="formulario.celular2"
-                      type="text"
-                      class="form-control"
-                      id="celular-padre"
-                      placeholder="Ingrese otro numero de celular..."
-                    />
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="celular-padre">Celular del Padre/Madre</label>
+                      <input
+                        v-model="formulario.celular2"
+                        type="text"
+                        class="form-control"
+                        id="celular-padre"
+                        placeholder="Ingrese otro numero de celular..."
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="form-group">
-                <label for="direccion">Dirección</label>
-                <input
-                  v-model="formulario.direccion"
-                  type="text"
-                  class="form-control"
-                  id="direccion"
-                  placeholder="Ej: Urb. Bustillos, nro 15"
-                />
-              </div>
-              <div class="form-group">
-                <label for="padrinos">Padrinos</label>
-                <input
-                  v-model="formulario.padrinos"
-                  type="text"
-                  class="form-control"
-                  id="padrinos"
-                  placeholder="Ingrese el nombre de los padrinos..."
-                />
-              </div>
-            </section>
+                <div class="form-group">
+                  <label for="direccion">Dirección</label>
+                  <input
+                    v-model="formulario.direccion"
+                    type="text"
+                    class="form-control"
+                    id="direccion"
+                    placeholder="Ej: Urb. Bustillos, nro 15"
+                  />
+                </div>
+              </section>
             </form>
           </div>
           <div class="card-footer text-center">
@@ -194,8 +192,9 @@ export default {
         celular: null,
         celular2: null,
         direccion: null,
-        padrinos: null,
         usuario_id: null,
+        catequesis_id: null,
+        gestion_id: null,
       },
       mostrarAlerta: false,
       errores: [],
@@ -211,11 +210,14 @@ export default {
     async agregarCatecumeno() {
       this.errores = [];
       this.formulario.usuario_id = this.auth.data.id;
+      this.formulario.catequesis_id = this.$route.params.catequesisId;
+      this.formulario.gestion_id = this.$route.params.gestionId;
+      
       if (this.formulario.nombres === null) {
         this.error = "Se requiere el nombre del catecúmeno";
         this.errores.push(this.error);
       }
-      if (this.formulario.apellidos === null ) {
+      if (this.formulario.apellidos === null) {
         this.error = "Se requiere el apellido del catecúmeno";
         this.errores.push(this.error);
       }
@@ -223,7 +225,7 @@ export default {
       //   this.error = "Se requiere el carnet de indentidad del catecúmeno";
       //   this.errores.push(this.error);
       // }
-      if (this.formulario.fecha_nacimiento === null ) {
+      if (this.formulario.fecha_nacimiento === null) {
         this.error = "Se requiere la fecha de nacimiento del catecúmeno";
         this.errores.push(this.error);
       }
@@ -254,6 +256,8 @@ export default {
               direccion: null,
               padrinos: null,
               usuario_id: null,
+              catequesis_id: null,
+              gestion_id: null,
             };
           })
           .catch((error) => {
@@ -273,9 +277,9 @@ export default {
     msgBotonNull() {
       this.msgBoton = null;
     },
-    mostrarMasCampos(){
-      this.activeBoton=!this.activeBoton;
-    }
+    mostrarMasCampos() {
+      this.activeBoton = !this.activeBoton;
+    },
   },
 };
 </script>

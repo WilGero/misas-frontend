@@ -1,30 +1,41 @@
 <template>
   <div class="container mt-4">
-    {{$route.params.catequesisId}}
+    {{ $route.params.catequesisId }}
     <div class="row m-2 align-items-center">
-       <!-- Barra de búsqueda -->
-       <div class="col-12 col-lg-8 mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Buscar..."
-        v-model="searchQuery"
-      />
-    </div>
+      <!-- Barra de búsqueda -->
+      <div class="col-12 col-lg-8 mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar..."
+          v-model="searchQuery"
+        />
+      </div>
       <section class="col-12 col-lg-4 btn-group h-25 py-4">
-        <router-link :to="{ name: 'agregarCatecumeno' }" class="btn btn-success"
-          ><i class="fas fa-user-plus"></i> <span class="d-none d-md-block">Nuevo</span></router-link
+        <router-link
+          :to="{
+            name: 'agregarCatecumeno',
+            params: {
+              catequesisId: $route.params.catequesisId,
+              gestionId: $route.params.gestionId,
+            },
+          }"
+          class="btn btn-success"
+          ><i class="fas fa-user-plus"></i>
+          <span class="d-none d-md-block">Nuevo</span></router-link
         >
         <button @click="imprimirNombresApellidos" class="btn btn-primary">
-        <i class="fas fa-print"></i> <span class="d-none d-md-block">Imprimir</span>
+          <i class="fas fa-print"></i>
+          <span class="d-none d-md-block">Imprimir</span>
         </button>
       </section>
     </div>
-
-   
+    <router-view></router-view>
     <div class="table-responsive">
       <table class="table table-hover table-bordered caption-top">
-        <caption class="text-center text-bg-dark bg-opacity-75">Lista de Catecúmenos</caption>
+        <caption class="text-center text-bg-dark bg-opacity-75">
+          Lista de Catecúmenos
+        </caption>
         <thead class="table-secondary">
           <tr>
             <th>Nro</th>
@@ -42,7 +53,9 @@
             <td>{{ item.nombres }}</td>
             <td>{{ item.apellidos }}</td>
             <td class="d-none d-lg-table-cell">{{ item.celular }}</td>
-            <td class="d-none d-lg-table-cell">{{ calcularEdad(item.fecha_nacimiento) }}</td>
+            <td class="d-none d-lg-table-cell">
+              {{ calcularEdad(item.fecha_nacimiento) }}
+            </td>
             <td class="d-none d-md-table-cell">{{ item.max_permiso }}</td>
             <td>
               <div class="btn-group">
@@ -54,7 +67,8 @@
                   type="button"
                   class="btn btn-secondary"
                 >
-                  <i class="fas fa-info-circle"></i> <span class="d-none d-lg-block">Datos</span>
+                  <i class="fas fa-info-circle"></i>
+                  <span class="d-none d-lg-block">Datos</span>
                 </router-link>
                 <router-link
                   :to="{
@@ -64,7 +78,8 @@
                   type="button"
                   class="btn btn-primary"
                 >
-                  <i class="fas fa-user-check"></i> <span class="d-none d-lg-block">Asistencia</span>
+                  <i class="fas fa-user-check"></i>
+                  <span class="d-none d-lg-block">Asistencia</span>
                 </router-link>
               </div>
             </td>
@@ -81,7 +96,7 @@ export default {
   data() {
     return {
       catecumenos: [],
-      searchQuery: "", 
+      searchQuery: "",
     };
   },
   created() {
@@ -132,7 +147,9 @@ export default {
       const lista = this.filteredCatecumenosClase
         .map(
           (item, index) =>
-            `<tr><td>${index + 1}</td><td>${item.nombres}</td><td>${item.apellidos}</td></tr>`
+            `<tr><td>${index + 1}</td><td>${item.nombres}</td><td>${
+              item.apellidos
+            }</td></tr>`
         )
         .join("");
 
@@ -181,5 +198,4 @@ export default {
 .table-responsive {
   overflow-x: auto;
 }
-
 </style>
