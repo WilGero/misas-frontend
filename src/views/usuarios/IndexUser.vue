@@ -111,6 +111,9 @@ export default {
   created() {
     this.getUsuarios();
   },
+  updated() {
+    this.getUsuarios();
+  },
   methods: {
     async getUsuarios() {
       await this.axios

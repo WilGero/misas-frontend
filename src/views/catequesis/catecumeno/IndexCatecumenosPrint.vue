@@ -102,6 +102,10 @@ export default {
   created() {
     this.getCatecumenos();
   },
+  updated(){
+    this.getCatecumenos();
+
+  },
   computed: {
     filteredCatecumenosClase() {
       return this.catecumenos.filter((item) => {
