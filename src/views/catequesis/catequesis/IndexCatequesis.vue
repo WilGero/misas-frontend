@@ -1,20 +1,15 @@
 <template>
   <div class="container mt-4">
-    <div class="col-12 p-3">
+    <div class="row p-3">
       <section
-        class="d-flex justify-content-around align-items-center text-bg-primary bg-opacity-75"
+        class="col-12 align-items-center text-bg-primary bg-opacity-75"
       >
         <h2 class="fs-1 ">Catequesis</h2>
       </section>
-      <!-- Barra de búsqueda -->
-    <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Buscar..."
-        v-model="searchQuery"
-      />
-    </div>
+      <!-- boton para agregar -->
+      <section class="col-md-1 col-3 mx-auto bg-light bg-opacity-75 rounded py-2">
+         <button class="btn btn-outline-success" @click="agregarCatequesis">Agregar</button>
+       </section>
     </div>
     <div class="row">
       <div class="col-6" v-for="item in catequesis" :key="item.id">
@@ -34,7 +29,7 @@
 </template>
   
   <script>
-import moment from "moment";
+
 export default {
   setup() {
     return {};
@@ -49,16 +44,7 @@ export default {
     this.getCatequesis();
   },
   computed: {
-    filteredCatecumenosClase() {
-      // Filtrar catecumenosClase basado en searchQuery
-      return this.catecumenos.filter((item) => {
-        const term = this.searchQuery.toLowerCase();
-        return (
-          item.nombres.toLowerCase().includes(term) ||
-          item.apellidos.toLowerCase().includes(term)
-        );
-      });
-    },
+
   },
   methods: {
     async getCatequesis() {
@@ -74,22 +60,20 @@ export default {
           console.error("Error al listar catequesis:", error);
         });
     },
-    calcularEdad(fecha_nacimiento) {
-      // Validar si se ha seleccionado una fecha
-      if (!fecha_nacimiento) {
-        alert("Por favor selecciona una fecha de nacimiento.");
-        return;
-      }
-      // Calcular la edad
-      const fechaNacimientoMoment = moment(fecha_nacimiento);
-      const fechaActualMoment = moment();
-      return fechaActualMoment.diff(fechaNacimientoMoment, "years");
-    },
+    async agregarCatequesis(){
+      this.$router.push({name:"agregarCatequesis"})
+    }    
   },
 };
 </script>
   
   <style>
+  .pos-a{
+    position: absolute;
+  }
+  .pos-r{
+    position: relative;
+  }
 /* Estilos personalizados */
 .table-responsive {
   overflow-x: auto;

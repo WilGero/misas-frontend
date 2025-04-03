@@ -158,12 +158,12 @@ const routes = [
     path: '/catecumenos/:catequesisId/:gestionId',
     name: 'catecumenos',
     component: () => import('../views/catequesis/catecumeno/IndexCatecumenosPrint'),
-    children:[
+    children: [
       {
         path: 'agregar-catecumeno',
         name: 'agregarCatecumeno',
         component: () => import('../views/catequesis/catecumeno/AgregarCatecumeno')
-        
+
       },
     ],
     meta: {
@@ -195,24 +195,31 @@ const routes = [
       requiresAuth: true, requiredRole: 4
     }
   },
-    // rutas para catequesis
-    {
-      path: '/catequesis/opciones/:catequesisId',
-      name: 'opciones',
-      component: () => import('../views/catequesis/catequesis/SelectCatequesis.vue'),
-      meta: {
-        requiresAuth: true, requiredRole: 4
-      }
-    },
-    {
-      path: '/catequesis/',
-      name: 'catequesis',
-      component: () => import('../views/catequesis/catequesis/IndexCatequesis.vue'),
-      meta: {
-        requiresAuth: true, requiredRole: 4
-      }
-    },
-
+  // rutas para catequesis
+  {
+    path: '/catequesis/',
+    name: 'catequesis',
+    component: () => import('../views/catequesis/catequesis/IndexCatequesis.vue'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
+  {
+    path: '/catequesis/opciones/:catequesisId',
+    name: 'opciones',
+    component: () => import('../views/catequesis/catequesis/SelectCatequesis.vue'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
+  {
+    path: '/catequesis/agregar-catequesis',
+    name: 'agregarCatequesis',
+    component: () => import('../views/catequesis/catequesis/AgregarCatequesis.vue'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
   // rutas para clases
   {
     path: '/clases',
@@ -222,7 +229,7 @@ const routes = [
       requiresAuth: true, requiredRole: 4
     }
   },
-    {
+  {
     path: '/agregar-clase',
     name: 'agregarClase',
     component: () => import('../views/catequesis/clases/AgregarClase'),
