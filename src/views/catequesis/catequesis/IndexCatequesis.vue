@@ -46,11 +46,11 @@
             <h5 class="card-title fw-bolder fs-4">{{ item.nombre }}</h5>
             <p class="card-text">{{ item.requisitos }}</p>
 
-            <router-link
-              class="btn btn-primary"
-              :to="{ name: 'opciones', params: { catequesisId: item.id } }"
+            <button
+              class="btn btn-outline-primary fw-bold"
+              @click="opcionesCatequesis(item.id)"
             >
-              Seleccionar</router-link
+              Seleccionar</button
             >
           </div>
         </div>
@@ -60,6 +60,7 @@
 </template>
   
   <script>
+
 export default {
   setup() {
     return {};
@@ -68,7 +69,6 @@ export default {
     return {
       catequesis: [],
       gestiones: [],
-      searchQuery: "", // Añadir searchQuery al estado
       selectGestion: null,
     };
   },
@@ -76,7 +76,8 @@ export default {
     this.getCatequesis();
     this.getGestion();
   },
-  computed: {},
+  mounted(){
+  },
   methods: {
     async getCatequesis() {
       await this.axios
@@ -110,17 +111,16 @@ export default {
           console.error("Error al listar las gestiones:", error);
         });
     },
+    //Dirige a la vista opciones de la catequesis
+    opcionesCatequesis(catequesisId){
+      this.$router.push({ name: 'opciones', params: { catequesisId,gestionId:this.selectGestion} })
+    }
   },
 };
 </script>
   
   <style>
-.pos-a {
-  position: absolute;
-}
-.pos-r {
-  position: relative;
-}
+
 /* Estilos personalizados */
 .table-responsive {
   overflow-x: auto;

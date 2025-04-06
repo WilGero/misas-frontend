@@ -77,7 +77,7 @@ export default {
   methods: {
     async getClases() {
       await this.axios
-        .get("/clases/listado")
+        .get(`/clases/listado/${this.$route.params.catequesisGestionId}`)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.clases = response.data.data;

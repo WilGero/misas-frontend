@@ -122,9 +122,7 @@ export default {
       await this.axios
         .get(
           "/catecumenos/listado/" +
-            this.$route.params.catequesisId +
-            "/" +
-            this.$route.params.gestionId
+            this.$route.params.catequesisGestionId
         )
         .then((response) => {
           // Manejar la respuesta exitosa

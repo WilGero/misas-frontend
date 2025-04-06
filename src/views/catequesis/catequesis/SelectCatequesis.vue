@@ -5,24 +5,16 @@
       <section
         class="d-flex justify-content-around align-items-center text-bg-primary bg-opacity-75"
       >
-      <h2 class="fs-1">{{ nameCateqesis }}</h2>
+        <h2 class="fs-1">{{ nameCateqesis }}</h2>
       </section>
-      <!-- Barra de búsqueda -->
-      <div class="row mb-3 justify-content-center">
-        <label
-          for="selectGestion"
-          class="col-3 form-label p-2 text-bg-dark bg-opacity-75 rounded rounded-end-0"
-          >Selecciona la Gestión:</label
-        >
-      </div>
     </div>
     <div class="row">
       <div class="col-3" v-for="(item, index) in opciones" :key="index">
         <div class="card shadow h-100">
           <div class="card-body">
-            <h5 class="card-title fw-bolder fs-4">{{ item }}</h5>
+            <h5 class="card-title fw-bolder fs-4">{{ item.nombre }}</h5>
             <p class="card-text"></p>
-            <button class="btn btn-primary" @click="catecumenos()">
+            <button class="btn btn-primary" @click="irOpcion(item.id)">
               Seleccionar
             </button>
           </div>
@@ -39,69 +31,51 @@ export default {
   },
   data() {
     return {
-      opciones: [
-        "Catecúmenos",
-        "Sesiones de catequesis",
-        "Examenes",
-        "Estadísticas",
+      opciones: [{
+        id:1,
+        nombre:"Catecúmenos"
+      },
+      { id:2,
+        nombre:"Sesiones de catequesis"}
+      ,
+      { id:3,
+        nombre:"Examenes"}
+        ,
+        { id:4,
+          nombre:"Estadísticas"}
       ],
       gestiones: [],
       catequesis_gestion: null,
       catequesis: null,
       nameCateqesis: null,
-      selectGestion: null, // Añadir searchQuery al estado
+      catequesisGestionId: null, 
     };
   },
   created() {
     this.encontrarCatequesis();
+    this.encontrarCatequesisGestion();
   },
   // mounted() {
-  //   this.encontrarCatequesisGestion();
   // },
-  updated(){
-    // this.encontrarCatequesisGestion();
-  },
-  computed: {
-  },
+  computed: {},
   methods: {
-        //metodo que encuentra una catequesis_gestiones segun el catequesis_id y la gestion_id
+    //metodo que encuentra una catequesis_gestiones segun el catequesis_id y la gestion_id
     async encontrarCatequesisGestion() {
       await this.axios
         .get(
-          `/catequesis-gestion/encontrar/${this.$route.params.catequesisId}/${this.selectGestion}`
+          `/catequesis-gestion/encontrar/${this.$route.params.catequesisId}/${this.$route.params.gestionId}`
         )
         .then((response) => {
           // Manejar la respuesta exitosa
           this.catequesis_gestion = response.data.data;
           console.log(this.catequesis_gestion);
-          if(this.catequesis_gestion===undefined){
-            this.agregarCatequesisGestion();
-          }
+          this.catequesisGestionId = this.catequesis_gestion.id;
         })
         .catch((error) => {
           // Manejar errores
           console.error("Error al listar las gestiones:", error);
         });
     },
-    //agregar catequesis_gestiones
-    async agregarCatequesisGestion(){
-      await this.axios
-        .get("/catequesi-gestion/agregar",
-          {
-            catequesis_id:this.$route.params.catequesisId,
-            gestion_id:this.selectGestion
-          }
-        )
-        .then((response) => {
-          // Manejar la respuesta exitosa
-          console.log(response);
-          this.encontrarCatequesis();
-        })
-        .catch((error) => {
-          // Manejar errores
-          console.error("Error al listar la catequesis:", error);
-        });
-    }, 
     //metodo que encuentra la catequesis por el id
     async encontrarCatequesis() {
       await this.axios
@@ -117,14 +91,24 @@ export default {
           console.error("Error al listar la catequesis:", error);
         });
     },
-    async catecumenos() {
-      this.$router.push({
-        name: "catecumenos",
-        params: {
-          catequesisId: this.$route.params.catequesisId,
-          gestionId: this.selectGestion,
-        },
-      });
+  irOpcion(id) {
+      console.log(id)
+      
+      if(id==1){        
+        this.$router.push({
+          name: "catecumenos",
+          params: {
+            catequesisGestionId: this.catequesisGestionId,
+          },
+        });
+      }else if(id==2){
+        this.$router.push({
+          name: "clases",
+          params: {
+            catequesisGestionId: this.catequesisGestionId,
+          },
+        });
+      }
     },
   },
 };

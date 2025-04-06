@@ -155,7 +155,7 @@ const routes = [
     }
   },
   {
-    path: '/catecumenos/:catequesisId/:gestionId',
+    path: '/catecumenos/:catequesisGestionId',
     name: 'catecumenos',
     component: () => import('../views/catequesis/catecumeno/IndexCatecumenosPrint'),
     children: [
@@ -197,7 +197,7 @@ const routes = [
   },
   // rutas para catequesis
   {
-    path: '/catequesis/',
+    path: '/catequesis',
     name: 'catequesis',
     component: () => import('../views/catequesis/catequesis/IndexCatequesis.vue'),
     meta: {
@@ -205,7 +205,7 @@ const routes = [
     }
   },
   {
-    path: '/catequesis/opciones/:catequesisId',
+    path: '/catequesis/opciones/:catequesisId/:gestionId',
     name: 'opciones',
     component: () => import('../views/catequesis/catequesis/SelectCatequesis.vue'),
     meta: {
@@ -222,7 +222,7 @@ const routes = [
   },
   // rutas para clases
   {
-    path: '/clases',
+    path: '/clases/:catequesisGestionId',
     name: 'clases',
     component: () => import('../views/catequesis/clases/IndexClases'),
     meta: {
