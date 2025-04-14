@@ -108,6 +108,13 @@ export default {
             catequesisGestionId: this.catequesisGestionId,
           },
         });
+      }else if(id==3){
+        this.$router.push({
+          name: "examenes",
+          params: {
+            catequesisGestionId: this.catequesisGestionId,
+          },
+        });
       }
     },
   },

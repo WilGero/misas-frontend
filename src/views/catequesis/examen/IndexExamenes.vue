@@ -127,7 +127,7 @@ export default {
   methods: {
     async getExamenes() {
       try {
-        const response = await this.axios.get("/examenes/listado");
+        const response = await this.axios.get("/examenes/listado/"+this.$route.params.catequesisGestionId);
         this.examenes = response.data.data;
         console.log(this.examenes);
       } catch (error) {
@@ -173,7 +173,7 @@ export default {
     },
     async getCatecumenos() {
       try {
-        const response = await this.axios.get("/catecumenos/listado");
+        const response = await this.axios.get("/catecumenos/listado/"+this.catequesisGestionId);
         this.catecumenos = response.data.data;
         console.log(this.catecumenos);
       } catch (error) {

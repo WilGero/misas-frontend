@@ -127,7 +127,7 @@ export default {
     },
     async getCatecumenos() {
       await this.axios
-        .get("/catecumenos/listado")
+        .get("/catecumenos/listado/"+this.$route.params.catequesisGestionId)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.catecumenos = response.data.data;

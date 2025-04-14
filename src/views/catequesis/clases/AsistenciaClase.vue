@@ -193,7 +193,7 @@ export default {
     },
     async getCatecumenosClase() {
       await this.axios
-        .get("/catecumenos/listado/" + this.$route.params.claseId)
+        .get("/catecumenos/listado-asistencia/" + this.$route.params.claseId)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.catecumenosClase = response.data.data;
