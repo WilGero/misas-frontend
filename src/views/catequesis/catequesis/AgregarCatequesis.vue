@@ -100,6 +100,16 @@ export default {
         console.log("Error al guardar la catequesis:", error);
       }
     },
+    async guardarCatequesisGestion(){
+        try {
+            const response = await this.axios.post(
+          "/catequesis/agregar",
+          this.formulario)
+          console.log("catequesisGestion guardada existosamente",response.data.data);
+        } catch (error) {
+            console.log("Error al guardar la catequesesGestion",error);
+        }
+    },
     irAtras(){
         this.$router.go(-1);
     }

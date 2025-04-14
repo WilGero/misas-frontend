@@ -1,16 +1,29 @@
 <template>
   <div class="container mt-4">
     <div class="d-flex m-2 justify-content-around">
-      <h1>Clases de la catequesis</h1>
-      {{ claseCatecumenos.length }}
+      <!-- Barra de búsqueda -->
+      <div class="col-12 col-lg-8 mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar..."
+          v-model="searchQuery"
+        />
+      </div>
       <section>
         <router-link :to="{ name: 'agregarClase' }" class="btn btn-success"
-          ><i class="fas fa-plus"></i><span class="d-none d-md-block">Agregar</span></router-link
+          ><i class="fas fa-plus"></i
+          ><span class="d-none d-md-block">Agregar</span></router-link
         >
       </section>
     </div>
     <div class="table-responsive">
-      <table class="table table-striped table-bordered">
+      <table
+        class="table table-hover table-striped table-bordered caption-top bg-opacity-75"
+      >
+        <caption class="text-center text-bg-dark fs-2">
+          Sesiones de Catequesis
+        </caption>
         <thead>
           <tr>
             <th>Nro</th>
@@ -20,7 +33,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in clases" :key="item.id">
+          <tr v-for="(item, index) in filteredClase" :key="item.id">
             <td>{{ index + 1 }}</td>
             <td>{{ item.tema }}</td>
             <td>{{ formatDateTime(item.fecha_hora) }}</td>
@@ -53,13 +66,13 @@
 
 <script>
 // import {ref} from "vue;"
-import useFormatDate from '@/composables/useFormatDate';
+import useFormatDate from "@/composables/useFormatDate";
 export default {
   setup() {
-    const {formatDateTime}=useFormatDate();
-    return{
+    const { formatDateTime } = useFormatDate();
+    return {
       formatDateTime,
-    }
+    };
   },
   data() {
     return {
@@ -68,11 +81,23 @@ export default {
       catecumenos: [],
       catecumenosNuevos: [],
       claseId: null,
+      searchQuery: "",
     };
   },
   created() {
     this.getClases();
     this.getCatecumenos();
+  },
+  computed: {
+    filteredClase() {
+      return this.clases.filter((item) => {
+        const term = this.searchQuery.toLowerCase();
+        return (
+          item.tema.toLowerCase().includes(term) ||
+          item.fecha_hora.toLowerCase().includes(term)
+        );
+      });
+    },
   },
   methods: {
     async getClases() {

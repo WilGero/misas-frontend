@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-4">
-    {{ $route.params.catequesisId }}
     <div class="row m-2 align-items-center">
       <!-- Barra de búsqueda -->
       <div class="col-12 col-lg-8 mb-3">
@@ -33,7 +32,7 @@
     <router-view></router-view>
     <div class="table-responsive">
       <table class="table table-hover table-bordered caption-top">
-        <caption class="text-center text-bg-dark bg-opacity-75">
+        <caption class="text-center text-bg-dark bg-opacity-75 fs-2">
           Lista de Catecúmenos
         </caption>
         <thead class="table-secondary">
