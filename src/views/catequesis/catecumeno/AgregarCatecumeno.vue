@@ -193,8 +193,7 @@ export default {
         celular2: null,
         direccion: null,
         usuario_id: null,
-        catequesis_id: null,
-        gestion_id: null,
+        catequesis_gestion_id: null,
       },
       mostrarAlerta: false,
       errores: [],
@@ -210,8 +209,7 @@ export default {
     async agregarCatecumeno() {
       this.errores = [];
       this.formulario.usuario_id = this.auth.data.id;
-      this.formulario.catequesis_id = this.$route.params.catequesisId;
-      this.formulario.gestion_id = this.$route.params.gestionId;
+      this.formulario.catequesis_gestion_id = this.$route.params.catequesisGestionId;
       
       if (this.formulario.nombres === null) {
         this.error = "Se requiere el nombre del catecúmeno";
@@ -256,8 +254,7 @@ export default {
               direccion: null,
               padrinos: null,
               usuario_id: null,
-              catequesis_id: null,
-              gestion_id: null,
+              catequesis_gestion_id: null,
             };
           })
           .catch((error) => {

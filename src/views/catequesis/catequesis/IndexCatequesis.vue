@@ -40,12 +40,11 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-6 mb-3" v-for="item in catequesis" :key="item.id">
-        <div class="card shadow h-100">
-          <div class="card-body">
-            <h5 class="card-title fw-bolder fs-4">{{ item.nombre }}</h5>
-            <p class="card-text">{{ item.requisitos }}</p>
-
+      <div class="col-6 mb-3"  v-for="item in catequesis" :key="item.id">
+        <div class="card shadow img-fondo" style="height: 300px;">
+          <div class="card-body position-relative z-index-1 d-flex flex-column justify-content-between">
+            <h5 class="card-title fs-2 fw-bold">{{ item.nombre }}</h5>
+            <p class="card-text fst-italic fs-4">{{ item.requisitos }}</p>
             <button
               class="btn btn-outline-primary fw-bold"
               @click="opcionesCatequesis(item.id)"
@@ -53,6 +52,7 @@
               Seleccionar</button
             >
           </div>
+          
         </div>
       </div>
     </div>
@@ -119,10 +119,36 @@ export default {
 };
 </script>
   
-  <style>
+  <style scoped>
+/* mis estuilos */
+.card h5:hover{
+  background-color: burlywood;
+}
+.card p:hover{
+  background-color: burlywood;
+}
 
 /* Estilos personalizados */
 .table-responsive {
   overflow-x: auto;
+}
+.img-fondo{
+  background-image: url('../../../assets/Confirmación.png');
+  background-size: 'cover'; 
+  height: '300px';
+}
+.img-fondo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.2); /* Ajusta el último valor (0.5) para la transparencia */
+  z-index: 0;
+}
+.card-body {
+  position: relative;
+  z-index: 1; /* Asegura que el contenido esté sobre el overlay */
 }
 </style>

@@ -1,11 +1,11 @@
 <template>
   <div class="container mt-4">
-    {{ this.catequesis_gestion }}
+
     <div class="col-12 p-3">
       <section
-        class="d-flex justify-content-around align-items-center text-bg-primary bg-opacity-75"
+        class="d-flex justify-content-around align-items-center text-bg-warning bg-opacity-75"
       >
-        <h2 class="fs-1">{{ nameCateqesis }}</h2>
+        <h2 class="fs-1 fw-bold text-light">{{ nameCateqesis }}</h2>
       </section>
     </div>
     <div class="row">
