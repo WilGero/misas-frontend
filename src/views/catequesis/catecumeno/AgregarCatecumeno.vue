@@ -2,16 +2,16 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card bg-light">
+        <div class="card text-bg-secondary opacity-75 mb-3">
           <div class="card-header">
-            <h3 class="card-title">Registro de Catecumeno</h3>
+            <h3 class="card-title text-light">Registro de Catecumeno</h3>
             <button
               class="btn-close"
               aria-label="Close"
               @click="irAtras"
             ></button>
           </div>
-          <div class="card-body">
+          <div class="card-body text-bg-light">
             <form>
               <div class="row">
                 <div class="col-md-6">
@@ -115,7 +115,7 @@
               </section>
             </form>
           </div>
-          <div class="card-footer text-center">
+          <div class="card-footer text-bg-light text-center">
             <button class="btn btn-danger me-2" @click="irAtras">
               Cancelar
             </button>
@@ -302,7 +302,9 @@ export default {
   color: #dc3545;
   margin-bottom: 5px;
 }
-btn-close:hover {
+.btn-close:hover {
   background-color: #dc3545;
 }
+
+
 </style>

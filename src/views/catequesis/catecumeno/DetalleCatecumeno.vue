@@ -34,7 +34,6 @@
                   {{ catecumeno.celular2 }}
                 </p>
                 <p><strong>Dirección:</strong> {{ catecumeno.direccion }}</p>
-                <p><strong>Padrinos:</strong> {{ catecumeno.padrinos }}</p>
               </div>
               <div class="">
                 <div class="row g-3 mb-4">
