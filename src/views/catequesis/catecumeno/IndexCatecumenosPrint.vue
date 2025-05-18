@@ -27,11 +27,14 @@
           <i class="fas fa-print"></i>
           <span class="d-none d-md-block">Imprimir</span>
         </button>
+        <button class="btn btn-success" @click="exportTableToExcel">
+          <i class="fas fa-file-excel"></i> Excel
+        </button>
       </section>
     </div>
     <router-view></router-view>
     <div class="table-responsive">
-      <table class="table table-hover table-bordered caption-top">
+      <table ref="table" class="table table-hover table-bordered caption-top">
         <caption class="text-center text-bg-dark bg-opacity-75 fs-2">
           Lista de Catecúmenos
         </caption>
@@ -91,6 +94,8 @@
 
 <script>
 import moment from "moment";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 export default {
   data() {
     return {
@@ -113,12 +118,25 @@ export default {
     },
   },
   methods: {
+    exportTableToExcel() {
+      // Obtener la referencia de la tabla
+      const table = this.$refs.table;
+
+      // Convertir la tabla a un libro de trabajo (workbook)
+      const workbook = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+
+      // Generar un archivo Excel binario
+      const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+
+      // Guardar el archivo usando FileSaver
+      saveAs(
+        new Blob([wbout], { type: "application/octet-stream" }),
+        "tabla.xlsx"
+      );
+    },
     async getCatecumenos() {
       await this.axios
-        .get(
-          "/catecumenos/listado/" +
-            this.$route.params.catequesisGestionId
-        )
+        .get("/catecumenos/listado/" + this.$route.params.catequesisGestionId)
         .then((response) => {
           // Manejar la respuesta exitosa
           this.catecumenos = response.data.data;
