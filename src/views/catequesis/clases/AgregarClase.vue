@@ -2,8 +2,8 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card bg-light">
-          <div class="card-header">
+        <div class="card opacity-75">
+          <div class="card-header text-bg-secondary">
             <h3 class="card-title">Registro de la clase</h3>
             <button
               class="btn-close"
@@ -11,7 +11,7 @@
               @click="irAtras"
             ></button>
           </div>
-          <div class="card-body">
+          <div class="card-body text-bg-light">
             <form>
               <div class="row">
                 <div class="col">
@@ -160,7 +160,7 @@ export default {
         fecha_hora: null,
         descripcion: null,
         observaciones: null,
-        catequesis_id: null,
+        catequesis_gestion_id: null,
       },
       mostrarAlerta: false,
       errores: [],
@@ -187,7 +187,7 @@ export default {
     },
     async agregarClase() {
       this.errores = [];
-      this.formulario.catequesis_id = 2;
+      this.formulario.catequesis_gestion_id = this.$route.params.catequesisGestionId;
       console.log(this.formulario);
       if (this.formulario.tema ===null) {
         this.error = "Se requiere el nombre del tema";
@@ -216,7 +216,7 @@ export default {
               fecha_hora: null,
               descripcion: null,
               observaciones: null,
-              catequesis_id: null,
+              catequesis_gestion_id: null,
             };
           })
           .catch((error) => {
@@ -264,7 +264,7 @@ export default {
   color: #dc3545;
   margin-bottom: 5px;
 }
-btn-close:hover {
+.btn-close:hover {
   background-color: #dc3545;
 }
 </style>

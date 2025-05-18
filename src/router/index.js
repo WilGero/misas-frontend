@@ -230,7 +230,7 @@ const routes = [
     }
   },
   {
-    path: '/agregar-clase',
+    path: '/agregar-clase/:catequesisGestionId',
     name: 'agregarClase',
     component: () => import('../views/catequesis/clases/AgregarClase'),
     meta: {

@@ -1,5 +1,6 @@
 <template>
   <div class="container mt-4">
+    {{ claseCatecumenos.length }}    
     <div class="d-flex m-2 justify-content-around">
       <!-- Barra de búsqueda -->
       <div class="col-12 col-lg-8 mb-3">
@@ -11,7 +12,7 @@
         />
       </div>
       <section>
-        <router-link :to="{ name: 'agregarClase' }" class="btn btn-success"
+        <router-link :to="{ name: 'agregarClase',params:{catequesisGestionId:$route.params.catequesisGestionId} }" class="btn btn-success"
           ><i class="fas fa-plus"></i
           ><span class="d-none d-md-block">Agregar</span></router-link
         >
