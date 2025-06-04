@@ -19,7 +19,6 @@
     <span class="fs-4">{{
       formatDatetimeWithMonthInLetters(fechaHoraClase)
     }}</span>
-    <h3>Lista de Catecúmenos</h3>
     <!-- Barra de búsqueda -->
     <div class="mb-3">
       <input
@@ -30,7 +29,10 @@
       />
     </div>
     <div class="table-responsive">
-      <table ref="table" class="table table-bordered table-hover">
+      <table ref="table" class="table table-bordered table-hover caption-top">
+        <caption class="text-center text-bg-dark bg-opacity-75 fs-2">
+          Lista de Catecúmenos
+        </caption>
         <thead class="table-success">
           <tr>
             <th>Nro</th>
@@ -354,6 +356,5 @@ export default {
 }
 .btn-attendance i {
   margin-right: 5px;
-  
 }
 </style>
