@@ -1,24 +1,32 @@
 <template>
-  <div class="container position-relative">
-    <div class="position-absolute mt-2 top-0 left-0">
-      <button class="btn btn-secondary" @click="irAtras">
-        <i class="fas fa-arrow-left"></i> Atrás
-      </button>
-      <button @click="imprimirListaAsistencia" class="btn btn-primary">
-        <i class="fas fa-print"></i>
-        <span class="d-none d-md-block">Imprimir</span>
-      </button>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 mt-2 text-start">
+        <button class="btn btn-secondary" @click="irAtras">
+          <i class="fas fa-arrow-left"></i>
+          <span class="d-none d-md-block">Atrás</span>
+        </button>
+      </div>
+      <div class="col-10 text-bg-dark bg-opacity-75">
+        <h2>Catequesis de {{ nombre }}</h2>
+        <span class="fs-3 text-start me-5"
+          ><strong>Tema:</strong> {{ temaClase }}</span
+        >
+        <span class="fs-4">{{
+          formatDatetimeWithMonthInLetters(fechaHoraClase)
+        }}</span>
+      </div>
+      <div class="col-2 btn-group py-4">
+        <button @click="imprimirListaAsistencia" class="btn btn-primary">
+          <i class="fas fa-print"></i>
+          <span class="d-none d-md-block">Imprimir</span>
+        </button>
+        <button class="btn btn-success" @click="exportTableToExcel">
+          <i class="fas fa-file-excel"></i>
+          <span class="d-none d-md-block">Excel</span>
+        </button>
+      </div>
     </div>
-    <button class="btn btn-success" @click="exportTableToExcel">
-      <i class="fas fa-file-excel"></i> Excel
-    </button>
-    <h2>Catequesis de {{ nombre }}</h2>
-    <span class="fs-3 text-start me-5"
-      ><strong>Tema:</strong> {{ temaClase }}</span
-    >
-    <span class="fs-4">{{
-      formatDatetimeWithMonthInLetters(fechaHoraClase)
-    }}</span>
     <!-- Barra de búsqueda -->
     <div class="mb-3">
       <input
@@ -348,13 +356,5 @@ export default {
 };
 </script>
 <style>
-.container {
-  padding: 20px;
-}
-.table-responsive {
-  margin-top: 20px;
-}
-.btn-attendance i {
-  margin-right: 5px;
-}
+
 </style>
