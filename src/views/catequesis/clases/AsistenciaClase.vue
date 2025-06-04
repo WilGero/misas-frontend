@@ -4,6 +4,10 @@
       <button class="btn btn-secondary" @click="irAtras">
         <i class="fas fa-arrow-left"></i> Atrás
       </button>
+      <button @click="imprimirListaAsistencia" class="btn btn-primary">
+        <i class="fas fa-print"></i>
+        <span class="d-none d-md-block">Imprimir</span>
+      </button>
     </div>
     <button class="btn btn-success" @click="exportTableToExcel">
       <i class="fas fa-file-excel"></i> Excel
@@ -15,7 +19,7 @@
     <span class="fs-4">{{
       formatDatetimeWithMonthInLetters(fechaHoraClase)
     }}</span>
-    <h3>Lista de Catecumenos</h3>
+    <h3>Lista de Catecúmenos</h3>
     <!-- Barra de búsqueda -->
     <div class="mb-3">
       <input
@@ -132,7 +136,7 @@ export default {
     this.getCatecumenosClase();
     this.getClase();
   },
-  computed:{
+  computed: {
     filteredCatecumenosClase() {
       // Filtrar catecumenosClase basado en searchQuery
       return this.catecumenosClase.filter((item) => {
@@ -280,6 +284,64 @@ export default {
     irAtras() {
       this.$router.go(-1);
     },
+    //para imprimir
+    imprimirListaAsistencia() {
+      // Crear una nueva ventana de impresión
+      const printWindow = window.open("", "_blank");
+      const lista = this.filteredCatecumenosClase
+        .map(
+          (item, index) =>
+            `<tr><td>${index + 1}</td><td>${item.nombres}</td><td>${
+              item.apellidos
+            }</td><td></td></td></tr>`
+        )
+        .join("");
+
+      // Insertar contenido en la ventana de impresión
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Confirmación - 2024</title>
+            <style>
+              body { font-family: Arial, sans-serif; padding: 20px 50px; }
+              h2,h3 { text-align: center; }
+              h4 {border:0.5px solid darkgray;
+              padding-left:10px;}
+              table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size:14px}
+              th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+              th { background-color: #f2f2f2; }
+            </style>
+          </head>
+          <body>
+    <h2>Catequesis de ${this.nombre}</h2>
+    <h4 class="fs-3 text-start me-5"
+      ><strong>Tema: </strong> ${this.temaClase}
+    <span class="fs-4"><br><strong>Fecha: </strong>${this.formatDatetimeWithMonthInLetters(
+      this.fechaHoraClase
+    )}</span></h4>
+    <h3>Lista de Catecúmenos</h3> 
+               <table>
+              <thead>
+                <tr>
+                  <th>Nro</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th>Asistencia</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${lista}
+                <td></td>
+              </tbody>
+            </table>
+          </body>
+        </html>
+      `);
+
+      // Cerrar el documento y enviar a impresión
+      printWindow.document.close();
+      printWindow.print();
+    },
   },
 };
 </script>
@@ -292,5 +354,6 @@ export default {
 }
 .btn-attendance i {
   margin-right: 5px;
+  
 }
 </style>
