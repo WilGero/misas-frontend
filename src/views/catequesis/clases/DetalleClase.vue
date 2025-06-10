@@ -4,25 +4,24 @@
     <p>{{ catecumenosNuevos }}</p> -->
     <div class="row justify-content-center mt-5">
       <div class="col-md-8">
-        <div class="card">
-          <div
-            class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
-          >
-            Información de la clase
-            <button
-              type="button"
-              @click="irAtras"
-              class="btn-close"
-              aria-label="Close"
-            ></button>
+        <div class="card opacity-75">
+          <div class="card-header text-bg-dark">
+            <div class="row">
+              <h3 class="col-10">Información de la clase</h3>
+              <div class="col-2 my-auto text-end">
+                <button
+                  type="button"
+                  @click="irAtras"
+                  class="btn-close"
+                  aria-label="Close"
+                ></button>
+              </div>
+            </div>
           </div>
           <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <p>
-                  <strong>{{ nombre }}</strong>
-                </p>
-                <p><strong>tema:</strong> {{ tema }}</p>
+            <div class="row justify-content-center text-start">
+              <div class="col-md-5 ps-5 ps-md-0 my-md-auto">
+                <p><strong>Tema:</strong> {{ tema }}</p>
                 <p>
                   <strong>Fecha y hora: </strong
                   >{{ formatDatetimeWithMonthInLetters(fechaHora) }}
@@ -31,11 +30,11 @@
                 <p><strong>Descripcion:</strong> {{ descripcion }}</p>
                 <p><strong>Observaciones:</strong> {{ observaciones }}</p>
               </div>
-              <div class="col-md-6">
-                <p>
+              <div class="col-md-5 ps-5">
+                <h5 class="text-center">
                   <strong>Estadística de la clase</strong>
-                </p>
-                <span>Catecúmenos:</span>
+                </h5>
+                <h6 class="text-center">Catecúmenos</h6>
                 <p><strong>Presentes:</strong> {{ presentes }}</p>
 
                 <p><strong>Atrasos:</strong> {{ atrasos }}</p>
@@ -44,30 +43,29 @@
               </div>
             </div>
           </div>
-          <div class="card-footer d-flex justify-content-end">
-            <button class="btn btn-info me-2" @click="irAsistencia">
-              <i class="fas fa-calendar-check"></i>
-            </button>
-            <router-link
-              :to="{
-                name: 'editarClase',
-                params: { catecumenoId: $route.params.claseId },
-              }"
-              type="button"
-              class="btn btn-warning me-2"
-            >
-              <i class="fas fa-edit"></i> Editar </router-link
-            ><button
-              type="button"
-              class="btn btn-danger me-2"
-              data-bs-toggle="modal"
-              data-bs-target="#mi-modal"
-            >
-              <i class="fas fa-trash-alt"></i> Eliminar
-            </button>
-            <button type="button" @click="irAtras" class="btn btn-secondary">
-              <i class="fas fa-times"></i> Cancelar
-            </button>
+          <div class="card-footer">
+            <div class="btn-group">
+              <!-- <button class="btn btn-info" @click="irAsistencia">
+                <i class="fas fa-calendar-check"></i>
+              </button> -->
+              <router-link
+                :to="{
+                  name: 'editarClase',
+                  params: { catecumenoId: $route.params.claseId },
+                }"
+                type="button"
+                class="btn btn-warning"
+              >
+                <i class="fas fa-edit"></i></router-link
+              ><button
+                type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#mi-modal"
+              >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -297,5 +295,11 @@ export default {
 <style>
 .card-header .btn {
   color: #fff;
+}
+.btn-close {
+  background-color: #d4cece9e;
+}
+.btn-close:hover {
+  background-color: #dc3545;
 }
 </style>
