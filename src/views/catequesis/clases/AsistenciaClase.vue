@@ -1,34 +1,44 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-12 mt-2 text-start">
+    <div class="row mt-4 mt-lg-2">
+      <!-- para el boton para ir atras -->
+      <div class="col-6 mb-2 text-start">
         <button class="btn btn-secondary" @click="irAtras">
           <i class="fas fa-arrow-left"></i>
           <span class="d-none d-md-block">Atrás</span>
         </button>
       </div>
-      <div class="col-10 text-bg-dark bg-opacity-75">
-        <h2>Catequesis de {{ nombre }}</h2>
-        <span class="fs-3 text-start me-5"
-          ><strong>Tema:</strong> {{ temaClase }}</span
-        >
-        <span class="fs-4">{{
-          formatDatetimeWithMonthInLetters(fechaHoraClase)
-        }}</span>
+      <!-- para los boones de opciones -->
+      <div class="col-6 text-end">
+        <div class="btn-group">
+          <button @click="imprimirListaAsistencia" class="btn btn-primary">
+            <i class="fas fa-print"></i>
+            <span class="d-none d-md-block">Imprimir</span>
+          </button>
+          <button class="btn btn-success" @click="exportTableToExcel">
+            <i class="fas fa-file-excel"></i>
+            <span class="d-none d-md-block">Excel</span>
+          </button>
+        </div>
       </div>
-      <div class="col-2 btn-group py-4">
-        <button @click="imprimirListaAsistencia" class="btn btn-primary">
-          <i class="fas fa-print"></i>
-          <span class="d-none d-md-block">Imprimir</span>
-        </button>
-        <button class="btn btn-success" @click="exportTableToExcel">
-          <i class="fas fa-file-excel"></i>
-          <span class="d-none d-md-block">Excel</span>
-        </button>
+      <!-- para el encabezado -->
+      <div class="col-12 mb-2">
+        <div class="text-bg-dark bg-opacity-75">
+          <div class="row p-3">
+            <h2 class="fs-2 fs-lg-1">Catequesis de {{ nombre }}</h2>
+            <h3 class="col-lg-6 text-start fs-5 fs-lg-3">
+              <strong class="me-2">Tema:</strong> {{ temaClase }}
+            </h3>
+            <h3 class="col-lg-6 text-start fs-5 fs-lg-3">
+              <strong class="me-2">Fecha:</strong
+              >{{ formatDatetimeWithMonthInLetters(fechaHoraClase) }}
+            </h3>
+          </div>
+        </div>
       </div>
     </div>
     <!-- Barra de búsqueda -->
-    <div class="mb-3">
+    <div class="mb-2">
       <input
         type="text"
         class="form-control"
@@ -43,11 +53,17 @@
         </caption>
         <thead class="table-success">
           <tr>
-            <th>Nro</th>
-            <th class="ps-4 text-start">Nombres</th>
-            <th class="ps-4 text-start">Apellidos</th>
-            <th>Asistencia</th>
-            <th>Estado</th>
+            <th rowspan="2">Nro</th>
+            <th class="ps-4 text-start" rowspan="2">Nombres</th>
+            <th class="ps-4 text-start" rowspan="2">Apellidos</th>
+            <th colspan="4" class="text-center">Marcar Asistencia</th>
+            <th rowspan="2">Estado</th>
+          </tr>
+          <tr>
+            <th>Presente</th>
+            <th>Retraso</th>
+            <th>Permiso</th>
+            <th>Falta</th>
           </tr>
         </thead>
         <tbody class="table-light">
@@ -59,36 +75,40 @@
             <td class="ps-4 text-start">{{ item.nombres }}</td>
             <td class="ps-4 text-start">{{ item.apellidos }}</td>
             <td>
-              <section class="btn-group">
-                <button
-                  @click="actualizarAsistencia(item, asistencias[0].id)"
-                  class="btn btn-success btn-attendance"
-                >
-                  <i class="fas fa-check"></i>
-                </button>
-                <button
-                  @click="actualizarAsistencia(item, asistencias[1].id)"
-                  class="btn btn-warning btn-attendance"
-                >
-                  <i class="fas fa-clock"></i>
-                </button>
-                <button
-                  @click="handleButtonClick(item, 2)"
-                  class="btn btn-info btn-attendance"
-                  :data-bs-toggle="item.max_permiso === 0 ? 'modal' : ''"
-                  :data-bs-target="item.max_permiso === 0 ? '#mi-modal' : ''"
-                >
-                  <i class="fas fa-user-clock"></i>
-                </button>
-                <button
-                  @click="handleButtonClick(item, 3)"
-                  class="btn btn-danger btn-attendance"
-                  :data-bs-toggle="item.max_falta === 0 ? 'modal' : ''"
-                  :data-bs-target="item.max_falta === 0 ? '#mi-modal' : ''"
-                >
-                  <i class="fas fa-times"></i>
-                </button>
-              </section>
+              <button
+                @click="actualizarAsistencia(item, asistencias[0].id)"
+                class="btn btn-sm btn-outline-success"
+              >
+                <i class="fas fa-check"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                @click="actualizarAsistencia(item, asistencias[1].id)"
+                class="btn btn-sm btn-outline-warning"
+              >
+                <i class="fas fa-clock"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                @click="handleButtonClick(item, 2)"
+                class="btn btn-sm btn-outline-info"
+                :data-bs-toggle="item.max_permiso === 0 ? 'modal' : ''"
+                :data-bs-target="item.max_permiso === 0 ? '#mi-modal' : ''"
+              >
+                <i class="fas fa-user-clock"></i>
+              </button>
+            </td>
+            <td>
+              <button
+                @click="handleButtonClick(item, 3)"
+                class="btn btn-sm btn-outline-danger"
+                :data-bs-toggle="item.max_falta === 0 ? 'modal' : ''"
+                :data-bs-target="item.max_falta === 0 ? '#mi-modal' : ''"
+              >
+                <i class="fas fa-times"></i>
+              </button>
             </td>
             <td class="fs-4">
               {{ item.tipo }}
@@ -356,5 +376,4 @@ export default {
 };
 </script>
 <style>
-
 </style>
