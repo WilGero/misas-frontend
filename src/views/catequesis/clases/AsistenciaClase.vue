@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid container-lg">
     <div class="row mt-4 mt-lg-2">
       <!-- para el boton para ir atras -->
       <div class="col-6 mb-2 text-start">
@@ -48,10 +48,10 @@
     </div>
     <div class="table-responsive">
       <table ref="table" class="table table-bordered table-hover caption-top">
-        <caption class="text-center text-bg-dark bg-opacity-75 fs-2">
+        <caption class="text-center text-bg-dark opacity-75 fs-2">
           Lista de Catecúmenos
         </caption>
-        <thead class="table-success">
+        <thead class="table-success opacity-75">
           <tr>
             <th rowspan="2">Nro</th>
             <th class="ps-4 text-start" rowspan="2">Nombres</th>
@@ -77,7 +77,11 @@
             <td>
               <button
                 @click="actualizarAsistencia(item, asistencias[0].id)"
-                class="btn btn-sm btn-outline-success"
+                :class="
+                  item.tipo === 'Presente'
+                    ? 'btn btn-sm btn-success'
+                    : 'btn btn-sm btn-outline-success'
+                "
               >
                 <i class="fas fa-check"></i>
               </button>
@@ -85,7 +89,11 @@
             <td>
               <button
                 @click="actualizarAsistencia(item, asistencias[1].id)"
-                class="btn btn-sm btn-outline-warning"
+                :class="
+                  item.tipo === 'Atraso'
+                    ? 'btn btn-sm btn-warning'
+                    : 'btn btn-sm btn-outline-warning'
+                "
               >
                 <i class="fas fa-clock"></i>
               </button>
@@ -93,7 +101,11 @@
             <td>
               <button
                 @click="handleButtonClick(item, 2)"
-                class="btn btn-sm btn-outline-info"
+                :class="
+                  item.tipo === 'Permiso'
+                    ? 'btn btn-sm btn-info'
+                    : 'btn btn-sm btn-outline-info'
+                "
                 :data-bs-toggle="item.max_permiso === 0 ? 'modal' : ''"
                 :data-bs-target="item.max_permiso === 0 ? '#mi-modal' : ''"
               >
@@ -103,7 +115,11 @@
             <td>
               <button
                 @click="handleButtonClick(item, 3)"
-                class="btn btn-sm btn-outline-danger"
+                :class="
+                  item.tipo === 'Falta'
+                    ? 'btn btn-sm btn-danger'
+                    : 'btn btn-sm btn-outline-danger'
+                "
                 :data-bs-toggle="item.max_falta === 0 ? 'modal' : ''"
                 :data-bs-target="item.max_falta === 0 ? '#mi-modal' : ''"
               >

@@ -1,6 +1,5 @@
 <template>
   <div class="container mt-4">
-
     <div class="col-12 p-3">
       <section
         class="d-flex justify-content-around align-items-center text-bg-warning bg-opacity-75"
@@ -9,11 +8,17 @@
       </section>
     </div>
     <div class="row">
-      <div class="col-3" v-for="(item, index) in opciones" :key="index">
-        <div class="card shadow h-100">
+      <div
+        class="col-12 col-md-6 col-lg-3 mb-2"
+        v-for="(item, index) in opciones"
+        :key="index"
+      >
+        <div class="card shadow text-bg-dark h-100 opacity-75">
           <div class="card-body">
-            <h5 class="card-title fw-bolder fs-4">{{ item.nombre }}</h5>
+            <h5 class="card-title fw-bolder size-lg">{{ item.nombre }}</h5>
             <p class="card-text"></p>
+          </div>
+          <div class="card-footer">
             <button class="btn btn-primary" @click="irOpcion(item.id)">
               Seleccionar
             </button>
@@ -31,24 +36,20 @@ export default {
   },
   data() {
     return {
-      opciones: [{
-        id:1,
-        nombre:"Catecúmenos"
-      },
-      { id:2,
-        nombre:"Sesiones de catequesis"}
-      ,
-      { id:3,
-        nombre:"Examenes"}
-        ,
-        { id:4,
-          nombre:"Estadísticas"}
+      opciones: [
+        {
+          id: 1,
+          nombre: "Catecúmenos",
+        },
+        { id: 2, nombre: "Sesiones de catequesis" },
+        { id: 3, nombre: "Examenes" },
+        { id: 4, nombre: "Estadísticas" },
       ],
       gestiones: [],
       catequesis_gestion: null,
       catequesis: null,
       nameCateqesis: null,
-      catequesisGestionId: null, 
+      catequesisGestionId: null,
     };
   },
   created() {
@@ -91,24 +92,24 @@ export default {
           console.error("Error al listar la catequesis:", error);
         });
     },
-  irOpcion(id) {
-      console.log(id)
-      
-      if(id==1){        
+    irOpcion(id) {
+      console.log(id);
+
+      if (id == 1) {
         this.$router.push({
           name: "catecumenos",
           params: {
             catequesisGestionId: this.catequesisGestionId,
           },
         });
-      }else if(id==2){
+      } else if (id == 2) {
         this.$router.push({
           name: "clases",
           params: {
             catequesisGestionId: this.catequesisGestionId,
           },
         });
-      }else if(id==3){
+      } else if (id == 3) {
         this.$router.push({
           name: "examenes",
           params: {
@@ -125,5 +126,10 @@ export default {
 /* Estilos personalizados */
 .table-responsive {
   overflow-x: auto;
+}
+@media (min-width: 992px) {
+  .size-lg {
+    font-size: 35px;
+  }
 }
 </style>
