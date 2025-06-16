@@ -1,19 +1,19 @@
 <template>
   <div class="container mt-4">
     <div class="row p-3">
-      <section class="col-12 align-items-center text-bg-primary bg-opacity-75">
+      <section class="col-12 align-items-center text-bg-blue opacity-75">
         <h2 class="fs-1">Catequesis</h2>
       </section>
       <div>
         <div class="row bg-light bg-opacity-75 rounded py-2">
-          <div class="col-6">
-            <div class="row justify-content-center">
+          <div class="col-8">
+            <div class="row ms-auto justify-content-center">
               <label
                 for="selectGestion"
-                class="col-3 form-label p-2 text-bg-dark bg-opacity-75 rounded rounded-end-0"
+                class="col-6 col-md-3 col-lg-2 form-label p-2 text-bg-dark bg-opacity-75 rounded rounded-end-0"
                 >Gestión:</label
               >
-              <div class="col-4 p-0">
+              <div class="col-6 col-md-3 col-lg-2 p-0">
                 <select
                   v-model="selectGestion"
                   id="selectGestion"
@@ -31,7 +31,7 @@
             </div>
           </div>
           <!-- boton para agregar -->
-          <section class="col-6">
+          <section class="col-4">
             <button class="btn btn-outline-success" @click="agregarCatequesis">
               Agregar
             </button>
@@ -40,19 +40,28 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-6 mb-3"  v-for="item in catequesis" :key="item.id">
-        <div class="card shadow img-fondo" style="height: 300px;">
-          <div class="card-body position-relative z-index-1 d-flex flex-column justify-content-between">
-            <h5 class="card-title fs-2 fw-bold">{{ item.nombre }}</h5>
-            <p class="card-text fst-italic fs-4">{{ item.requisitos }}</p>
-            <button
-              class="btn btn-outline-primary fw-bold"
-              @click="opcionesCatequesis(item.id)"
-            >
-              Seleccionar</button
-            >
-          </div>
-          
+      <div
+        class="col-12 col-lg-6 mx-auto mb-3"
+        v-for="item in catequesis"
+        :key="item.id"
+      >
+        <div class="card text-bg-secondary opacity-75 border-primary">
+          <h5 class="card-header fs-2">Confirmación</h5>
+          <img src="../../../assets/Confirmación.png" alt="imagen" />
+          <div class="card-img-overlay">
+            <div class="row h-100 row-cols-1 align-items-end">
+              <p class="card-text fst-italic fs-4">{{ item.requisitos }}</p>
+              <section class="d-grid">
+
+                <button
+                class="btn btn-outline-primary fw-bold"
+                @click="opcionesCatequesis(item.id)"
+                >
+                Seleccionar
+              </button>
+            </section>
+            </div>
+            </div>
         </div>
       </div>
     </div>
@@ -60,7 +69,6 @@
 </template>
   
   <script>
-
 export default {
   setup() {
     return {};
@@ -76,8 +84,7 @@ export default {
     this.getCatequesis();
     this.getGestion();
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
     async getCatequesis() {
       await this.axios
@@ -112,39 +119,39 @@ export default {
         });
     },
     //Dirige a la vista opciones de la catequesis
-    opcionesCatequesis(catequesisId){
-      this.$router.push({ name: 'opciones', params: { catequesisId,gestionId:this.selectGestion} })
-    }
+    opcionesCatequesis(catequesisId) {
+      this.$router.push({
+        name: "opciones",
+        params: { catequesisId, gestionId: this.selectGestion },
+      });
+    },
   },
 };
 </script>
   
   <style scoped>
-/* mis estuilos */
-.card h5:hover{
-  background-color: burlywood;
-}
-.card p:hover{
-  background-color: burlywood;
-}
-
 /* Estilos personalizados */
 .table-responsive {
   overflow-x: auto;
 }
-.img-fondo{
-  background-image: url('../../../assets/Confirmación.png');
-  background-size: 'cover'; 
-  height: '300px';
+.img-fondo {
+  background-image: url("../../../assets/Confirmación.png");
+  background-size: "cover";
+  height: "300px";
 }
 .img-fondo::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.2); /* Ajusta el último valor (0.5) para la transparencia */
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.2
+  ); /* Ajusta el último valor (0.5) para la transparencia */
   z-index: 0;
 }
 .card-body {

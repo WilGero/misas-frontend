@@ -111,4 +111,14 @@ nav a.router-link-exact-active {
   background-position: center;
   height: 100%;
 }}
+.bg-dblue{
+  background-color: dodgerblue;
+}
+.bg-bluedark{
+  background-color: #2c3e50;
+}
+.text-bg-blue{
+  color: #fff;
+  background:  #001f3f;
+}
 </style>
