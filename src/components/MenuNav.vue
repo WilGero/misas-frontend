@@ -79,7 +79,7 @@
             </li>
             <li class="nav-item" v-if="auth.data.rol_id === 4">
               <router-link class="nav-link" :to="{ name: 'catequesis' }"
-                ><i class="fas fa-chalkboard"></i> Catequesis</router-link
+                ><i class="fas fa-bible"></i> Catequesis</router-link
               >
             </li>
             <!-- <li class="nav-item" v-if="auth.data.rol_id === 4">

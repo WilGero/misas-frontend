@@ -46,7 +46,7 @@
         :key="item.id"
       >
         <div class="card text-bg-secondary opacity-75 border-primary">
-          <h5 class="card-header fs-2">Confirmación</h5>
+          <h5 class="card-header fs-2">{{ item.nombre}}</h5>
           <img src="../../../assets/Confirmación.png" alt="imagen" />
           <div class="card-img-overlay">
             <div class="row h-100 row-cols-1 align-items-end">

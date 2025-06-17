@@ -1,10 +1,18 @@
 <template>
   <div class="container mt-4">
-    <div class="col-12 p-3">
-      <section
-        class="d-flex justify-content-around align-items-center text-bg-warning bg-opacity-75"
-      >
-        <h2 class="fs-1 fw-bold text-light">{{ nameCateqesis }}</h2>
+    <div class="row p-3">
+      <!-- para el boton para ir atras -->
+      <div class="col-2 col-lg-1 text-start">
+        <button class="btn btn-secondary w-100" @click="irAtras">
+          <i class="fas fa-arrow-left"></i>
+          <span class="d-none d-md-block">Atrás</span>
+        </button>
+      </div>
+
+      <section class="col-10 col-lg-11 text-bg-warning bg-opacity-75">
+        <h2 class="fs-1 fw-bold text-light">
+          {{ nameCatequesis }} - {{ gestion }}
+        </h2>
       </section>
     </div>
     <div class="row">
@@ -14,9 +22,16 @@
         :key="index"
       >
         <div class="card shadow text-bg-dark h-100 opacity-75">
+          <div class="card-header pt-4">
+            <h4 class="card-title fw-bolder fs-4 size-lg">{{ item.nombre }}</h4>
+          </div>
           <div class="card-body">
-            <h5 class="card-title fw-bolder size-lg">{{ item.nombre }}</h5>
-            <p class="card-text"></p>
+            <div class="row">
+              <section class="fs-1 align-items-end">
+                <i :class="item.icono"></i>
+              </section>
+              <!-- <i class="fas fa-user-graduate"></i> -->
+            </div>
           </div>
           <div class="card-footer">
             <button class="btn btn-primary" @click="irOpcion(item.id)">
@@ -40,15 +55,17 @@ export default {
         {
           id: 1,
           nombre: "Catecúmenos",
+          icono:"fas fa-people-group"
         },
-        { id: 2, nombre: "Sesiones de catequesis" },
-        { id: 3, nombre: "Examenes" },
-        { id: 4, nombre: "Estadísticas" },
+        { id: 2, nombre: "Sesiones de catequesis",icono:"fas fa-chalkboard-teacher" },
+        { id: 3, nombre: "Examenes",icono:"fas fa-file-alt" },
+        { id: 4, nombre: "Estadísticas", icono:"fas fa-chart-line" },
       ],
       gestiones: [],
       catequesis_gestion: null,
       catequesis: null,
-      nameCateqesis: null,
+      nameCatequesis: null,
+      gestion: null,
       catequesisGestionId: null,
     };
   },
@@ -70,6 +87,7 @@ export default {
           // Manejar la respuesta exitosa
           this.catequesis_gestion = response.data.data;
           console.log(this.catequesis_gestion);
+          this.gestion = this.catequesis_gestion.gestion;
           this.catequesisGestionId = this.catequesis_gestion.id;
         })
         .catch((error) => {
@@ -85,7 +103,7 @@ export default {
           // Manejar la respuesta exitosa
           this.catequesis = response.data.data;
           console.log(this.catequesis);
-          this.nameCateqesis = this.catequesis.nombre;
+          this.nameCatequesis = this.catequesis.nombre;
         })
         .catch((error) => {
           // Manejar errores
@@ -117,6 +135,9 @@ export default {
           },
         });
       }
+    },
+    irAtras() {
+      this.$router.go(-1);
     },
   },
 };
