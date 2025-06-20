@@ -9,25 +9,25 @@
           <span class="d-none d-md-block">Atrás</span>
         </button>
       </div>
-      <!-- Barra de búsqueda -->
-      <div class="col-12 mb-2">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Buscar..."
-          v-model="searchQuery"
-        />
-      </div>
     </div>
     <div class="table-responsive">
       <table
         class="table table-hover table-striped table-bordered caption-top bg-opacity-75"
       >
         <caption class="text-bg-dark fs-2">
-          <div class="row">
-            <h3 class="col-10 text-center">Sesiones de Catequesis</h3>
+          <div class="row align-items-center">
+            <h3 class="col-12 text-center">Sesiones de Catequesis</h3>
+            <!-- Barra de búsqueda -->
+            <div class="col-9 col-md-10 mb-2 ps-4 pe-md-4">
+              <input
+                type="text"
+                class="form-control w-100"
+                placeholder="Buscar..."
+                v-model="searchQuery"
+              />
+            </div>
             <!-- boton para agregar mas sesiones de catequesis -->
-            <section class="col-2 text-start">
+            <section class="col-3 col-md-2 text-start ps-md-4 pe-4">
               <router-link
                 :to="{
                   name: 'agregarClase',
@@ -59,7 +59,8 @@
               <div class="btn-group">
                 <!-- Botón para a ir a registrar asistencias de la clase -->
                 <button class="btn btn-info" @click="irAsistencia(item.id)">
-                  <i class="fas fa-calendar-check"></i><span class="d-none d-md-block">Asistencia</span> 
+                  <i class="fas fa-calendar-check"></i
+                  ><span class="d-none d-md-block">Asistencia</span>
                 </button>
                 <!-- Botón de detalles -->
                 <router-link
@@ -70,7 +71,8 @@
                   type="button"
                   class="btn btn-primary"
                 >
-                  <i class="fas fa-info-circle"></i> <span class="d-none d-md-block">Detalles</span>
+                  <i class="fas fa-info-circle"></i>
+                  <span class="d-none d-md-block">Detalles</span>
                 </router-link>
               </div>
             </td>

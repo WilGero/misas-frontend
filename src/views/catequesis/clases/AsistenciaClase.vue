@@ -55,11 +55,11 @@
           <tr>
             <th rowspan="2">Nro</th>
             <th class="ps-4 text-start" rowspan="2">Nombres</th>
-            <th class="ps-4 text-start" rowspan="2">Apellidos</th>
+            <th class="ps-4 text-start d-none d-md-table-cell" rowspan="2">Apellidos</th>
             <th colspan="4" class="text-center">Marcar Asistencia</th>
-            <th rowspan="2">Estado</th>
+            <th rowspan="2" class="d-none d-lg-table-cell">Estado</th>
           </tr>
-          <tr>
+          <tr class="d-none d-md-table-row">
             <th>Presente</th>
             <th>Retraso</th>
             <th>Permiso</th>
@@ -73,7 +73,7 @@
           >
             <td>{{ index + 1 }}</td>
             <td class="ps-4 text-start">{{ item.nombres }}</td>
-            <td class="ps-4 text-start">{{ item.apellidos }}</td>
+            <td class="ps-4 text-start d-none d-md-table-cell">{{ item.apellidos }}</td>
             <td>
               <button
                 @click="actualizarAsistencia(item, asistencias[0].id)"
@@ -126,7 +126,7 @@
                 <i class="fas fa-times"></i>
               </button>
             </td>
-            <td class="fs-4">
+            <td class="fs-4 d-none d-lg-table-cell">
               {{ item.tipo }}
             </td>
           </tr>
