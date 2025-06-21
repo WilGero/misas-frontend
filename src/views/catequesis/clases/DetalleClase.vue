@@ -6,17 +6,13 @@
       <div class="col-md-8">
         <div class="card opacity-75">
           <div class="card-header text-bg-dark">
-            <div class="row">
-              <h3 class="col-10">Información de la clase</h3>
-              <div class="col-2 my-auto text-end">
+              <h3 class="card-title">Información de la clase</h3>
                 <button
                   type="button"
                   @click="irAtras"
                   class="btn-close"
                   aria-label="Close"
                 ></button>
-              </div>
-            </div>
           </div>
           <div class="card-body">
             <div class="row justify-content-center text-start">

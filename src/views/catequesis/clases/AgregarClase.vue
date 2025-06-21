@@ -1,22 +1,23 @@
 <template>
-  <div class="container mt-5">
+  <div class="container-fluid container-lg mt-5">
     <div class="row justify-content-center">
-      <div class="col-md-6">
-        <div class="card opacity-75">
-          <div class="card-header text-bg-secondary">
-            <h3 class="card-title">Registro de la clase</h3>
-            <button
-              class="btn-close"
-              aria-label="Close"
-              @click="irAtras"
-            ></button>
+      <div class="col-md-8">
+        <div class="card opacity-75 mb-4">
+          <div class="card-header text-bg-dark">
+                <h3 class="card-title">Agregar sesión de catequesis</h3>
+                <button
+                  type="button"
+                  @click="irAtras"
+                  class="btn-close"
+                  aria-label="Close"
+                ></button>
           </div>
           <div class="card-body text-bg-light">
             <form>
               <div class="row">
                 <div class="col">
                   <div class="form-group">
-                    <label for="tema">tema:</label>
+                    <label for="tema" class="form-label">Tema:</label>
                     <input
                       v-model="formulario.tema"
                       type="text"
@@ -30,7 +31,7 @@
               <div class="row">
                 <div class="col">
                   <div class="form-group">
-                    <label for="fecha-hora">Fecha y hora:</label>
+                    <label class="form-label" for="fecha-hora">Fecha y hora:</label>
                     <input
                       v-model="formulario.fecha_hora"
                       type="datetime-local"
@@ -56,7 +57,7 @@
                     <div class="form-group">
                       <label for="descripcion">Descripción:</label>
                       <textarea
-                      class="form-control"
+                        class="form-control"
                         v-model="formulario.descripcion"
                         name="descripcion"
                         id="descripcion"
@@ -70,7 +71,7 @@
                     <div class="form-group">
                       <label for="observaciones">Observaciones</label>
                       <textarea
-                      class="form-control"
+                        class="form-control"
                         v-model="formulario.observaciones"
                         name="observaciones"
                         id="observaciones"
@@ -78,7 +79,6 @@
                         rows="5"
                         placeholder="Ingrese alguna observación/observaciones..."
                       ></textarea>
-
                     </div>
                   </div>
                 </div>
@@ -187,17 +187,20 @@ export default {
     },
     async agregarClase() {
       this.errores = [];
-      this.formulario.catequesis_gestion_id = this.$route.params.catequesisGestionId;
+      this.formulario.catequesis_gestion_id =
+        this.$route.params.catequesisGestionId;
       console.log(this.formulario);
-      if (this.formulario.tema ===null) {
+      if (this.formulario.tema === null) {
         this.error = "Se requiere el nombre del tema";
         this.errores.push(this.error);
       }
-      const dif = this.calcularDiferenciaFechaHoraEnHoras(this.formulario.fecha_hora);
+      const dif = this.calcularDiferenciaFechaHoraEnHoras(
+        this.formulario.fecha_hora
+      );
       if (this.formulario.fecha_hora === null) {
         this.error = "Se requiere la fecha y hora de la clase";
         this.errores.push(this.error);
-      }else if (dif < 2) {
+      } else if (dif < 2) {
         this.error = "Ingrese una fecha y hora mas actual";
         this.errores.push(this.error);
       }
@@ -263,6 +266,9 @@ export default {
 .error-list-item {
   color: #dc3545;
   margin-bottom: 5px;
+}
+.btn-close {
+  background-color: #d4cece9e;
 }
 .btn-close:hover {
   background-color: #dc3545;

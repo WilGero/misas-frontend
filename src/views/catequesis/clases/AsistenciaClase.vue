@@ -1,6 +1,6 @@
 <template>
-  <div class="container-fluid container-lg">
-    <div class="row mt-4 mt-lg-2">
+  <div class="container-fluid container-lg mt-4">
+    <div class="row">
       <!-- para el boton para ir atras -->
       <div class="col-6 mb-2 text-start">
         <button class="btn btn-secondary" @click="irAtras">
@@ -37,25 +37,28 @@
         </div>
       </div>
     </div>
-    <!-- Barra de búsqueda -->
-    <div class="mb-2">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Buscar..."
-        v-model="searchQuery"
-      />
-    </div>
+
     <div class="table-responsive">
       <table ref="table" class="table table-bordered table-hover caption-top">
         <caption class="text-center text-bg-dark opacity-75 fs-2">
           Lista de Catecúmenos
+          <!-- Barra de búsqueda -->
+          <div class="mb-2 px-4">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar..."
+              v-model="searchQuery"
+            />
+          </div>
         </caption>
         <thead class="table-success opacity-75">
           <tr>
             <th rowspan="2">Nro</th>
             <th class="ps-4 text-start" rowspan="2">Nombres</th>
-            <th class="ps-4 text-start d-none d-md-table-cell" rowspan="2">Apellidos</th>
+            <th class="ps-4 text-start d-none d-md-table-cell" rowspan="2">
+              Apellidos
+            </th>
             <th colspan="4" class="text-center">Marcar Asistencia</th>
             <th rowspan="2" class="d-none d-lg-table-cell">Estado</th>
           </tr>
@@ -73,7 +76,9 @@
           >
             <td>{{ index + 1 }}</td>
             <td class="ps-4 text-start">{{ item.nombres }}</td>
-            <td class="ps-4 text-start d-none d-md-table-cell">{{ item.apellidos }}</td>
+            <td class="ps-4 text-start d-none d-md-table-cell">
+              {{ item.apellidos }}
+            </td>
             <td>
               <button
                 @click="actualizarAsistencia(item, asistencias[0].id)"
