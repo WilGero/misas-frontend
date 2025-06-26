@@ -270,7 +270,7 @@ const routes = [
     }
   },
   {
-    path: '/nuevo-examen',
+    path: '/nuevo-examen/:catequesisGestionId',
     name: 'nuevoExamen',
     component: () => import('../views/catequesis/examen/NuevoExamen'),
     meta: {

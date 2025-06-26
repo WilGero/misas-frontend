@@ -6,13 +6,15 @@
       <div class="col-md-8">
         <div class="card opacity-75">
           <div class="card-header text-bg-dark">
-              <h3 class="card-title">Información de la clase</h3>
-                <button
-                  type="button"
-                  @click="irAtras"
-                  class="btn-close"
-                  aria-label="Close"
-                ></button>
+            <h3 class="card-title">Información de la sesión de catequesis</h3>
+            <div>
+              <button
+                type="button"
+                @click="irAtras"
+                class="btn-close"
+                aria-label="Close"
+              ></button>
+            </div>
           </div>
           <div class="card-body">
             <div class="row justify-content-center text-start">

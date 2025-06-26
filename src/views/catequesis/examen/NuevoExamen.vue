@@ -114,6 +114,7 @@ export default {
       formulario: {
         titulo: null,
         fecha: null,
+        catequesis_gestion_id: null,
       },
       mostrarAlerta: false,
       errores: [],
@@ -128,7 +129,8 @@ export default {
   methods: {
     async nuevoExamen() {
       this.errores = [];
-
+      this.formulario.catequesis_gestion_id =
+        this.$route.params.catequesisGestionId;
       if (!this.formulario.titulo) {
         this.errores.push("Se requiere el título del examen");
       }
@@ -136,6 +138,8 @@ export default {
       if (!this.formulario.fecha) {
         this.errores.push("Se requiere la fecha del examen");
       }
+      console.log(this.formulario);
+
       if (this.errores.length === 0) {
         try {
           const response = await this.axios.post(
@@ -149,6 +153,7 @@ export default {
           this.formulario = {
             titulo: null,
             fecha: null,
+            catequesis_gestion_id: null,
           };
         } catch (error) {
           console.error("Error al guardar el examen:", error);

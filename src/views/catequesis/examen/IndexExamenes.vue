@@ -7,7 +7,13 @@
         <h2 class="fs-1">Examenes</h2>
       </div>
       <div class="col">
-        <router-link :to="{ name: 'nuevoExamen' }" class="btn btn-success">
+        <router-link
+          :to="{
+            name: 'nuevoExamen',
+            params: { catequesisGestionId: $route.params.catequesisGestionId },
+          }"
+          class="btn btn-success"
+        >
           <i class="fas fa-plus"></i>
           Nuevo
         </router-link>
@@ -102,13 +108,13 @@
 </template>
 
 <script>
-import useFormatDate from '@/composables/useFormatDate';
+import useFormatDate from "@/composables/useFormatDate";
 export default {
-  setup(){
-    const {formatDate}=useFormatDate();
-    return{
+  setup() {
+    const { formatDate } = useFormatDate();
+    return {
       formatDate,
-    }
+    };
   },
   data() {
     return {
@@ -127,7 +133,9 @@ export default {
   methods: {
     async getExamenes() {
       try {
-        const response = await this.axios.get("/examenes/listado/"+this.$route.params.catequesisGestionId);
+        const response = await this.axios.get(
+          "/examenes/listado/" + this.$route.params.catequesisGestionId
+        );
         this.examenes = response.data.data;
         console.log(this.examenes);
       } catch (error) {
@@ -173,7 +181,9 @@ export default {
     },
     async getCatecumenos() {
       try {
-        const response = await this.axios.get("/catecumenos/listado/"+this.catequesisGestionId);
+        const response = await this.axios.get(
+          "/catecumenos/listado/" + this.$route.params.catequesisGestionId
+        );
         this.catecumenos = response.data.data;
         console.log(this.catecumenos);
       } catch (error) {
@@ -194,7 +204,10 @@ export default {
           "/catecumenos-examen/agregar",
           formulario
         );
-        console.log("catecumeno registrado al examen exitosamente", response.data.data);
+        console.log(
+          "catecumeno registrado al examen exitosamente",
+          response.data.data
+        );
       } catch (error) {
         console.error("Error al registrar el catecumeno al examen:", error);
       }
@@ -203,7 +216,6 @@ export default {
       try {
         this.examenId = idExamen;
         console.log(this.examenId);
-
         // Obtener catecúmenos de la clase
         await this.getExamenCatecumenos(idExamen);
         console.log(this.catecumenosExamen.length);
@@ -223,7 +235,8 @@ export default {
             catecumeno_id: catecumeno.id,
             nota: 0,
             puntos: 0,
-            nota_final: 0
+            nota_final: 0,
+            catequesis_gestion_id: this.$route.params.catequesisGestionId,
           });
         });
 
