@@ -2,14 +2,10 @@
   <div class="container mt-5">
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card text-bg-secondary opacity-75 mb-3">
+        <div class="card text-bg-dark opacity-75 mb-3">
           <div class="card-header">
             <h3 class="card-title text-light">Registro de Catecumeno</h3>
-            <button
-              class="btn-close"
-              aria-label="Close"
-              @click="irAtras"
-            ></button>
+            <btn-close/>
           </div>
           <div class="card-body text-bg-light">
             <form>
@@ -181,7 +177,11 @@
 
 <script>
 import { mapState } from "vuex";
+import BtnClose from "@/components/BtnClose.vue";   
 export default {
+  components: {
+    BtnClose,
+  },
   data() {
     return {
       formulario: {
@@ -301,9 +301,6 @@ export default {
 .error-list-item {
   color: #dc3545;
   margin-bottom: 5px;
-}
-.btn-close:hover {
-  background-color: #dc3545;
 }
 
 

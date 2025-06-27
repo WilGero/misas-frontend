@@ -3,10 +3,7 @@
     <div class="row">
       <!-- para el boton para ir atras -->
       <div class="col-6 mb-2 text-start">
-        <button class="btn btn-secondary" @click="irAtras">
-          <i class="fas fa-arrow-left"></i>
-          <span class="d-none d-md-block">Atrás</span>
-        </button>
+        <back-go/>
       </div>
       <!-- para los boones de opciones -->
       <div class="col-6 text-end">
@@ -161,7 +158,11 @@
 import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import BackGo from "@/components/BackGo.vue";
 export default {
+  components:{
+    BackGo
+  },
   data() {
     return {
       asistencias: [],
@@ -331,9 +332,6 @@ export default {
           error
         );
       }
-    },
-    irAtras() {
-      this.$router.go(-1);
     },
     //para imprimir
     imprimirListaAsistencia() {

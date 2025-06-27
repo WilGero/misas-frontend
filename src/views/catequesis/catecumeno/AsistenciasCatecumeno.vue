@@ -1,17 +1,23 @@
 <template>
   <div class="container">
-    <div class="table-responsive">
+   <section class="text-start mb-2">
+     <back-go/>
+   </section>
+    <div class="table-responsive opacity-75">
       <table class="table table-hover table-bordered">
+       <caption class="text-end">
+        <div class="btn-group">
+          <button class="btn btn-dark disabled">Multa Total:</button>
+          <input class="btn btn-info" type="button" v-model="multaTotal">
+          <button class="btn btn-primary disabled">Bs</button>
+        </div>
+       </caption>
         <thead>
           <tr>
             <th colspan="4" class="bgr"><h2 class="fw-bold text-light">Asistencias</h2></th>
             <th class="bgr fs-3" colspan="3">{{ nombreCatecumeno }}</th>
           </tr>
-          <tr>
-            <th colspan="4" class="text-end fw-bold">Multa Total:</th>
-            <th class="fw-bolder bg-warning fs-4">{{ multaTotal }} Bs</th>
-            <th colspan="2"></th>
-          </tr>
+        
           <tr>
             <th>Nro</th>
             <th>Clases</th>
@@ -70,7 +76,9 @@
 </template>
 <script>
 import moment from "moment";
+import BackGo from "@/components/BackGo.vue";
 export default {
+  components:{BackGo},
   data() {
     return {
       asistencias: [],

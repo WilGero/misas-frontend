@@ -158,19 +158,26 @@ const routes = [
     path: '/catecumenos/:catequesisGestionId',
     name: 'catecumenos',
     component: () => import('../views/catequesis/catecumeno/IndexCatecumenosPrint'),
-    children: [
-      {
-        path: 'agregar-catecumeno',
-        name: 'agregarCatecumeno',
-        component: () => import('../views/catequesis/catecumeno/AgregarCatecumeno')
+    // children: [
+    //   {
+    //     path: 'agregar-catecumeno',
+    //     name: 'agregarCatecumeno',
+    //     component: () => import('../views/catequesis/catecumeno/AgregarCatecumeno')
 
-      },
-    ],
+    //   },
+    // ],
     meta: {
       requiresAuth: true, requiredRole: 4
     }
   },
-
+  {
+    path: '/agregar-catecumeno/:catequesisGestionId',
+    name: 'agregarCatecumeno',
+    component: () => import('../views/catequesis/catecumeno/AgregarCatecumeno'),
+    meta: {
+      requiresAuth: true, requiredRole: 4
+    }
+  },
   {
     path: '/detalle-catecumeno/:catecumenoId',
     name: 'detalleCatecumeno',

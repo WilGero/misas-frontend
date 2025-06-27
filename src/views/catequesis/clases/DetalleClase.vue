@@ -5,16 +5,9 @@
     <div class="row justify-content-center mt-5">
       <div class="col-md-8">
         <div class="card opacity-75">
-          <div class="card-header text-bg-dark">
-            <h3 class="card-title">Información de la sesión de catequesis</h3>
-            <div>
-              <button
-                type="button"
-                @click="irAtras"
-                class="btn-close"
-                aria-label="Close"
-              ></button>
-            </div>
+          <div class="card-header d-flex text-bg-dark align-items-center justify-content-between">
+            <h3 class="card-title">Información de la sesión</h3>
+            <btn-close/>
           </div>
           <div class="card-body">
             <div class="row justify-content-center text-start">
@@ -111,7 +104,9 @@
 
 <script>
 import moment from "moment";
+import BtnClose from "@/components/BtnClose.vue";
 export default {
+  components:{BtnClose},
   data() {
     return {
       claseCatecumenos: [],

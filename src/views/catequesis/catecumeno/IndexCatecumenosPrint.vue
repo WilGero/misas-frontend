@@ -1,42 +1,51 @@
 <template>
-  <div class="container mt-4">
-    <div class="row m-2 align-items-center">
-      <!-- Barra de búsqueda -->
-      <div class="col-12 col-lg-8 mb-3">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Buscar..."
-          v-model="searchQuery"
-        />
-      </div>
-      <section class="col-12 col-lg-4 btn-group h-25 py-4">
-        <router-link
-          :to="{
-            name: 'agregarCatecumeno',
-            params: {
-              catequesisId: $route.params.catequesisId,
-              gestionId: $route.params.gestionId,
-            },
-          }"
-          class="btn btn-success"
-          ><i class="fas fa-user-plus"></i>
-          <span class="d-none d-md-block">Nuevo</span></router-link
-        >
-        <button @click="imprimirNombresApellidos" class="btn btn-primary">
-          <i class="fas fa-print"></i>
-          <span class="d-none d-md-block">Imprimir</span>
-        </button>
-        <button class="btn btn-success" @click="exportTableToExcel">
-          <i class="fas fa-file-excel"></i> Excel
-        </button>
+  <div class="container-fluid container-md mt-4">
+    <div class="row align-items-center justify-content-end">
+      <section class="col-6 text-start">
+        <!-- componente par a ir hacia atrasF -->
+        <back-go />
+      </section>
+      <section class="col-6 py-2 text-end">
+        <div class="btn-group">
+          <button @click="imprimirNombresApellidos" class="btn btn-primary">
+            <i class="fas fa-print"></i>
+            <span class="d-none d-md-block">Imprimir</span>
+          </button>
+          <button class="btn btn-success" @click="exportTableToExcel">
+            <i class="fas fa-file-excel"></i
+            ><span class="d-none d-md-block">Excel</span>
+          </button>
+        </div>
       </section>
     </div>
-    <router-view></router-view>
     <div class="table-responsive">
       <table ref="table" class="table table-hover table-bordered caption-top">
         <caption class="text-center text-bg-dark bg-opacity-75 fs-2">
           Lista de Catecúmenos
+          <div class="d-flex justify-content-around align-items-center">
+            <!-- Barra de búsqueda -->
+            <div class="col-10">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar..."
+                v-model="searchQuery"
+              />
+            </div>
+            <div class="">
+              <router-link
+                :to="{
+                  name: 'agregarCatecumeno',
+                  params: {
+                    catequesisGestionId: $route.params.catequesisGestionId,
+                  },
+                }"
+                class="btn btn-success"
+                ><i class="fas fa-user-plus"></i>
+                <span class="d-none d-md-block">Nuevo</span></router-link
+              >
+            </div>
+          </div>
         </caption>
         <thead class="table-secondary">
           <tr>
@@ -96,7 +105,11 @@
 import moment from "moment";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import BackGo from "@/components/BackGo.vue";
 export default {
+  components: {
+    BackGo,
+  },
   data() {
     return {
       catecumenos: [],

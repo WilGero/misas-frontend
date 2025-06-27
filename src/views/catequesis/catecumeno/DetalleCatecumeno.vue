@@ -2,20 +2,15 @@
   <div class="container">
     <div class="row justify-content-center mt-5">
       <div class="col-md-6">
-        <div class="card">
+        <div class="card opacity-75">
           <div
-            class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+            class="card-header d-flex text-bg-dark align-items-center justify-content-between"
           >
-            Información del Catecúmeno
-            <button
-              type="button"
-              @click="irAtras"
-              class="btn-close"
-              aria-label="Close"
-            ></button>
+            <h3 class="card-title text-light">Detalles del Catecúmeno</h3>
+            <btn-close />
           </div>
           <div class="card-body text-start p-4">
-            <div class="d-flex">
+            <div class="d-md-flex">
               <div class="me-4">
                 <p><strong>Nombres:</strong> {{ catecumeno.nombres }}</p>
                 <p><strong>Apellidos:</strong> {{ catecumeno.apellidos }}</p>
@@ -35,36 +30,36 @@
                 </p>
                 <p><strong>Dirección:</strong> {{ catecumeno.direccion }}</p>
               </div>
-              <div class="">
-                <div class="row g-3 mb-4">
-                  <div class="col-8">
-                    <strong>Máximo de permisos:</strong>
-                  </div>
-                  <div class="col-4">
-                    <input
-                      class="form-control fs-4"
-                      type="number"
-                      v-model="catecumeno.max_permiso"
-                      disabled
-                    />
-                  </div>
+              <div class="d-md-flex align-items-start">
+                <div class="btn-group ms-2">
+                  <button class="btn btn-dark disabled">
+                    Máximo de permisos:
+                  </button>
+                  <input
+                    class="btn btn-info"
+                    type="button"
+                    v-model="catecumeno.max_permiso"
+                    disabled
+                  />
                 </div>
-                <p class="text-center">
-                  Aumentar permisos
+                <div class="text-center btn-group ms-2">
+                  <button class="btn btn-dark disabled">
+                    Aumentar permisos
+                  </button>
                   <button
-                    class="btn btn-primary px-3"
+                    class="btn btn-outline-primary px-3"
                     data-bs-toggle="modal"
                     data-bs-target="#mi-modal2"
                     @click="reiniciarEstados"
                   >
                     +
                   </button>
-                </p>
+                </div>
               </div>
             </div>
           </div>
           <div class="card-footer d-flex justify-content-end">
-           <button
+            <button
               type="button"
               class="btn btn-danger me-2"
               data-bs-toggle="modal"
@@ -168,7 +163,11 @@
 
 <script>
 import moment from "moment";
+import BtnClose from "@/components/BtnClose.vue";
 export default {
+  components: {
+    BtnClose,
+  },
   data() {
     return {
       claseCatecumenos: [],
@@ -257,10 +256,6 @@ export default {
           console.error("Error al encontrar catecumeno:", error);
         });
     },
-
-    irAtras() {
-      this.$router.go(-1);
-    },
     cerrarModal() {
       if (this.msgBtn === "Cerrar") {
         this.$router.go(-1);
@@ -271,7 +266,4 @@ export default {
 </script>
 
 <style>
-.card-header .btn {
-  color: #fff;
-}
 </style>
